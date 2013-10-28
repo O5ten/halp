@@ -10,3 +10,8 @@
     -fx-font-weight: lighter;
     -fx-font-style: italic;
 }
+
+.continue-button{
+	-fx-padding: 10;
+}
+

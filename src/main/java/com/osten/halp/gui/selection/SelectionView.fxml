@@ -35,5 +35,6 @@
                 </VBox>
             </HBox>
         </VBox>
+        <Button fx:id="continueButton" styleClass="continue-button" text="Profile this selection" onAction="#handleContinue"/>
     </VBox>
 </fx:root>
