@@ -21,7 +21,7 @@
         <VBox fx:id="content" spacing="4" VBox.vgrow="ALWAYS" >
             <HBox spacing="4">
                 <Button fx:id="browseButton" text="Browse data" onAction="#handleBrowse"/>
-                <ComboBox fx:id="formatBox" promptText="Format" minWidth="70"/>
+                <ComboBox fx:id="dataFormatBox" promptText="Format" minWidth="70"/>
                 <TextField fx:id="fileField" editable="false" text="No file selected yet" HBox.hgrow="ALWAYS"/>
             </HBox>
             <HBox VBox.vgrow="ALWAYS" fx:id="dataSelection">
@@ -31,10 +31,10 @@
                 </VBox>
                 <VBox HBox.hgrow="SOMETIMES">
                     <Label text="CTRL + Click to select what data to profile" styleClass="sub-header"/>
-                    <ListView VBox.vgrow="ALWAYS" fx:id="dataSelector"/>
+                    <ListView VBox.vgrow="ALWAYS" fx:id="selectionList"/>
                 </VBox>
             </HBox>
         </VBox>
-        <Button fx:id="continueButton" styleClass="continue-button" text="Profile this selection" onAction="#handleContinue"/>
+        <Button fx:id="continueButton" visible="false" styleClass="continue-button" text="Profile this selection" onAction="#handleContinue"/>
     </VBox>
 </fx:root>

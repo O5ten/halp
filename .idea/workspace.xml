@@ -2,15 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6eb23687-7a41-4ffa-9791-f8c00db2cea4" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/statistics/CsvStatistic.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/statistics/CsvStatisticMap.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CSVReader.java" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CSVReader.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataCruncher.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/DataPoint.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/LongCruncher.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongDataPoint.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongStatistic.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/StatisticMap.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CSVReader.java" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/CSVReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataReader.java" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/osten/halp/api/statistics/DataReaderTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/osten/halp/api/statistics/DataReaderTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.java" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.java" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/common-style.css" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/common-style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/Statistic.java" afterPath="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/Statistic.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="shafdt.iws" />
@@ -48,17 +52,17 @@
     <file path="/how.html" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382370580336" ignored="false" />
     <file path="/what.html" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382437295761" ignored="false" />
     <file path="/AnalysisView.fxml" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382362786807" ignored="false" />
-    <file path="/Statistic.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382456368340" ignored="false" />
+    <file path="/Statistic.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382975099102" ignored="false" />
     <file path="/DataView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382358077206" ignored="false" />
     <file path="/DataView.fxml" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382359226463" ignored="false" />
-    <file path="/SelectionView.fxml" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382962348315" ignored="false" />
-    <file path="/ProfilingView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382362370772" ignored="false" />
+    <file path="/SelectionView.fxml" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382963614568" ignored="false" />
+    <file path="/ProfilingView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382964292529" ignored="false" />
     <file path="/AnalysisView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382362379295" ignored="false" />
     <file path="/ProfilingView.fxml" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382362767795" ignored="false" />
     <file path="/HomeView.css" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382363243149" ignored="false" />
     <file path="/HomeView.fxml" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382362722178" ignored="false" />
     <file path="/HomeView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382370223170" ignored="false" />
-    <file path="/SelectionView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382962916304" ignored="false" />
+    <file path="/SelectionView.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382963478546" ignored="false" />
     <file path="/CsvReader.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382540747207" ignored="false" />
     <file path="/DataReader.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382539973621" ignored="false" />
     <file path="/StatisticMap.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382465862253" ignored="false" />
@@ -74,6 +78,11 @@
     <file path="/Main.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382704298975" ignored="false" />
     <file path="/data.csv" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382705093414" ignored="false" />
     <file path="/SelectionView.css" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382722409736" ignored="false" />
+    <file path="/DataPoint.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382972017895" ignored="false" />
+    <file path="/LongDataPoint.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382972234545" ignored="false" />
+    <file path="/LongStatistic.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382977500108" ignored="false" />
+    <file path="/StatisticCruncher.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382978071704" ignored="false" />
+    <file path="/LongCruncher.java" changelist="6eb23687-7a41-4ffa-9791-f8c00db2cea4" time="1382979510041" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,50 +148,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SelectionView.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SelectionView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="32" selection-start="1526" selection-end="1526" vertical-scroll-proportion="0.37578288">
+            <state line="71" column="0" selection-start="1783" selection-end="1783" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#4775#5692#0" expanded="true" />
-                <element signature="e#5681#5682#0" expanded="true" />
+                <element signature="e#4741#5658#0" expanded="true" />
+                <element signature="e#5647#5648#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainWindowView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.java">
+      <file leaf-file-name="DataCruncher.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataCruncher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="0" selection-start="2002" selection-end="2002" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="18" column="17" selection-start="478" selection-end="478" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FXLauncher.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/FXLauncher.java">
+      <file leaf-file-name="LongCruncher.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/LongCruncher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="55" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainWindowView.fxml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="32" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProfilingView.fxml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="27" selection-start="425" selection-end="425" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="27" column="26" selection-start="697" selection-end="697" vertical-scroll-proportion="0.53775036">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -190,25 +185,45 @@
       <file leaf-file-name="ProfilingView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="4" selection-start="474" selection-end="474" vertical-scroll-proportion="0.0">
+            <state line="19" column="28" selection-start="498" selection-end="498" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SelectionView.fxml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml">
+      <file leaf-file-name="StopRule.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/analysis/StopRule.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="42" selection-start="1225" selection-end="1225" vertical-scroll-proportion="0.0">
+            <state line="9" column="23" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CSVReader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CSVReader.java">
+      <file leaf-file-name="LongDataPoint.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongDataPoint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="63" selection-start="776" selection-end="776" vertical-scroll-proportion="0.0">
+            <state line="11" column="10" selection-start="216" selection-end="217" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LongStatistic.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongStatistic.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="5" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Statistic.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/Statistic.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="36" column="38" selection-start="887" selection-end="887" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -217,18 +232,7 @@
       <file leaf-file-name="DataReaderTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/com/osten/halp/api/statistics/DataReaderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="11" selection-start="523" selection-end="523" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="common-style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/common-style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="34" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0">
+            <state line="7" column="27" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -252,22 +256,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/utils/ExecutorSupport.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CsvReader.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/osten/halp/api/statistics/DataReaderTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/statistics/CsvStatistic.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/TableExample.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/csv/data.csv" />
         <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.css" />
         <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.css" />
         <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CSVReader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/common-style.css" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/DataPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/DataPointImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongDataPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/Statistic.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/StatisticCruncher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/DataCruncher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongStatistic.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataCruncher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/LongCruncher.java" />
       </list>
     </option>
   </component>
@@ -432,7 +436,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
+              <option name="myItemId" value="impl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -462,45 +466,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
+              <option name="myItemId" value="impl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="selection" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shafdt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="profiling" />
+              <option name="myItemId" value="io" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -527,112 +497,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shafdt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="home" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shafdt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="analysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shafdt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -670,10 +534,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -708,49 +568,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="analysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shafdt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="halp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="csv" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -789,6 +607,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
@@ -1027,6 +846,7 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.326713" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39822024" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1037,12 +857,11 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.43589744" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.0144605115" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24493062" sideWeight="0.5223436" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4776564" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24493062" sideWeight="0.6703079" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32969216" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.07790822" sideWeight="0.52183175" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32703003" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1112,102 +931,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.css">
+    <entry file="jar:///usr/local/java/jdk1.7.0_17/jre/lib/jfxrt.jar!/javafx/fxml/FXMLLoader.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="17" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/common-style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="12" selection-start="89" selection-end="89" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/FXLauncher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="55" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="32" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/main/MainWindowView.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="17" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/impl/io/csv/CSVReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="63" selection-start="776" selection-end="776" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/osten/halp/api/statistics/DataReaderTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="11" selection-start="523" selection-end="523" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="27" selection-start="425" selection-end="425" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="4" selection-start="474" selection-end="474" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/common-style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="34" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="42" selection-start="1225" selection-end="1225" vertical-scroll-proportion="0.0">
+        <state line="484" column="0" selection-start="24716" selection-end="24716" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1219,12 +945,109 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="83" selection-start="113" selection-end="113" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="21" selection-start="944" selection-end="944" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/osten/halp/api/statistics/DataReaderTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="27" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/DataPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="28" selection-start="228" selection-end="228" vertical-scroll-proportion="0.13761468">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/analysis/StopRule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="23" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/profiling/ProfilingView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="28" selection-start="498" selection-end="498" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/gui/selection/SelectionView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="32" selection-start="1526" selection-end="1526" vertical-scroll-proportion="0.37578288">
+        <state line="71" column="0" selection-start="1783" selection-end="1783" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#4775#5692#0" expanded="true" />
-            <element signature="e#5681#5682#0" expanded="true" />
+            <element signature="e#4741#5658#0" expanded="true" />
+            <element signature="e#5647#5648#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/CSVReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="91" selection-start="529" selection-end="529" vertical-scroll-proportion="0.45382166">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataCruncher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="17" selection-start="478" selection-end="478" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/io/DataReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="31" selection-start="438" selection-end="438" vertical-scroll-proportion="0.3343949">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/api/model/statistics/Statistic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="38" selection-start="887" selection-end="887" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongStatistic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="5" selection-start="579" selection-end="579" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/statistics/LongDataPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="10" selection-start="216" selection-end="217" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/osten/halp/impl/io/LongCruncher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="26" selection-start="697" selection-end="697" vertical-scroll-proportion="0.53775036">
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

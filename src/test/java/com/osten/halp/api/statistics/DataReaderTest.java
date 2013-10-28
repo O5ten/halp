@@ -1,6 +1,6 @@
 package com.osten.halp.api.statistics;
 
-import com.osten.halp.api.impl.io.csv.CSVReader;
+import com.osten.halp.impl.io.CSVReader;
 import org.junit.Before;
 import org.junit.Test;
 

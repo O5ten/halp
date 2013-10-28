@@ -1,4 +1,4 @@
-package com.osten.halp.api.impl.io.csv;
+package com.osten.halp.impl.io;
 
 import com.osten.halp.api.model.io.DataReader;
 

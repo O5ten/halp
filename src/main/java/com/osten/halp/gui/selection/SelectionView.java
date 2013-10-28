@@ -1,6 +1,6 @@
 package com.osten.halp.gui.selection;
 
-import com.osten.halp.api.impl.io.csv.CSVReader;
+import com.osten.halp.impl.io.CSVReader;
 import com.osten.halp.gui.main.MainWindowView;
 import com.osten.halp.utils.FXMLUtils;
 import javafx.beans.value.ChangeListener;
@@ -37,7 +37,7 @@ public class SelectionView extends HBox implements Initializable {
     MainWindowView parentWindow;
 
     @FXML
-    VBox content;
+    private VBox content;
 
     @FXML
     private TableView<String[]> table;
@@ -69,10 +69,6 @@ public class SelectionView extends HBox implements Initializable {
 
         System.out.println( " Compiling statistics for next view.  " );
         parentWindow.getSelectionModel().selectNext();
-
-		 /**
-		  * WORKING HERE
-		  */
 
     }
 
