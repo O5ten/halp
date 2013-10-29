@@ -1,7 +1,11 @@
 package com.osten.halp.gui.selection;
 
+import com.osten.halp.api.model.io.DataReader;
+import com.osten.halp.api.model.statistics.DataPoint;
+import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.impl.io.CSVReader;
 import com.osten.halp.gui.main.MainWindowView;
+import com.osten.halp.impl.io.LongCruncher;
 import com.osten.halp.utils.FXMLUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
@@ -60,16 +65,40 @@ public class SelectionView extends HBox implements Initializable {
     @FXML
     private TextField fileField;
 
-    File lastDirectory;
+    File lastFile;
     ExecutorService executor;
     CSVDataSource csvData;
 
     @FXML
-    private void handleContinue(){
+    private void handleContinue() {
 
-        System.out.println( " Compiling statistics for next view.  " );
+        System.out.println(" Compiling statistics for next view.  ");
+        LongCruncher data = new LongCruncher();
+
+        ObservableList<String> selection = selectionList.getSelectionModel().getSelectedItems();
+        System.out.println("Selected data " + selection.toString());
+
+
+        try {
+            DataReader reader = new CSVReader(lastFile);
+
+            List<Statistic<Long>> compiledData = data.crunch(reader, selection);
+
+            //TODO create object model that can contain the data accessable.
+            //Print it all out for now
+            for (Statistic<Long> statistic : compiledData) {
+
+                System.out.print(statistic.getName() + "= [ ");
+                for (DataPoint<Long> point : statistic.getData()) {
+                    System.out.print(point.getData() + " ");
+                }
+                System.out.println("]");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         parentWindow.getSelectionModel().selectNext();
-
     }
 
     @FXML
@@ -77,7 +106,7 @@ public class SelectionView extends HBox implements Initializable {
 
         FileChooser filepicker = new FileChooser();
 
-        if ( dataFormatBox.getItems().size() == 1) {
+        if (dataFormatBox.getItems().size() == 1) {
             dataFormatBox.getSelectionModel().selectFirst();
         }
 
@@ -87,12 +116,15 @@ public class SelectionView extends HBox implements Initializable {
         );
 
         filepicker.setTitle("Select table");
-        filepicker.setInitialDirectory(lastDirectory);
+
+        if (lastFile != null) {
+            filepicker.setInitialDirectory(lastFile.getParentFile());
+        }
 
         File file = filepicker.showOpenDialog(parentWindow.getScene().getWindow());
 
         if (file != null) {
-            lastDirectory = file.getParentFile();
+            lastFile = file.getParentFile();
             fileField.setText(file.toString());
             populateViews(file, format);
         }
@@ -100,7 +132,7 @@ public class SelectionView extends HBox implements Initializable {
 
     private void populateViews(File file, String format) {
 
-        if ( dataFormatBox.getSelectionModel().getSelectedItem().compareTo(format) == 0) {
+        if (dataFormatBox.getSelectionModel().getSelectedItem().compareTo(format) == 0) {
 
             /************************
              * Build TableView using DataFX
@@ -113,8 +145,8 @@ public class SelectionView extends HBox implements Initializable {
             /************************
              * Build ListView using DataFX
              ************************/
-            ObservableList<String> observableHeaders = FXCollections.observableArrayList( headers );
-            selectionList.setItems( observableHeaders );
+            ObservableList<String> observableHeaders = FXCollections.observableArrayList(headers);
+            selectionList.setItems(observableHeaders);
             this.csvData = csvData;
         }
     }
@@ -159,27 +191,25 @@ public class SelectionView extends HBox implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String s2) {
 
-                continueButton.setVisible( true );
+                continueButton.setVisible(true);
 
-                if(csvData != null){
+                if (csvData != null) {
                     int i = 0;
 
                     //Reset all columns
-                    for( TableColumn column : table.getColumns() ){
+                    for (TableColumn column : table.getColumns()) {
                         column.setStyle("-fx-opacity: 0.4;");
                     }
 
                     //Mark selected columns
-                    for ( String column : selectionList.getSelectionModel().getSelectedItems()){
-                        TableColumn selectedTableColumn = csvData.getNamedColumn( column );
+                    for (String column : selectionList.getSelectionModel().getSelectedItems()) {
+                        TableColumn selectedTableColumn = csvData.getNamedColumn(column);
                         selectedTableColumn.setStyle("-fx-opacity: 1; ");
-                        System.out.println( column + " is selected. " );
+                        System.out.println(column + " is selected. ");
                     }
                 }
             }
         });
-
-
 
         executor = parentWindow.getExecutor();
     }

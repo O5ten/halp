@@ -1,6 +1,7 @@
 package com.osten.halp.api.model.io;
 
 import com.osten.halp.api.model.statistics.Statistic;
+import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.util.List;
@@ -19,5 +20,5 @@ public interface DataCruncher<T>
 	 * @param headers
 	 * @return a list
 	 */
-	public List<Statistic<T>> crunch( DataReader reader, String[] headers);
+	public List<Statistic<T>> crunch( DataReader reader, ObservableList<String> headers);
 }

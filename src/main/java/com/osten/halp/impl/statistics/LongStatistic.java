@@ -18,6 +18,11 @@ public class LongStatistic implements Statistic<Long>
 	private DataType dataType;
 	private List<DataPoint<Long>> data;
 
+    public LongStatistic( String name ){
+        this.name = name;
+        this.dataType = Statistic.DataType.UNDEFINED;
+    }
+
 	public LongStatistic( String name, DataType dataType ){
 		this.name = name;
 		this.dataType = dataType;
