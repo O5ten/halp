@@ -1,6 +1,5 @@
-package com.osten.halp.api.impl.io.csv;
+package com.osten.halp.impl.io;
 
-import com.osten.halp.api.impl.statistics.CsvStatisticMap;
 import com.osten.halp.api.model.io.DataReader;
 
 import java.io.*;
@@ -61,22 +60,11 @@ public class CSVReader implements DataReader {
         return string.split(splitregexp);
     }
 
-    private CsvStatisticMap arrayToStatisticMap(String[] headlines, String[] statistics) {
-
-        CsvStatisticMap statsmap = new CsvStatisticMap(statistics[0]);
-
-        for (int i = 1; i < headlines.length; i++) {
-            //TODO fix
-        }
-
-        return statsmap;
-    }
-
-    /**
+    /*******************************************
      * Method only reads header, does not read content, use readFile for that.
      *
      * @return
-     */
+     *******************************************/
     public String[] readHeader() {
         String[] line = null;
         try {

@@ -1,12 +1,7 @@
 package com.osten.halp.api.model.io;
 
-import com.osten.halp.api.model.statistics.Statistic;
-import com.osten.halp.api.model.statistics.StatisticMap;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**

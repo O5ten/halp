@@ -24,6 +24,10 @@ public class ProfilingView extends HBox implements Initializable{
         FXMLUtils.load( this );
     }
 
+	 public void populateView(  ){
+
+	 }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
