@@ -72,33 +72,36 @@ public class SelectionView extends HBox implements Initializable {
     @FXML
     private void handleContinue() {
 
+        //Cleanup
         System.out.println(" Compiling statistics for next view.  ");
         LongCruncher data = new LongCruncher();
 
         ObservableList<String> selection = selectionList.getSelectionModel().getSelectedItems();
         System.out.println("Selected data " + selection.toString());
-
-
         try {
             DataReader reader = new CSVReader(lastFile);
 
             List<Statistic<Long>> compiledData = data.crunch(reader, selection);
 
-            //TODO create object model that can contain the data accessable.
+            //TODO create object model that can contain the data and keep it accessible.
             //Print it all out for now
-            for (Statistic<Long> statistic : compiledData) {
 
-                System.out.print(statistic.getName() + "= [ ");
-                for (DataPoint<Long> point : statistic.getData()) {
-                    System.out.print(point.getData() + " ");
-                }
-                System.out.println("]");
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         parentWindow.getSelectionModel().selectNext();
+    }
+
+    private void printData( List<Statistic<Long>> listOfStatistics){
+
+        for ( Statistic<Long> statistic : listOfStatistics ) {
+            System.out.print(statistic.getName() + "= [ ");
+            for (DataPoint<Long> point : statistic.getData()) {
+                System.out.print(point.getData() + " ");
+            }
+            System.out.println("]");
+        }
     }
 
     @FXML
@@ -124,7 +127,7 @@ public class SelectionView extends HBox implements Initializable {
         File file = filepicker.showOpenDialog(parentWindow.getScene().getWindow());
 
         if (file != null) {
-            lastFile = file.getParentFile();
+            lastFile = file;
             fileField.setText(file.toString());
             populateViews(file, format);
         }
@@ -139,7 +142,9 @@ public class SelectionView extends HBox implements Initializable {
              ************************/
             String[] headers = readHeaders(file);
             CSVDataSource csvData = readCSVFile(file, headers);
+            table.getItems().clear();
             table.setItems(csvData.getData());
+            table.getColumns().clear();
             table.getColumns().addAll(csvData.getColumns());
 
             /************************
@@ -157,7 +162,6 @@ public class SelectionView extends HBox implements Initializable {
         try {
             reader = new CSVReader(file);
             headers = reader.readHeader();
-
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

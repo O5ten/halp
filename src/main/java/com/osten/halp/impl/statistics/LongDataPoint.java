@@ -10,13 +10,8 @@ public class LongDataPoint implements DataPoint<Long> {
 
     }
 
-    public LongDataPoint(String s) {
-        try {
-            this.data = Long.parseLong(s);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Cannot parse long from " + s);
-            e.printStackTrace();
-        }
+    public LongDataPoint(String s) throws IllegalArgumentException{
+        this.data = Long.valueOf( s );
     }
 
     @Override

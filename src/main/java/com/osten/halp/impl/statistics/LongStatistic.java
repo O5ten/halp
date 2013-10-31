@@ -3,6 +3,7 @@ package com.osten.halp.impl.statistics;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +22,13 @@ public class LongStatistic implements Statistic<Long>
     public LongStatistic( String name ){
         this.name = name;
         this.dataType = Statistic.DataType.UNDEFINED;
+        this.data = new ArrayList<DataPoint<Long>>();
     }
 
 	public LongStatistic( String name, DataType dataType ){
 		this.name = name;
 		this.dataType = dataType;
+        this.data = new ArrayList<DataPoint<Long>>();
 	}
 
 	@Override

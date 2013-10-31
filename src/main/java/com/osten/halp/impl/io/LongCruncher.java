@@ -23,20 +23,30 @@ public class LongCruncher implements DataCruncher<Long> {
     @Override
     public List<Statistic<Long>> crunch(DataReader reader, ObservableList<String> requiredHeaders) {
 
-       ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
+        ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
 
         try {
             String[] headers = reader.readLine(1);
             ArrayList<String[]> data = reader.readFile();
             List<Integer> positions = locatePositions(requiredHeaders, headers);
 
-            for( Integer column : positions ){
-                LongStatistic stat = new LongStatistic( headers[column] );
+            for (int column : positions) {
+                LongStatistic stat = new LongStatistic(headers[column]);
 
-                for( int row = 0; row < data.size(); row++){
-                    stat.addData( new LongDataPoint( data.get( row )[ column ] ) );
+                //Why 1? it ignores the header
+
+                for (int row = 1; row < data.size(); row++) {
+                    try {
+                        stat.addData(new LongDataPoint(data.get(row)[column]));
+                    } catch (Exception e) {
+                        System.out.println("cannot parse " + stat.getName() + ", is it really a number? Ignoring and continuing with the rest.");
+                        break;
+                    }
                 }
-                statistics.add( stat );
+
+                if(!stat.getData().isEmpty()){
+                    statistics.add(stat);
+                }
             }
 
         } catch (IOException exception) {
@@ -52,8 +62,8 @@ public class LongCruncher implements DataCruncher<Long> {
 
         for (int i = 0; i < requiredHeaders.size(); i++) {
             for (int j = 0; j < headers.length; j++) {
-                if (requiredHeaders.get( i ).compareTo( headers[j] ) == 0) {
-                    headerIndices.add( j );
+                if (requiredHeaders.get(i).compareTo(headers[j]) == 0) {
+                    headerIndices.add(j);
                     break;
                 }
             }
