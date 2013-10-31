@@ -4,10 +4,16 @@
 <?import javafx.scene.control.Button?>
 
 <?import javafx.scene.layout.HBox?>
+<?import java.net.URL?>
 <fx:root type="javafx.scene.layout.HBox"
           xmlns:fx="http://javafx.com/fxml" styleClass="profiling-view, inner-view">
+    <stylesheets>
+        <URL value="@../common-style.css"/>
+        <URL value="@ProfilingView.css" />
+    </stylesheets>
     <VBox>
-        <Label styleClass="header" text="Data profiling"/>
+        <Label styleClass="header" text="Data profiling" alignment="CENTER"/>
+        <Button text="Analyze data using these profiles" onAction="#handleAnalyze"/>
     </VBox>
     <VBox fx:id="content"/>
 </fx:root>

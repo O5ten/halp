@@ -1,4 +1,4 @@
-package com.osten.halp.gui.main;
+package com.osten.halp.views.main;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

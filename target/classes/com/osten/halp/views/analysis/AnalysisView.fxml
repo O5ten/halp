@@ -8,11 +8,22 @@
 <?import java.lang.String?>
 <?import javafx.collections.ObservableList?>
 
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import java.net.URL?>
 <fx:root type="javafx.scene.layout.HBox"
           xmlns:fx="http://javafx.com/fxml"
           styleClass="analysis-view, inner-view">
-    <VBox>
+    <stylesheets>
+        <URL value="@../common-style.css"/>
+        <URL value="@AnalysisView.css" />
+    </stylesheets>
+    <VBox HBox.hgrow="ALWAYS" styleClass="line-chart-container" >
         <Label text="Analysis" styleClass="header" />
+        <LineChart fx:id="lineChart" VBox.vgrow="ALWAYS">
+            <xAxis><NumberAxis label="Time" tickUnit="1"/></xAxis>
+            <yAxis><NumberAxis label=""/></yAxis>
+        </LineChart>
     </VBox>
     <VBox fx:id="content"/>
 </fx:root>

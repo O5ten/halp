@@ -1,0 +1,23 @@
+.start-view .start-buttons{
+    -fx-border-color: -dark-color;
+    -fx-border-width: 0 3 0 0;
+    -fx-padding: 5;
+    -fx-spacing: 5;
+}
+
+.start-view{
+
+    -fx-background-color: linear-gradient( from 50% 0% to 50% 100%, -light-color 0%, -base-color 15%, -base-color 85%, -light-color 100% );
+    -fx-background-radius: 3;
+    -fx-border-color: -dark-color;
+    -fx-border-width: 3 0 0 0;
+    -fx-padding: 5;
+
+}
+
+.web-view-container{
+    -fx-background-color: red;
+    -fx-border-color: yellow;
+    -fx-border-width: 5;
+    -fx-border-style: dashed;
+}

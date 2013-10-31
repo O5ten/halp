@@ -7,5 +7,5 @@ package com.osten.halp.api.model.analysis;
  * Time: 13:52
  * To change this template use File | Settings | File Templates.
  */
-public class Filter {
+public interface Filter {
 }

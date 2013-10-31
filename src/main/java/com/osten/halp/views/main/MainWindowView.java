@@ -1,9 +1,12 @@
-package com.osten.halp.gui.main;
+package com.osten.halp.views.main;
 
-import com.osten.halp.gui.analysis.AnalysisView;
-import com.osten.halp.gui.selection.SelectionView;
-import com.osten.halp.gui.profiling.ProfilingView;
-import com.osten.halp.gui.home.HomeView;
+import com.osten.halp.api.model.gui.PopulatableView;
+import com.osten.halp.api.model.shared.PropertyModel;
+import com.osten.halp.impl.shared.LongPropertyModel;
+import com.osten.halp.views.analysis.AnalysisView;
+import com.osten.halp.views.selection.SelectionView;
+import com.osten.halp.views.profiling.ProfilingView;
+import com.osten.halp.views.home.HomeView;
 import com.osten.halp.utils.FXMLUtils;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +18,8 @@ import javafx.scene.layout.BorderPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,22 +37,37 @@ public class MainWindowView extends BorderPane{
     private ExecutorService executor;
 
     @FXML
-    private Tab home;
+    private Tab homeTab;
 
     @FXML
-    private Tab selection;
+    private Tab selectionTab;
 
     @FXML
-    private Tab profiling;
+    private Tab profilingTab;
 
     @FXML
-    private Tab analysis;
+    private Tab analysisTab;
 
     @FXML
     private TabPane tabpane;
 
     @FXML
     private Label subHeadline;
+
+	 private List<PopulatableView> popViews;
+
+	 private PropertyModel<Long> propertyModel;
+
+	 public PropertyModel<Long> getPropertyModel(){
+		 return propertyModel;
+	 }
+
+	 public void rePopulateViews( ){
+
+		  for( PopulatableView p : popViews ){
+			  p.populate( propertyModel );
+		  }
+	 }
 
     public MainWindowView(){
         FXMLUtils.load( this );
@@ -81,10 +101,21 @@ public class MainWindowView extends BorderPane{
                 }
             });
 
-            home.setContent(new HomeView(this));
-            selection.setContent(new SelectionView(this));
-            profiling.setContent(new ProfilingView(this));
-            analysis.setContent( new AnalysisView(this) );
+            homeTab.setContent( new HomeView( this ) );
+            selectionTab.setContent( new SelectionView( this ) );
+
+		 		ProfilingView profilingView = new ProfilingView( this );
+		 		AnalysisView analysisView = new AnalysisView( this );
+
+		 		//Views that can be repopulated as data or settings is changed.
+		 		popViews = new ArrayList<PopulatableView>();
+		      popViews.add( profilingView );
+		 		popViews.add( analysisView );
+
+		 		profilingTab.setContent( profilingView );
+            analysisTab.setContent( analysisView );
+
+		      propertyModel = new LongPropertyModel();
 
     }
 

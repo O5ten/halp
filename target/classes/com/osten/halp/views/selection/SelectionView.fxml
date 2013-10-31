@@ -13,9 +13,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import java.net.URL?>
 <fx:root type="javafx.scene.layout.HBox"
           xmlns:fx="http://javafx.com/fxml"
           styleClass="data-view, inner-view">
+    <stylesheets>
+        <URL value="@../common-style.css"/>
+        <URL value="@SelectionView.css" />
+    </stylesheets>
     <VBox HBox.hgrow="ALWAYS" alignment="TOP_CENTER" spacing="4" >
         <Label styleClass="header" text="Data Selection and Identification"/>
         <VBox fx:id="content" spacing="4" VBox.vgrow="ALWAYS" >

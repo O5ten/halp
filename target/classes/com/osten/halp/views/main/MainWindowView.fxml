@@ -23,10 +23,10 @@
     <center>
         <TabPane fx:id="tabpane">
             <tabs>
-                <Tab fx:id="home" id="home" closable="false" text="Home" />
-                <Tab fx:id="selection" id="selection" closable="false" text="Data Selection" />
-                <Tab fx:id="profiling" id="profiling" closable="false" text="Data Profiling"/>
-                <Tab fx:id="analysis" id="analysis" closable="false" text="Data Analysis"/>
+                <Tab fx:id="homeTab" id="home" closable="false" text="Home" />
+                <Tab fx:id="selectionTab" id="selection" closable="false" text="Data Selection" />
+                <Tab fx:id="profilingTab" id="profiling" closable="false" text="Data Profiling"/>
+                <Tab fx:id="analysisTab" id="analysis" closable="false" text="Data Analysis"/>
             </tabs>
         </TabPane>
     </center>

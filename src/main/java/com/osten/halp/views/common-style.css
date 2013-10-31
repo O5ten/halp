@@ -1,0 +1,17 @@
+.root{
+    -base-color: #B2B2B2;
+    -light-color: #EFEFEF;
+    -dark-color: #331122;
+
+}
+
+.text{
+    -fx-font-size: 12px;
+    -fx-font-weight: lighter;
+    -fx-font-style: italic;
+}
+
+.continue-button{
+	-fx-padding: 10;
+}
+

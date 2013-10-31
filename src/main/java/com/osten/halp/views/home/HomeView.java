@@ -1,6 +1,6 @@
-package com.osten.halp.gui.home;
+package com.osten.halp.views.home;
 
-import com.osten.halp.gui.main.MainWindowView;
+import com.osten.halp.views.main.MainWindowView;
 import com.osten.halp.utils.FXMLUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
