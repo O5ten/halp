@@ -34,11 +34,10 @@ public class LongCruncher implements DataCruncher<Long> {
                 LongStatistic stat = new LongStatistic(headers[column]);
 
                 //Why 1? it ignores the header
-
                 for (int row = 1; row < data.size(); row++) {
                     try {
-                        stat.addData(new LongDataPoint(data.get(row)[column]));
-                    } catch (Exception e) {
+                        stat.addData(new LongDataPoint( data.get(row)[column] ) );
+                    } catch (NumberFormatException e) {
                         System.out.println("cannot parse " + stat.getName() + ", is it really a number? Ignoring and continuing with the rest.");
                         break;
                     }

@@ -7,6 +7,7 @@ import com.osten.halp.views.main.MainWindowView;
 import com.osten.halp.impl.io.CSVReader;
 import com.osten.halp.impl.io.LongCruncher;
 import com.osten.halp.utils.FXMLUtils;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,205 +38,202 @@ import java.util.concurrent.ExecutorService;
  * Time: 15:18
  * To change this template use File | Settings | File Templates.
  */
-public class SelectionView extends HBox implements Initializable
-{
+public class SelectionView extends HBox implements Initializable {
 
-	MainWindowView parentWindow;
+    MainWindowView parentWindow;
 
-	@FXML
-	private VBox content;
+    @FXML
+    private VBox content;
 
-	@FXML
-	private TableView<String[]> table;
+    @FXML
+    private TableView<String[]> table;
 
-	@FXML
-	private ToggleButton editButton;
+    @FXML
+    private ToggleButton editButton;
 
-	@FXML
-	private ComboBox<String> dataFormatBox;
+    @FXML
+    private ComboBox<String> dataFormatBox;
 
-	@FXML
-	private ListView<String> selectionList;
+    @FXML
+    private ListView<String> selectionList;
 
-	@FXML
-	private Button save;
+    @FXML
+    private Button save;
 
-	@FXML
-	private Button continueButton;
+    @FXML
+    private Button continueButton;
 
-	@FXML
-	private TextField fileField;
+    @FXML
+    private TextField fileField;
 
-	File lastFile;
-	ExecutorService executor;
-	CSVDataSource csvData;
+    File lastFile;
+    ExecutorService executor;
+    CSVDataSource csvData;
 
-	@FXML
-	private void handleContinue()
-	{
-		LongCruncher data = new LongCruncher();
+    @FXML
+    private void handleContinue() {
 
-		ObservableList<String> selection = selectionList.getSelectionModel().getSelectedItems();
-		DataReader reader = null;
+        final LongCruncher data = new LongCruncher();
+        final ObservableList<String> selection = selectionList.getSelectionModel().getSelectedItems();
 
-		try
-		{
-			reader = new CSVReader( lastFile );
-		}
-		catch( IOException e )
-		{
-			e.printStackTrace();
-		}
+        executor.submit(new Runnable() {
 
-		List<Statistic<Long>> compiledData = data.crunch( reader, selection );
-		parentWindow.getPropertyModel().setData( compiledData );
+            @Override
+            public void run() {
+                DataReader reader = null;
 
-		parentWindow.rePopulateViews();
+                try {
+                    reader = new CSVReader(lastFile);
+                    final List<Statistic<Long>> compiledData = data.crunch( reader, selection );
 
-		getTabsSelectionModel().selectNext();
-	}
+                    Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            parentWindow.getPropertyModel().setData(compiledData);
+                            parentWindow.rePopulateViews();
+                            getTabsSelectionModel().selectNext();
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 
+    @FXML
+    private void handleBrowse(ActionEvent event) {
 
-	@FXML
-	private void handleBrowse( ActionEvent event )
-	{
+        FileChooser filepicker = new FileChooser();
 
-		FileChooser filepicker = new FileChooser();
+        if (dataFormatBox.getItems().size() == 1) {
+            dataFormatBox.getSelectionModel().selectFirst();
+        }
 
-		if( dataFormatBox.getItems().size() == 1 )
-		{
-			dataFormatBox.getSelectionModel().selectFirst();
-		}
+        final String format = dataFormatBox.getSelectionModel().getSelectedItem();
+        filepicker.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(format, "*." + format.toLowerCase())
+        );
 
-		String format = dataFormatBox.getSelectionModel().getSelectedItem();
-		filepicker.getExtensionFilters().add(
-				new FileChooser.ExtensionFilter( format, "*." + format.toLowerCase() )
-		);
+        filepicker.setTitle("Select table");
 
-		filepicker.setTitle( "Select table" );
+        if (lastFile != null) {
+            filepicker.setInitialDirectory(lastFile.getParentFile());
+        }
 
-		if( lastFile != null )
-		{
-			filepicker.setInitialDirectory( lastFile.getParentFile() );
-		}
+        final File file = filepicker.showOpenDialog(parentWindow.getScene().getWindow());
 
-		File file = filepicker.showOpenDialog( parentWindow.getScene().getWindow() );
+        if (file != null) {
+            lastFile = file;
+            fileField.setText(file.toString());
 
-		if( file != null )
-		{
-			lastFile = file;
-			fileField.setText( file.toString() );
-			populateViews( file, format );
-		}
-	}
+            populateViews(file, format);
+        }
+    }
 
-	private void populateViews( File file, String format )
-	{
+    private void populateViews(File file, String format) {
 
-		if( dataFormatBox.getSelectionModel().getSelectedItem().compareTo( format ) == 0 )
-		{
+        if (dataFormatBox.getSelectionModel().getSelectedItem().compareTo(format) == 0) {
 
-			/************************
-			 * Build TableView using DataFX
-			 ************************/
-			String[] headers = readHeaders( file );
-			CSVDataSource csvData = readCSVFile( file, headers );
-			table.getItems().clear();
-			table.setItems( csvData.getData() );
-			table.getColumns().clear();
-			table.getColumns().addAll( csvData.getColumns() );
+            /************************
+             * Build TableView using DataFX
+             ************************/
+            final String[] headers = readHeaders(file);
+            CSVDataSource csvData = readCSVFile(file, headers);
+            this.csvData = csvData;
+            table.getItems().clear();
+            table.setItems(csvData.getData());
+            table.getColumns().clear();
+            table.getColumns().addAll(csvData.getColumns());
 
-			/************************
-			 * Build ListView using DataFX
-			 ************************/
-			ObservableList<String> observableHeaders = FXCollections.observableArrayList( headers );
-			selectionList.setItems( observableHeaders );
-			this.csvData = csvData;
-		}
-	}
+            /************************
+             * Build ListView using DataFX
+             ************************/
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ObservableList<String> observableHeaders = FXCollections.observableArrayList(headers);
+                    selectionList.setItems(observableHeaders);
+                }
+            });
 
-	private String[] readHeaders( File file )
-	{
-		CSVReader reader = null;
-		String[] headers = null;
-		try
-		{
-			reader = new CSVReader( file );
-			headers = reader.readHeader();
-		}
-		catch( IOException e )
-		{
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-		}
-		return headers;
-	}
 
-	private CSVDataSource readCSVFile( File file, String[] headers )
-	{
-		CSVDataSource dataSource = null;
-		try
-		{
-			DataSourceReader source = new FileSource( file );
-			dataSource = new CSVDataSource( source, headers );
-		}
-		catch( FileNotFoundException e )
-		{
-			System.err.println( "Cannot find file" );
-		}
-		catch( IOException e )
-		{
-			System.err.println( "Cannot read file" );
-		}
-		return dataSource;
-	}
+        }
+    }
 
-	private SelectionModel getTabsSelectionModel()
-	{
-		return parentWindow.getSelectionModel();
-	}
+    private String[] readHeaders(File file) {
+        CSVReader reader = null;
+        String[] headers = null;
+        try {
+            reader = new CSVReader(file);
+            headers = reader.readHeader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return headers;
+    }
 
-	public SelectionView( MainWindowView mainWindowView )
-	{
-		parentWindow = mainWindowView;
-		FXMLUtils.load( this );
-	}
+    private CSVDataSource readCSVFile(File file, String[] headers) {
+        CSVDataSource dataSource = null;
+        try {
+            DataSourceReader source = new FileSource(file);
 
-	@Override
-	public void initialize( URL url, ResourceBundle resourceBundle )
-	{
+            dataSource = new CSVDataSource(source, headers);
 
-		dataFormatBox.getItems().setAll( "CSV" );
-		selectionList.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
-		selectionList.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<String>()
-		{
-			@Override
-			public void changed( ObservableValue<? extends String> observableValue, String s, String s2 )
-			{
+        } catch (FileNotFoundException e) {
+            System.err.println("Cannot find file");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Cannot read file");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("General exception caught");
+            e.printStackTrace();
+        }
+        return dataSource;
+    }
 
-				continueButton.setVisible( true );
+    private SelectionModel getTabsSelectionModel() {
+        return parentWindow.getSelectionModel();
+    }
 
-				if( csvData != null )
-				{
-					int i = 0;
+    public SelectionView(MainWindowView mainWindowView) {
+        parentWindow = mainWindowView;
+        FXMLUtils.load(this);
+    }
 
-					//Reset all columns
-					for( TableColumn column : table.getColumns() )
-					{
-						column.setStyle( "-fx-opacity: 0.4;" );
-					}
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-					//Mark selected columns
-					for( String column : selectionList.getSelectionModel().getSelectedItems() )
-					{
-						TableColumn selectedTableColumn = csvData.getNamedColumn( column );
-						selectedTableColumn.setStyle( "-fx-opacity: 1; " );
-						System.out.println( column + " is selected. " );
-					}
-				}
-			}
-		} );
+        dataFormatBox.getItems().setAll("CSV");
+        selectionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        selectionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String s2) {
 
-		executor = parentWindow.getExecutor();
-	}
+                continueButton.setVisible(true);
+
+                if (csvData != null) {
+                    int i = 0;
+
+                    //Reset all columns
+                    for (TableColumn column : table.getColumns()) {
+                        column.setStyle("-fx-opacity: 0.4;");
+                    }
+
+                    //Mark selected columns
+                    for (String column : selectionList.getSelectionModel().getSelectedItems()) {
+                        TableColumn selectedTableColumn = csvData.getNamedColumn(column);
+                        selectedTableColumn.setStyle("-fx-opacity: 1; ");
+                        System.out.println(column + " is selected. ");
+                    }
+                }
+            }
+        });
+
+        executor = parentWindow.getExecutor();
+    }
 }

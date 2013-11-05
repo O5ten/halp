@@ -33,6 +33,8 @@ public class LauncherTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        String s = "908.10";
+
+        System.out.println( Double.parseDouble( s ) );
     }
 }

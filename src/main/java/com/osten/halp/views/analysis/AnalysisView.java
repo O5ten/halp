@@ -47,8 +47,9 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	public void populate( PropertyModel<Long> properties )
 	{
 		System.out.println( "AnalysisView populating view using: " );
-		for ( Statistic<Long> statistic : properties.getData()){
-			 lineChart.getData().add( toSeries( statistic ) );
+		lineChart.getData().clear();
+        for ( Statistic<Long> statistic : properties.getData()){
+			lineChart.getData().add( toSeries( statistic ) );
 		}
 
 		properties.printModel();

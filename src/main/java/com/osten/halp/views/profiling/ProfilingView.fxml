@@ -2,18 +2,53 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
-
 <?import javafx.scene.layout.HBox?>
 <?import java.net.URL?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.ObservableList?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.ListView?>
 <fx:root type="javafx.scene.layout.HBox"
-          xmlns:fx="http://javafx.com/fxml" styleClass="profiling-view, inner-view">
+         xmlns:fx="http://javafx.com/fxml" styleClass="profiling-view, inner-view">
     <stylesheets>
         <URL value="@../common-style.css"/>
-        <URL value="@ProfilingView.css" />
+        <URL value="@ProfilingView.css"/>
     </stylesheets>
-    <VBox>
+    <VBox spacing="5" alignment="CENTER" HBox.hgrow="ALWAYS">
         <Label styleClass="header" text="Data profiling" alignment="CENTER"/>
+        <HBox alignment="CENTER">
+            <ComboBox fx:id="profileSelector"/>
+            <Label styleClass="sub-header" text="-profile"/>
+        </HBox>
+        <VBox fx:id="settingsBox"/>
+        <HBox spacing="5" VBox.vgrow="ALWAYS">
+            <VBox>
+                <Label styleClass="sub-header" text="Statistic"/>
+                <ListView fx:id="statisticSelector" HBox.hgrow="SOMETIMES"/>
+            </VBox>
+            <VBox>
+                <Label styleClass="sub-header" text="Behaviour"/>
+                <ListView fx:id="statisticTypeSelector" HBox.hgrow="SOMETIMES"/>
+            </VBox>
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <VBox VBox.vgrow="ALWAYS">
+                    <Label styleClass="sub-header" text="Adaptive Filter"/>
+                    <VBox VBox.vgrow="ALWAYS" fx:id="adaptiveFilterList"/>
+                </VBox>
+                <VBox VBox.vgrow="ALWAYS">
+                    <Label styleClass="sub-header" text="Change Detector"/>
+                    <VBox VBox.vgrow="ALWAYS" fx:id="changeDetectorList"/>
+                </VBox>
+                <VBox VBox.vgrow="ALWAYS">
+                    <Label styleClass="sub-header" text="Stop Rules"/>
+                    <VBox VBox.vgrow="ALWAYS" fx:id="stopRuleList"/>
+                </VBox>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS">
+                <Label styleClass="sub-header" text="Indication Correlations"/>
+                <VBox fx:id="correlationList"/>
+            </VBox>
+        </HBox>
         <Button text="Analyze data using these profiles" onAction="#handleAnalyze"/>
     </VBox>
-    <VBox fx:id="content"/>
 </fx:root>

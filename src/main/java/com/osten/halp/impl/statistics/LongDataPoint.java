@@ -10,8 +10,17 @@ public class LongDataPoint implements DataPoint<Long> {
 
     }
 
-    public LongDataPoint(String s) throws IllegalArgumentException{
-        this.data = Long.valueOf( s );
+    public LongDataPoint(String s) throws NumberFormatException{
+        try{
+            this.data = Long.valueOf( s );
+        }catch(NumberFormatException e){
+            if( s.contains(".") ){
+                this.data = Math.round( Double.valueOf( s ) );
+            }else{
+                throw e;
+            }
+        }
+
     }
 
     @Override
