@@ -1,6 +1,6 @@
 package com.osten.halp.api.model.gui;
 
-import com.osten.halp.api.model.shared.PropertyModel;
+import com.osten.halp.api.model.shared.DataModel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,6 +11,6 @@ import com.osten.halp.api.model.shared.PropertyModel;
  */
 public interface PopulatableView<Type>
 {
-	public void populate( PropertyModel<Type> properties);
-	public PropertyModel<Type> getPropertyModel();
+	public void populate( DataModel<Type> properties);
+	public DataModel<Type> getPropertyModel();
 }

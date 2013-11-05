@@ -58,6 +58,11 @@ public class HomeView extends HBox implements Initializable{
     }
 
     @FXML
+    public void handleBehaviour(ActionEvent event){
+       webEngine.load( getClass().getResource("/html/behaviour.html").toString() );
+    }
+
+    @FXML
     public void handleGo(ActionEvent event ){
          parentView.getSelectionModel().select( 1 );
     }

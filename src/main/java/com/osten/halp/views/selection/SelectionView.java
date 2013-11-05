@@ -1,7 +1,6 @@
 package com.osten.halp.views.selection;
 
 import com.osten.halp.api.model.io.DataReader;
-import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.views.main.MainWindowView;
 import com.osten.halp.impl.io.CSVReader;
@@ -90,7 +89,7 @@ public class SelectionView extends HBox implements Initializable {
 
                         @Override
                         public void run() {
-                            parentWindow.getPropertyModel().setData(compiledData);
+                            parentWindow.getDataModel().setData(compiledData);
                             parentWindow.rePopulateViews();
                             getTabsSelectionModel().selectNext();
                         }

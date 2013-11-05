@@ -22,13 +22,13 @@
         </HBox>
         <VBox fx:id="settingsBox"/>
         <HBox spacing="5" VBox.vgrow="ALWAYS">
-            <VBox>
+            <VBox HBox.hgrow="SOMETIMES">
                 <Label styleClass="sub-header" text="Statistic"/>
-                <ListView fx:id="statisticSelector" HBox.hgrow="SOMETIMES"/>
+                <ListView fx:id="statisticSelector" VBox.vgrow="ALWAYS"/>
             </VBox>
-            <VBox>
-                <Label styleClass="sub-header" text="Behaviour"/>
-                <ListView fx:id="statisticTypeSelector" HBox.hgrow="SOMETIMES"/>
+            <VBox HBox.hgrow="SOMETIMES">
+                <Label styleClass="sub-header" text="Expected behaviour"/>
+                <ListView fx:id="statisticTypeSelector" VBox.vgrow="ALWAYS"/>
             </VBox>
             <VBox spacing="5" HBox.hgrow="ALWAYS">
                 <VBox VBox.vgrow="ALWAYS">

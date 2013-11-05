@@ -1,7 +1,7 @@
 package com.osten.halp.views.analysis;
 
 import com.osten.halp.api.model.gui.PopulatableView;
-import com.osten.halp.api.model.shared.PropertyModel;
+import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.utils.FXMLUtils;
@@ -44,7 +44,7 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	}
 
 	@Override
-	public void populate( PropertyModel<Long> properties )
+	public void populate( DataModel<Long> properties )
 	{
 		System.out.println( "AnalysisView populating view using: " );
 		lineChart.getData().clear();
@@ -70,8 +70,8 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	}
 
 	@Override
-	public PropertyModel<Long> getPropertyModel()
+	public DataModel<Long> getPropertyModel()
 	{
-		return parentView.getPropertyModel();
+		return parentView.getDataModel();
 	}
 }

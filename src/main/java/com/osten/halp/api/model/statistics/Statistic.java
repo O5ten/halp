@@ -66,7 +66,7 @@ public interface Statistic<Data>
 	/**
 	 * What type of data is this.
 	 *
-	 * Sharkteeth:
+	 * Garbage Collection:
 	 * ==================================
 	 * - Garbage collection usually has this pattern, with regular and BIG sudden changes.
 	 *   they should not be detected as changes, however, if this data stops changing regularly then we have a problem.
@@ -95,7 +95,7 @@ public interface Statistic<Data>
 	 * continuously while throughput moves more seldom but spikes more often.
 	 * Average is continuous but without the same spiking as TP.
 	 *
-	 * Fixed Rate:
+	 * Rate:
 	 * ==================================
 	 * A rate, let's say a sending-rate of a fixed number of requests per seconds.
 	 * Seldom changes, and when it does it shouldn't really trigger any alarms as it is likely user or tester inflicted.
@@ -110,15 +110,24 @@ public interface Statistic<Data>
 	 * Statistic is and should be Zero in the best case scenario, examples are dropped messages, discarded messages
 	 * 404 Resource cannot be found, 500 Internal Server Error,
 	 *
-	 * Undefined
+     * Time
+     * ==================================
+     * Time taken to get a response, fluctuates a'lot when it eventually moves at all. Highly relevant for the peak profile
+     * Good to correlate to Rate.
+     *
+	 * Unknown
 	 * ==================================
 	 * A timestamp for example or something that does not imply anything of importance
 	 * like number of valid responses or timestamps or similar. I.E, this does not get measured or correlated unless explicitly specified.
 	 *
+     * CPU
+     * ==================================
+     * A very specific measurement that fluctuates much and often. If it lingers on very high very long then there is a need for an alarm.
+     *
 	 */
 	public enum DataType
 	{
-		SHARKTEETH, THROUGHPUT, MEMORY, ACCUMULATIVE, AVERAGE, FIXEDRATE, MOVINGRATE, ZERO, UNDEFINED
+		Throughput, Time, Garbage_collection, Memory, CPU, Accumulative, Linear, Average, Rate, Moving_rate, Zero, Unknown
 	}
 
 }

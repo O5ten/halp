@@ -1,8 +1,8 @@
 package com.osten.halp.views.main;
 
 import com.osten.halp.api.model.gui.PopulatableView;
-import com.osten.halp.api.model.shared.PropertyModel;
-import com.osten.halp.impl.shared.LongPropertyModel;
+import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.impl.shared.LongDataModel;
 import com.osten.halp.views.analysis.AnalysisView;
 import com.osten.halp.views.selection.SelectionView;
 import com.osten.halp.views.profiling.ProfilingView;
@@ -56,16 +56,16 @@ public class MainWindowView extends BorderPane{
 
 	 private List<PopulatableView> popViews;
 
-	 private PropertyModel<Long> propertyModel;
+	 private DataModel<Long> dataModel;
 
-	 public PropertyModel<Long> getPropertyModel(){
-		 return propertyModel;
+	 public DataModel<Long> getDataModel(){
+		 return dataModel;
 	 }
 
 	 public void rePopulateViews( ){
 
 		  for( PopulatableView p : popViews ){
-			  p.populate( propertyModel );
+			  p.populate(dataModel);
 		  }
 	 }
 
@@ -115,7 +115,7 @@ public class MainWindowView extends BorderPane{
 		 		profilingTab.setContent( profilingView );
             analysisTab.setContent( analysisView );
 
-		      propertyModel = new LongPropertyModel();
+		      dataModel = new LongDataModel();
 
     }
 

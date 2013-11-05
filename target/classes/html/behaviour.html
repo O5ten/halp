@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="web-style.css">
+</head>
+<body>
+<H1>Data Behaviour</H1>
+
+In the profiling tab, when you have selected data you wish to profile you can see a list with the headline "expected behaviour".
+This is the application asking you, the user, to suggest what type of data the selected data is.
+The application can guess it, but that is currently in a stage of development so input is the best bet until the guessing algorithm is in place.
+Below follows a short description on what each type of data means and how it might be automatically correlated as soon as profiling is in place.<BR>
+<BR>
+<H2>Garbage Collection:</H2>
+<HR>
+ This pattern has regular and BIG sudden changes.<BR>
+ they should not be detected as changes, however, if this data stops changing regularly then we have a problem.<BR>
+<BR>
+<H2>Throughput</H2>
+<HR>
+ A value that can change drastically as the number of users increase or decreases.<BR>
+ Should almost always be correlated to a FIXED rate or MovingRate.<BR>
+ If there is a big change in a fixed or moving rate at the same time as Throughput then this lessens the importance of the alarm.<BR>
+<BR>
+<H2>Memory</H2>
+<HR>
+ Fast on startup, slow changes when steady state reached.<BR>
+ Alarm should be raised if this seldom or never decreases.<BR>
+ I.E if there is a memory leak.<BR>
+<BR>
+<H2>Accumulative</H2>
+<HR>
+ Number of completed transactions, counters of the many sorts.<BR>
+ Alarm should be raised if they suddenly stop compared to a pattern.<BR>
+<BR>
+<H2>Average</H2>
+<HR>
+ Like troughput it coincides with rates and other similar systems.<BR>
+ A difference is that the filter should be more forgiving as averages move<BR>
+ continuously while throughput moves more seldom but spikes more often.<BR>
+ Average is continuous but without the same spiking as TP.<BR>
+<BR>
+<H2>Rate</H2>
+<HR>
+ A rate, let's say a sending-rate of a fixed number of requests per seconds.<BR>
+ Seldom changes, and when it does it shouldn't really trigger any alarms as it is likely user or tester inflicted.<BR>
+<BR>
+<H2>Moving Rate</H2>
+<HR>
+ A rate that moves with time, let's say a linear increase, in correlation to this rate not<BR>
+ changing drastically then an alarm at a TP stat that does change drastically is more definite.<BR>
+<BR>
+<H2>Zero</H2>
+<HR>
+ Statistic is and should be Zero in the best case scenario, examples are dropped messages, discarded messages<BR>
+ 404 Resource cannot be found, 500 Internal Server Error,<BR>
+<BR>
+<H2>Time</H2>
+<HR>
+ Time taken to get a response, fluctuates a'lot when it eventually moves at all. Highly relevant for the peak profile<BR>
+ Good to correlate to Rate.<BR>
+<BR>
+<H2>CPU</H2>
+<HR>
+A very specific measurement that fluctuates much and often. If it lingers on very high very long then there is a need for an alarm.<BR>
+<BR>
+<H2>Unknown</H2>
+<HR>
+ A timestamp for example or something that does not imply anything of importance<BR>
+ like number of valid responses or timestamps or similar. I.E, this does not get measured or correlated unless explicitly specified.<BR>
+<BR>
+
+</body>
+</html>

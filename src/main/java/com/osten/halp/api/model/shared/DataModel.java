@@ -13,11 +13,12 @@ import java.util.List;
  * Time: 1:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class PropertyModel<Data>
+public abstract class DataModel<Data>
 {
 	public abstract List<Statistic<Data>> getData();
 	public abstract void setData( List<Statistic<Data>> data);
-
+    public abstract List<String> getStatisticNames();
+    public abstract Statistic<Data> getDataByName( String name );
 	/**
 	 * To be used for properties that are very small only. Bear in mind that they will need casting.
 	 */

@@ -19,6 +19,7 @@
            <Button fx:id="whatButton" text="What?" onAction="#handleWhat"/>
            <Button fx:id="howButton" text="How?" onAction="#handleHow"/>
            <Button fx:id="whyButton" text="Why?" onAction="#handleWhy"/>
+           <Button fx:id="behaviourButton" id="behaviourButton" text="Data" onAction="#handleBehaviour"/>
            <Button fx:id="goButton" id="goButton" text="GO!" onAction="#handleGo"/>
        </VBox>
        <HBox HBox.hgrow="ALWAYS" styleClass="web-view-container">

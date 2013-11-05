@@ -21,7 +21,7 @@ public class LongStatistic implements Statistic<Long>
 
     public LongStatistic( String name ){
         this.name = name;
-        this.dataType = Statistic.DataType.UNDEFINED;
+        this.dataType = Statistic.DataType.Unknown;
         this.data = new ArrayList<DataPoint<Long>>();
     }
 
