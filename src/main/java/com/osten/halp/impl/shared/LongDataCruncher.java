@@ -1,4 +1,4 @@
-package com.osten.halp.impl.io;
+package com.osten.halp.impl.shared;
 
 import com.osten.halp.api.model.io.DataCruncher;
 import com.osten.halp.api.model.io.DataReader;
@@ -18,7 +18,7 @@ import java.util.*;
  * Time: 5:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LongCruncher implements DataCruncher<Long> {
+public class LongDataCruncher implements DataCruncher<Long> {
 
     @Override
     public List<Statistic<Long>> crunch(DataReader reader, ObservableList<String> requiredHeaders) {
