@@ -1,8 +1,8 @@
 package com.osten.halp.views.profiling;
 
 import com.osten.halp.api.model.gui.PopulatableView;
-import com.osten.halp.api.model.profiling.Profile;
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.views.main.MainWindowView;
 import com.osten.halp.utils.FXMLUtils;
@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
-import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -69,15 +68,13 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 		System.out.println( "ProfilingView Repopulated using: " );
 		properties.printModel();
 
-        this.dataModel = properties;
-
         statisticSelector.getItems().clear();
+        statisticTypeSelector.getItems().clear();
+
+        this.dataModel = properties;
         statisticSelector.getItems().addAll(FXCollections.observableList( dataModel.getStatisticNames() ));
         statisticSelector.getSelectionModel().selectFirst();
-
-        statisticTypeSelector.getItems().clear();
         statisticTypeSelector.getItems().addAll( Statistic.DataType.values() );
-
     }
 
 	@Override
@@ -89,10 +86,10 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        profileSelector.getItems().addAll( Profile.values() );
+        profileSelector.getItems().addAll( ProfileModel.Profile.values() );
         profileSelector.getSelectionModel().selectFirst();
-        profileSelector.getSelectionModel().selectedItemProperty().addListener( handleProfileSelected );
 
+        profileSelector.getSelectionModel().selectedItemProperty().addListener( handleProfileSelected );
         statisticSelector.getSelectionModel().selectedItemProperty().addListener( handleStatisticSelected );
         statisticTypeSelector.getSelectionModel().selectedItemProperty().addListener( handleStatisticTypeSelected );
     }
@@ -101,7 +98,6 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 
         @Override
         public void changed(ObservableValue observableValue, Object o, Object o2) {
-
             String selectedItem = statisticSelector.getSelectionModel().getSelectedItem();
             Statistic.DataType type = dataModel.getDataByName( selectedItem ).getType();
             statisticTypeSelector.getSelectionModel().select( type );

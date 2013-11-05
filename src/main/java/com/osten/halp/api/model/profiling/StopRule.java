@@ -1,4 +1,4 @@
-package com.osten.halp.api.model.analysis;
+package com.osten.halp.api.model.profiling;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,8 +7,6 @@ package com.osten.halp.api.model.analysis;
  * Time: 13:52
  * To change this template use File | Settings | File Templates.
  */
-public interface StopRule {
-
-
+public interface StopRule<Data> {
 
 }

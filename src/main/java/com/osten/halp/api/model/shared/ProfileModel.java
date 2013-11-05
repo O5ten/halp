@@ -7,6 +7,9 @@ package com.osten.halp.api.model.shared;
  * Time: 14:12
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ProfileModel {
+public abstract class ProfileModel<Data> {
 
+    public static enum Profile {
+        Custom, Soak, Load, Baseline, Stress, Peak
+    }
 }
