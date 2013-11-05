@@ -7,5 +7,5 @@ package com.osten.halp.api.model.shared;
  * Time: 14:12
  * To change this template use File | Settings | File Templates.
  */
-public class FilterModel {
+public abstract class FilterModel {
 }

@@ -2,9 +2,9 @@ package com.osten.halp.views.selection;
 
 import com.osten.halp.api.model.io.DataReader;
 import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.impl.shared.LongDataCruncher;
 import com.osten.halp.views.main.MainWindowView;
 import com.osten.halp.impl.io.CSVReader;
-import com.osten.halp.impl.io.LongCruncher;
 import com.osten.halp.utils.FXMLUtils;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -72,7 +72,7 @@ public class SelectionView extends HBox implements Initializable {
     @FXML
     private void handleContinue() {
 
-        final LongCruncher data = new LongCruncher();
+        final LongDataCruncher data = new LongDataCruncher();
         final ObservableList<String> selection = selectionList.getSelectionModel().getSelectedItems();
 
         executor.submit(new Runnable() {

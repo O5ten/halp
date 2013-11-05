@@ -19,20 +19,6 @@ public abstract class DataModel<Data>
 	public abstract void setData( List<Statistic<Data>> data);
     public abstract List<String> getStatisticNames();
     public abstract Statistic<Data> getDataByName( String name );
-	/**
-	 * To be used for properties that are very small only. Bear in mind that they will need casting.
-	 */
-	private HashMap<String,Object> properties = new HashMap<String, Object>();
-
-	public Object getProperty( String key )
-	{
-		return properties.get( key );
-	}
-
-	public void setProperty( String key, Object data )
-	{
-		properties.put( key, data );
-	}
 
 	public void printModel(  )
 	{
@@ -46,14 +32,5 @@ public abstract class DataModel<Data>
 			}
 			System.out.println( "]" );
 		}
-		System.out.print("\nGeneral properties\n==============\n");
-		for( String key : properties.keySet() ){
-			System.out.println( key + " ==> " + properties.get( key ).toString() );
-		}
-
-		if( properties.values().isEmpty()){
-			System.out.println("EMPTY SET");
-		}
-		System.out.println("==============\n");
 	}
 }
