@@ -6,6 +6,9 @@ import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.impl.shared.LongDataModel;
+import com.osten.halp.impl.shared.LongFilterModel;
+import com.osten.halp.impl.shared.LongProfileModel;
 import com.osten.halp.utils.FXMLUtils;
 import com.osten.halp.views.main.MainWindowView;
 import javafx.fxml.FXML;
@@ -33,9 +36,18 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	@FXML
 	LineChart<Number,Number> lineChart;
 
+    //Domain references
+    private ProfileModel<Long> profileModel;
+    private DataModel<Long> dataModel;
+    private FilterModel<Long> filterModel;
+
 	public AnalysisView( MainWindowView parentView )
 	{
 		this.parentView = parentView;
+        this.dataModel = new LongDataModel();
+        this.filterModel = new LongFilterModel();
+        this.profileModel = new LongProfileModel();
+
 		FXMLUtils.load( this );
 	}
 
@@ -43,10 +55,10 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	public void initialize( URL url, ResourceBundle resourceBundle )
 	{
 
-	}
+    }
 
 
-	public XYChart.Series toSeries( Statistic<Long> statistic )
+	private XYChart.Series toSeries( Statistic<Long> statistic )
 	{
 		XYChart.Series<Number, Number> series = new XYChart.Series<Number,Number>();
 		series.setName( statistic.getName() );
@@ -63,14 +75,19 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
     @Override
     public void populate(DataModel<Long> properties, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
 
-        //TODO handle filterModel and profilemodel
-        System.out.println( "AnalysisView populating view using: " );
+        this.dataModel = properties;
+        this.filterModel = filterModel;
+        this.profileModel = profileModel;
+
+        rebuildLineChart();
+        properties.printModel();
+    }
+
+    private void rebuildLineChart(){
         lineChart.getData().clear();
-        for ( Statistic<Long> statistic : properties.getData()){
+        for ( Statistic<Long> statistic : dataModel.getData() ){
             lineChart.getData().add( toSeries( statistic ) );
         }
-
-        properties.printModel();
     }
 
     @Override

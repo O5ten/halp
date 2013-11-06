@@ -47,6 +47,8 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
     @FXML private VBox changeDetectorList;
 
     private DataModel<Long> dataModel;
+    private FilterModel<Long> filterModel;
+    private ProfileModel<Long> profileModel;
 
     public ProfilingView(MainWindowView parentView){
         this.parentView = parentView;
@@ -56,23 +58,26 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
    	@FXML
 	public void handleAnalyze(ActionEvent event){
 		getTabsSelectionModel().selectNext();
-		System.out.println( "(Not really) Applying filters" );
+		parentView.rePopulateViews();
+        System.out.println( "(Not really) Applying filters" );
 	}
 
 	public SelectionModel getTabsSelectionModel(){
 		return parentView.getSelectionModel();
 	}
 
-
     @Override
     public void populate(DataModel<Long> dataModel, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
+
+        this.profileModel = profileModel;
+        this.filterModel = filterModel;
 
         //TODO handle filterModel and profilemodel
 
         System.out.println( "ProfilingView Repopulated using: " );
         dataModel.printModel();
-
         statisticSelector.getItems().clear();
+
         statisticTypeSelector.getItems().clear();
 
         this.dataModel = dataModel;
@@ -105,7 +110,7 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
             String selectedItem = statisticSelector.getSelectionModel().getSelectedItem();
             Statistic.DataType type = dataModel.getDataByName( selectedItem ).getType();
             statisticTypeSelector.getSelectionModel().select( type );
-            System.out.println( statisticSelector.getSelectionModel().getSelectedItem().toString() + " selected, populating filter-view with " + statisticSelector.getSelectionModel().getSelectedItem().toString() );
+            System.out.println( statisticSelector.getSelectionModel().getSelectedItem().toString() + " of type " + type + " selected." );
         }
     };
 
@@ -116,6 +121,7 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
         public void changed(ObservableValue<? extends Statistic.DataType> observableValue, Statistic.DataType oldType, Statistic.DataType newType) {
             String name = statisticSelector.getSelectionModel().getSelectedItem();
             dataModel.getDataByName( name ).setType( newType );
+            System.out.println( "Defining " + name + " to the statistic-type " + newType );
         }
     };
 

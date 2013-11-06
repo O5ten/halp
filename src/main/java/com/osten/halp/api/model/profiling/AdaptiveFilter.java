@@ -1,5 +1,6 @@
 package com.osten.halp.api.model.profiling;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -12,18 +13,30 @@ import java.util.Properties;
  */
 public interface AdaptiveFilter<Data> {
 
-
     /**
      * Takes current estimation (local function) and the actual measurement and adapts the local parameters accordingly.
-     * @param measurement
+     * @param measurement the actual measurement
+     * @return The residue between the measured data and its actual estimation.
      */
-    public void adapt( Data measurement );
+    public Data adapt( Data measurement );
 
     /**
      * Estimates a new value based on the latest batch of measurements.
      * @return
      */
     public Data estimate();
+
+    /**
+     * Returns a list of all the historical estimates this filter has done.
+     * @return
+     */
+    public List<Data> getAllEstimates();
+
+    /**
+     * Get all residuals this filter has produced after adaptations.
+     * @return
+     */
+    public List<Data> getAllResiduals();
 
     /**
      *
@@ -37,7 +50,9 @@ public interface AdaptiveFilter<Data> {
      */
     public void setParameters( Properties properties );
 
+    public Type getType();
+
     public enum Type{
-        LMS, AGF, ABB
+        LMS
     }
 }

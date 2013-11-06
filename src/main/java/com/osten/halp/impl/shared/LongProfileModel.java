@@ -3,6 +3,7 @@ package com.osten.halp.impl.shared;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.Relation;
 import com.osten.halp.api.model.shared.ProfileModel;
+import com.osten.halp.api.model.statistics.Statistic;
 
 import java.util.List;
 
@@ -15,18 +16,13 @@ import java.util.List;
  */
 public class LongProfileModel implements ProfileModel<Long> {
 
-
-    public LongProfileModel( ){
-
-    }
-
     @Override
     public List<Relation> getRelations() {
         throw new UnsupportedOperationException( "Not yet implemented");
     }
 
     @Override
-    public AdaptiveFilter<Long> getFilterByProfile() {
-        throw new UnsupportedOperationException( "Not yet implemented");
+    public AdaptiveFilter<Long> getFilterByProfile(Profile profile, Statistic.DataType dataType) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

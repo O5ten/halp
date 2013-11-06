@@ -15,34 +15,52 @@ import java.util.Map;
 public interface FilterModel<Data> {
 
     /**
+     * Adapt parameters governing this algorithm so that the estimation of the next value is adapting to historical data and pattern of this filter.
+     *
      * @param name        What it this filter called
      * @param actualValue
      * @return Returns a map of the margins of error between actualValue and Estimation, the key is the name of the filter.
      */
-    public Map<String, Data> adapt(String name, Data actualValue);
+    public Map<AdaptiveFilter.Type, Data> adapt(String name, Data actualValue);
 
     /**
-     * Get the absolute residue between the latest estimation and latest measurement.
+     * Get the absolute residue between the latest estimation and latest measurement for each filter.
+     * This is also shown by the adapt-method, but will only act on the latest complete measurement and estimation.
      *
      * @param name
      * @return
      */
-    public List<Data> getEstimate(String name);
+    public Map<AdaptiveFilter.Type, Data> getEstimations( String name );
 
     /**
-     * Returns the specific filter type.
+     * Returns the specific filter that a statisticname holds.
      *
-     * @param name the name of the statistic owning the filter.
-     * @return
+     * @param filterType the name of the statistic owning the filter.
+     * @param statisticName the name of the statistic holding the filters.
+     * @return the Filter
      */
-    public AdaptiveFilter<Data> getFilter(String name);
+    public AdaptiveFilter<Data> getFilter(String statisticName, AdaptiveFilter.Type filterType);
 
     /**
-     * Estimate the next value based on historic data.
+     * Returns the specific filter that a statisticname holds.
+     *
+     * @param statisticName the name of the statistic holding the filters.
+     * @return the Filter
+     */
+    public List<AdaptiveFilter<Data>> getFilters(String statisticName);
+
+
+    /**
+     * Estimate the next value based on historic measurements.
+     * Returns a map of estimations per filter, but estimation is stored locally.
+     *
+     * This method is closely tied to the adapt-method that provides more historical data.
+     * If estimation is attempted several times before the adapt-method is not called, then the same estimation as before is returned.
+     * This is because an empty/0/impossible measurement should still keep an estimation if needed.
      *
      * @param name
-     * @return
+     * @return the estimations, sorted on FilterType.
      */
-    public List<Data> estimate( String name );
+    public Map<AdaptiveFilter.Type, Data> estimate( String name );
 
 }
