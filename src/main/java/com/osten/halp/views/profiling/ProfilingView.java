@@ -2,6 +2,7 @@ package com.osten.halp.views.profiling;
 
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.views.main.MainWindowView;
@@ -62,22 +63,25 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 		return parentView.getSelectionModel();
 	}
 
-	@Override
-	public void populate( DataModel<Long> properties )
-	{
-		System.out.println( "ProfilingView Repopulated using: " );
-		properties.printModel();
+
+    @Override
+    public void populate(DataModel<Long> dataModel, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
+
+        //TODO handle filterModel and profilemodel
+
+        System.out.println( "ProfilingView Repopulated using: " );
+        dataModel.printModel();
 
         statisticSelector.getItems().clear();
         statisticTypeSelector.getItems().clear();
 
-        this.dataModel = properties;
-        statisticSelector.getItems().addAll(FXCollections.observableList( dataModel.getStatisticNames() ));
+        this.dataModel = dataModel;
+        statisticSelector.getItems().addAll(FXCollections.observableList( this.dataModel.getStatisticNames() ));
         statisticSelector.getSelectionModel().selectFirst();
         statisticTypeSelector.getItems().addAll( Statistic.DataType.values() );
     }
 
-	@Override
+    @Override
 	public DataModel<Long> getPropertyModel()
 	{
 		return parentView.getDataModel();

@@ -2,6 +2,8 @@ package com.osten.halp.views.analysis;
 
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.FilterModel;
+import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.utils.FXMLUtils;
@@ -43,17 +45,6 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 
 	}
 
-	@Override
-	public void populate( DataModel<Long> properties )
-	{
-		System.out.println( "AnalysisView populating view using: " );
-		lineChart.getData().clear();
-        for ( Statistic<Long> statistic : properties.getData()){
-			lineChart.getData().add( toSeries( statistic ) );
-		}
-
-		properties.printModel();
-	}
 
 	public XYChart.Series toSeries( Statistic<Long> statistic )
 	{
@@ -69,7 +60,20 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 		return series;
 	}
 
-	@Override
+    @Override
+    public void populate(DataModel<Long> properties, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
+
+        //TODO handle filterModel and profilemodel
+        System.out.println( "AnalysisView populating view using: " );
+        lineChart.getData().clear();
+        for ( Statistic<Long> statistic : properties.getData()){
+            lineChart.getData().add( toSeries( statistic ) );
+        }
+
+        properties.printModel();
+    }
+
+    @Override
 	public DataModel<Long> getPropertyModel()
 	{
 		return parentView.getDataModel();

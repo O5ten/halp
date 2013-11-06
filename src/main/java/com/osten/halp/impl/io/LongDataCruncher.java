@@ -1,4 +1,4 @@
-package com.osten.halp.impl.shared;
+package com.osten.halp.impl.io;
 
 import com.osten.halp.api.model.io.DataCruncher;
 import com.osten.halp.api.model.io.DataReader;

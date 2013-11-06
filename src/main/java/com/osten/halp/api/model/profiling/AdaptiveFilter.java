@@ -10,34 +10,34 @@ import java.util.Properties;
  * Time: 14:30
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AdaptiveFilter<Data> {
+public interface AdaptiveFilter<Data> {
 
 
     /**
      * Takes current estimation (local function) and the actual measurement and adapts the local parameters accordingly.
      * @param measurement
      */
-    public abstract void adapt( Data measurement );
+    public void adapt( Data measurement );
 
     /**
      * Estimates a new value based on the latest batch of measurements.
      * @return
      */
-    public abstract Data estimate();
+    public Data estimate();
 
     /**
      *
      * @return the parameters currently in effect in the form of properties.
      */
-    public abstract Properties getParameters();
+    public Properties getParameters();
 
     /**
      * If a new set of properties needs to be
      * @param properties
      */
-    public abstract void setParameters( Properties properties );
+    public void setParameters( Properties properties );
 
     public enum Type{
-        LMR, AGF, ABB
+        LMS, AGF, ABB
     }
 }

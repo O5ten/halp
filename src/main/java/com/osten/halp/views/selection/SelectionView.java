@@ -2,7 +2,7 @@ package com.osten.halp.views.selection;
 
 import com.osten.halp.api.model.io.DataReader;
 import com.osten.halp.api.model.statistics.Statistic;
-import com.osten.halp.impl.shared.LongDataCruncher;
+import com.osten.halp.impl.io.LongDataCruncher;
 import com.osten.halp.views.main.MainWindowView;
 import com.osten.halp.impl.io.CSVReader;
 import com.osten.halp.utils.FXMLUtils;
