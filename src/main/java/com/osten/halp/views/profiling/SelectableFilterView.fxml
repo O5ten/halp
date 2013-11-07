@@ -9,14 +9,11 @@
 <?import javafx.scene.web.WebView?>
 
 <?import javafx.scene.control.ComboBox?>
-<fx:root type="javafx.scene.layout.HBox"
-         xmlns:fx="http://javafx.com/fxml" styleClass="start-view">
+<?import javafx.scene.control.ToggleButton?>
+<fx:root type="javafx.scene.layout.VBox"
+         xmlns:fx="http://javafx.com/fxml" styleClass="selectable-component-view">
     <stylesheets>
         <URL value="@../common-style.css"/>
-        <URL value="@MutableComponentView.css" />
+        <URL value="@SelectableFilterView.css" />
     </stylesheets>
-    <HBox fx:id="Field" spacing="5" HBox.hgrow="ALWAYS">
-        <Button/>
-        <ComboBox HBox.hgrow="ALWAYS"/>
-    </HBox>
 </fx:root>

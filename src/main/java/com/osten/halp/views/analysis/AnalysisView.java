@@ -6,9 +6,6 @@ import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
-import com.osten.halp.impl.shared.LongDataModel;
-import com.osten.halp.impl.shared.LongFilterModel;
-import com.osten.halp.impl.shared.LongProfileModel;
 import com.osten.halp.utils.FXMLUtils;
 import com.osten.halp.views.main.MainWindowView;
 import javafx.fxml.FXML;
@@ -36,17 +33,9 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	@FXML
 	LineChart<Number,Number> lineChart;
 
-    //Domain references
-    private ProfileModel<Long> profileModel;
-    private DataModel<Long> dataModel;
-    private FilterModel<Long> filterModel;
-
 	public AnalysisView( MainWindowView parentView )
 	{
 		this.parentView = parentView;
-        this.dataModel = new LongDataModel();
-        this.filterModel = new LongFilterModel();
-        this.profileModel = new LongProfileModel();
 
 		FXMLUtils.load( this );
 	}
@@ -75,24 +64,30 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
     @Override
     public void populate(DataModel<Long> properties, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
 
-        this.dataModel = properties;
-        this.filterModel = filterModel;
-        this.profileModel = profileModel;
-
         rebuildLineChart();
         properties.printModel();
     }
 
     private void rebuildLineChart(){
         lineChart.getData().clear();
-        for ( Statistic<Long> statistic : dataModel.getData() ){
+        for ( Statistic<Long> statistic : getDataModel().getData() ){
             lineChart.getData().add( toSeries( statistic ) );
         }
     }
 
     @Override
-	public DataModel<Long> getPropertyModel()
+	public DataModel<Long> getDataModel()
 	{
 		return parentView.getDataModel();
 	}
+
+    @Override
+    public FilterModel<Long> getFilterModel() {
+        return parentView.getFilterModel();
+    }
+
+    @Override
+    public ProfileModel<Long> getProfileModel() {
+        return parentView.getProfileModel();
+    }
 }

@@ -21,7 +21,7 @@ public interface FilterModel<Data> {
      * @param actualValue
      * @return Returns a map of the margins of error between actualValue and Estimation, the key is the name of the filter.
      */
-    public Map<AdaptiveFilter.Type, Data> adapt(String name, Data actualValue);
+    public Map<AdaptiveFilter.FilterType, Data> adapt(String name, Data actualValue);
 
     /**
      * Get the absolute residue between the latest estimation and latest measurement for each filter.
@@ -30,7 +30,7 @@ public interface FilterModel<Data> {
      * @param name
      * @return
      */
-    public Map<AdaptiveFilter.Type, Data> getEstimations( String name );
+    public Map<AdaptiveFilter.FilterType, Data> getEstimations( String name );
 
     /**
      * Returns the specific filter that a statisticname holds.
@@ -39,16 +39,31 @@ public interface FilterModel<Data> {
      * @param statisticName the name of the statistic holding the filters.
      * @return the Filter
      */
-    public AdaptiveFilter<Data> getFilter(String statisticName, AdaptiveFilter.Type filterType);
+    public AdaptiveFilter<Data> getFilter(String statisticName, AdaptiveFilter.FilterType filterType);
 
     /**
-     * Returns the specific filter that a statisticname holds.
+     * Returns the specific filters that a statisticname holds.
      *
      * @param statisticName the name of the statistic holding the filters.
      * @return the Filter
      */
     public List<AdaptiveFilter<Data>> getFilters(String statisticName);
 
+
+    /**
+     * Creates a new filter according to the type selected.
+     *
+     * @param statisticName
+     * @param type
+     */
+    public void createFilter( String statisticName, AdaptiveFilter.FilterType type );
+
+    /**
+     * Removes an old filter according to the type deselected.
+     * @param statisticName
+     * @param type
+     */
+    public void removeFilter( String statisticName, AdaptiveFilter.FilterType type );
 
     /**
      * Estimate the next value based on historic measurements.
@@ -61,6 +76,6 @@ public interface FilterModel<Data> {
      * @param name
      * @return the estimations, sorted on FilterType.
      */
-    public Map<AdaptiveFilter.Type, Data> estimate( String name );
+    public Map<AdaptiveFilter.FilterType, Data> estimate( String name );
 
 }

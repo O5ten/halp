@@ -14,10 +14,10 @@ import java.util.Properties;
  */
 public class BasicLMSFilter implements AdaptiveFilter<Long> {
 
-    private Type filterType;
+    private FilterType filterType;
 
     public BasicLMSFilter(){
-        this.filterType = Type.LMS;
+        this.filterType = FilterType.LMS;
     }
 
     @Override
@@ -51,7 +51,12 @@ public class BasicLMSFilter implements AdaptiveFilter<Long> {
     }
 
     @Override
-    public Type getType() {
+    public FilterType getType() {
        return filterType;
+    }
+
+    @Override
+    public Enum[] getEnums(){
+        return FilterType.values();
     }
 }

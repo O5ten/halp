@@ -23,8 +23,6 @@ import java.util.ResourceBundle;
  */
 public class HomeView extends HBox implements Initializable{
 
-    private static Logger logger = LoggerFactory.getLogger(HomeView.class);
-
     @FXML
     WebView webView;
 

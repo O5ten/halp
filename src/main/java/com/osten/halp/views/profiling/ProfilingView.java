@@ -1,6 +1,7 @@
 package com.osten.halp.views.profiling;
 
 import com.osten.halp.api.model.gui.PopulatableView;
+import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
@@ -29,107 +30,133 @@ import java.util.ResourceBundle;
  * Time: 15:18
  * To change this template use File | Settings | File Templates.
  */
-public class ProfilingView extends HBox implements Initializable, PopulatableView<Long>
-{
+public class ProfilingView extends HBox implements Initializable, PopulatableView<Long> {
 
     MainWindowView parentView;
 
-    @FXML private ComboBox profileSelector;
+    @FXML
+    private ComboBox<ProfileModel.Profile> profileSelector;
 
-    @FXML private ListView<String> statisticSelector;
+    @FXML
+    private ListView<String> statisticSelector;
 
-    @FXML private ListView<Statistic.DataType> statisticTypeSelector;
+    @FXML
+    private ListView<Statistic.DataType> statisticTypeSelector;
 
-    @FXML private VBox adaptiveFilterList;
+    @FXML
+    private VBox adaptiveFilterList;
 
-    @FXML private VBox stopRuleList;
+    @FXML
+    private VBox stopRuleList;
 
-    @FXML private VBox changeDetectorList;
+    @FXML
+    private VBox changeDetectorList;
 
-    private DataModel<Long> dataModel;
-    private FilterModel<Long> filterModel;
-    private ProfileModel<Long> profileModel;
-
-    public ProfilingView(MainWindowView parentView){
+    public ProfilingView(MainWindowView parentView) {
         this.parentView = parentView;
-        FXMLUtils.load( this );
+        FXMLUtils.load(this);
     }
 
-   	@FXML
-	public void handleAnalyze(ActionEvent event){
-		getTabsSelectionModel().selectNext();
-		parentView.rePopulateViews();
-        System.out.println( "(Not really) Applying filters" );
-	}
+    @FXML
+    public void handleAnalyze(ActionEvent event) {
+        getTabsSelectionModel().selectNext();
 
-	public SelectionModel getTabsSelectionModel(){
-		return parentView.getSelectionModel();
-	}
+        parentView.rePopulateViews();
+        System.out.println("(Not really) Applying filters");
+    }
+
+    public SelectionModel getTabsSelectionModel() {
+        return parentView.getSelectionModel();
+    }
 
     @Override
     public void populate(DataModel<Long> dataModel, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
 
-        this.profileModel = profileModel;
-        this.filterModel = filterModel;
-
-        //TODO handle filterModel and profilemodel
-
-        System.out.println( "ProfilingView Repopulated using: " );
+        System.out.println("ProfilingView Repopulated using: ");
         dataModel.printModel();
-        statisticSelector.getItems().clear();
 
+        statisticSelector.getItems().clear();
         statisticTypeSelector.getItems().clear();
 
-        this.dataModel = dataModel;
-        statisticSelector.getItems().addAll(FXCollections.observableList( this.dataModel.getStatisticNames() ));
+        statisticSelector.getItems().addAll(FXCollections.observableList(getDataModel().getStatisticNames()));
         statisticSelector.getSelectionModel().selectFirst();
-        statisticTypeSelector.getItems().addAll( Statistic.DataType.values() );
+        statisticTypeSelector.getItems().addAll(Statistic.DataType.values());
     }
 
     @Override
-	public DataModel<Long> getPropertyModel()
-	{
-		return parentView.getDataModel();
-	}
+    public DataModel<Long> getDataModel() {
+        return parentView.getDataModel();
+    }
+
+    @Override
+    public FilterModel<Long> getFilterModel() {
+        return parentView.getFilterModel();
+    }
+
+    @Override
+    public ProfileModel<Long> getProfileModel() {
+        return parentView.getProfileModel();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        profileSelector.getItems().addAll( ProfileModel.Profile.values() );
+        profileSelector.getItems().addAll(ProfileModel.Profile.values());
         profileSelector.getSelectionModel().selectFirst();
 
-        profileSelector.getSelectionModel().selectedItemProperty().addListener( handleProfileSelected );
-        statisticSelector.getSelectionModel().selectedItemProperty().addListener( handleStatisticSelected );
-        statisticTypeSelector.getSelectionModel().selectedItemProperty().addListener( handleStatisticTypeSelected );
+        profileSelector.getSelectionModel().selectedItemProperty().addListener(handleProfileSelected);
+        statisticSelector.getSelectionModel().selectedItemProperty().addListener(handleStatisticSelected);
+        statisticTypeSelector.getSelectionModel().selectedItemProperty().addListener(handleStatisticTypeSelected);
     }
 
-    private ChangeListener handleStatisticSelected = new ChangeListener(){
+    public String getSelectedStatistic(){
+        return statisticSelector.getSelectionModel().getSelectedItem();
+    }
+
+    public Statistic.DataType getSelectedStatisticType(){
+        return statisticTypeSelector.getSelectionModel().getSelectedItem();
+    }
+
+    public ProfileModel.Profile getSelectedProfile(){
+        return profileSelector.getSelectionModel().getSelectedItem();
+    }
+
+    private ChangeListener handleStatisticSelected = new ChangeListener() {
 
         @Override
         public void changed(ObservableValue observableValue, Object o, Object o2) {
-            String selectedItem = statisticSelector.getSelectionModel().getSelectedItem();
-            Statistic.DataType type = dataModel.getDataByName( selectedItem ).getType();
-            statisticTypeSelector.getSelectionModel().select( type );
-            System.out.println( statisticSelector.getSelectionModel().getSelectedItem().toString() + " of type " + type + " selected." );
+            if (!statisticSelector.getItems().isEmpty()) {
+                String selectedItem = getSelectedStatistic();
+                adaptiveFilterList.getChildren().clear();
+                Statistic.DataType type = getDataModel().getDataByName(selectedItem).getType();
+                statisticTypeSelector.getSelectionModel().select(type);
+                System.out.println(getSelectedStatistic().toString() + " of type " + type + " selected.");
+            }
         }
     };
 
-    private ChangeListener<Statistic.DataType> handleStatisticTypeSelected = new ChangeListener<Statistic.DataType>(){
-
+    private ChangeListener<Statistic.DataType> handleStatisticTypeSelected = new ChangeListener<Statistic.DataType>() {
 
         @Override
         public void changed(ObservableValue<? extends Statistic.DataType> observableValue, Statistic.DataType oldType, Statistic.DataType newType) {
-            String name = statisticSelector.getSelectionModel().getSelectedItem();
-            dataModel.getDataByName( name ).setType( newType );
-            System.out.println( "Defining " + name + " to the statistic-type " + newType );
+            if (!statisticTypeSelector.getItems().isEmpty()) {
+                String name = getSelectedStatistic();
+                getDataModel().getDataByName(name).setType(newType);
+
+                if(adaptiveFilterList.getChildren().isEmpty()){
+                    adaptiveFilterList.getChildren().add(new SelectableFilterView( ProfilingView.this ));
+                }
+
+                System.out.println("Defining " + name + " to the statistic-type " + newType);
+            }
         }
     };
 
-    private ChangeListener handleProfileSelected = new ChangeListener(){
+    private ChangeListener handleProfileSelected = new ChangeListener() {
 
         @Override
         public void changed(ObservableValue observableValue, Object o, Object o2) {
-            System.out.println( profileSelector.getSelectionModel().getSelectedItem().toString() + "-profile selected");
+            System.out.println(getSelectedProfile().toString() + "-profile selected");
         }
     };
 }

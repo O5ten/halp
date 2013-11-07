@@ -9,7 +9,7 @@ import java.util.Properties;
  * Time: 13:52
  * To change this template use File | Settings | File Templates.
  */
-public interface ChangeDetector<Data> {
+public interface ChangeDetector<Data> extends Enumerable{
     public boolean detect();
     public void extractParameters( Properties properties );
     public void applyParameters( Properties properties );

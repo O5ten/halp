@@ -50,7 +50,7 @@ public interface Statistic<Data>
 	public DataPoint<Data> getDataByIndex( int index );
 
 	/**
-	 * What type of data is this, returns an enum residing in Statistic.Type
+	 * What type of data is this, returns an enum residing in Statistic.FilterType
 	 * @return
 	 */
 	public DataType getType();

@@ -27,9 +27,9 @@ public class LongFilterModel implements FilterModel<Long> {
     }
 
     @Override
-    public Map<AdaptiveFilter.Type, Long> adapt(String name, Long actualValue) {
+    public Map<AdaptiveFilter.FilterType, Long> adapt(String name, Long actualValue) {
 
-        Map<AdaptiveFilter.Type, Long> residues = new HashMap<AdaptiveFilter.Type, Long>();
+        Map<AdaptiveFilter.FilterType, Long> residues = new HashMap<AdaptiveFilter.FilterType, Long>();
 
         for (AdaptiveFilter<Long> filter : filters.get(name)) {
             residues.put(filter.getType(), filter.adapt(actualValue));
@@ -39,8 +39,8 @@ public class LongFilterModel implements FilterModel<Long> {
     }
 
     @Override
-    public Map<AdaptiveFilter.Type, Long> getEstimations(String name) {
-        Map<AdaptiveFilter.Type, Long> residuals = new HashMap<AdaptiveFilter.Type, Long>();
+    public Map<AdaptiveFilter.FilterType, Long> getEstimations(String name) {
+        Map<AdaptiveFilter.FilterType, Long> residuals = new HashMap<AdaptiveFilter.FilterType, Long>();
 
         for (AdaptiveFilter<Long> filter : filters.get(name)) {
             residuals.put(filter.getType(), filter.estimate());
@@ -50,24 +50,15 @@ public class LongFilterModel implements FilterModel<Long> {
     }
 
     @Override
-    public AdaptiveFilter<Long> getFilter(String statisticName, AdaptiveFilter.Type filterType) {
-        AdaptiveFilter<Long> filter;
-        switch (filterType) {
-            case LMS:
-                filter = new BasicLMSFilter();
+    public AdaptiveFilter<Long> getFilter(String statisticName, AdaptiveFilter.FilterType filterType) {
+        AdaptiveFilter<Long> foundFilter = null;
+        for ( AdaptiveFilter<Long> filter : filters.get( statisticName ) ){
+            if( filter.getType() == filterType){
+                foundFilter = filter;
                 break;
-            default:
-                throw new UnsupportedFilterException();
+            }
         }
-        if(filters.containsKey( statisticName) ){
-            filters.get( statisticName ).add( filter );
-        }else{
-            ArrayList<AdaptiveFilter<Long>> filterList = new ArrayList<AdaptiveFilter<Long>>();
-            filterList.add( filter );
-            filters.put( statisticName, filterList );
-        }
-
-        return filter;
+        return foundFilter;
     }
 
     @Override
@@ -75,10 +66,47 @@ public class LongFilterModel implements FilterModel<Long> {
         return Collections.unmodifiableList(filters.get(statisticName));
     }
 
+    @Override
+    public void createFilter(String statisticName, AdaptiveFilter.FilterType filterType) {
+        AdaptiveFilter<Long> filter;
+
+        switch (filterType) {
+            case LMS:
+                filter = new BasicLMSFilter();
+                break;
+            default:
+                throw new UnsupportedFilterException();
+        }
+
+        if(filters.containsKey( statisticName) ){
+            System.out.println( "Statistic " + statisticName + " added filter of type " + filter.getType() );
+            filters.get( statisticName ).add( filter );
+        }else{
+            System.out.println( "Statistic " + statisticName + " created and filter of type " + filter.getType() + " added " );
+            ArrayList<AdaptiveFilter<Long>> filterList = new ArrayList<AdaptiveFilter<Long>>();
+            filterList.add( filter );
+            filters.put( statisticName, filterList );
+        }
+    }
 
     @Override
-    public Map<AdaptiveFilter.Type, Long> estimate(String name) {
-        Map<AdaptiveFilter.Type, Long> estimates = new HashMap<AdaptiveFilter.Type, Long>();
+    public void removeFilter(String statisticName, AdaptiveFilter.FilterType type) {
+        for ( AdaptiveFilter<Long> filter : filters.get( statisticName )){
+            if( filter.getType() == type ){
+                filters.get( statisticName ).remove( filter );
+                System.out.println( "Statistic " + statisticName + " removes filter of type " + filter.getType() );
+                if( filters.size() == 0){
+                    System.out.println( "Statistic " + statisticName + " has now no active filters." );
+                    filters.remove( statisticName );
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public Map<AdaptiveFilter.FilterType, Long> estimate(String name) {
+        Map<AdaptiveFilter.FilterType, Long> estimates = new HashMap<AdaptiveFilter.FilterType, Long>();
 
         for (AdaptiveFilter<Long> filter : filters.get( name )){
             estimates.put( filter.getType(), filter.estimate() );

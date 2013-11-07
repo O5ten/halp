@@ -1,7 +1,6 @@
 package com.osten.halp.api.model.profiling;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Properties;
  * Time: 14:30
  * To change this template use File | Settings | File Templates.
  */
-public interface AdaptiveFilter<Data> {
+public interface AdaptiveFilter<Data> extends Enumerable{
 
     /**
      * Takes current estimation (local function) and the actual measurement and adapts the local parameters accordingly.
@@ -50,9 +49,10 @@ public interface AdaptiveFilter<Data> {
      */
     public void setParameters( Properties properties );
 
-    public Type getType();
+    public FilterType getType();
 
-    public enum Type{
+
+    public enum FilterType {
         LMS
     }
 }

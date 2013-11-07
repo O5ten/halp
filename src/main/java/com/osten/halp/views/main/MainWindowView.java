@@ -36,8 +36,6 @@ import java.util.concurrent.Executors;
  */
 public class MainWindowView extends BorderPane {
 
-    private static Logger logger = LoggerFactory.getLogger(MainWindowView.class);
-
     private ExecutorService executor;
 
     @FXML
@@ -69,7 +67,7 @@ public class MainWindowView extends BorderPane {
         return dataModel;
     }
 
-    public FilterModel<Long> getfilterModel() {
+    public FilterModel<Long> getFilterModel() {
         return filterModel;
     }
 

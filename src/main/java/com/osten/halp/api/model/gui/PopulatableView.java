@@ -14,5 +14,7 @@ import com.osten.halp.api.model.shared.ProfileModel;
 public interface PopulatableView<Type>
 {
 	public void populate( DataModel<Type> properties, FilterModel<Type> filterModel, ProfileModel<Type> profileModel);
-	public DataModel<Type> getPropertyModel();
+	public DataModel<Type> getDataModel();
+    public FilterModel<Type> getFilterModel();
+    public ProfileModel<Type> getProfileModel();
 }
