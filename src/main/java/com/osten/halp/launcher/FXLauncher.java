@@ -1,5 +1,6 @@
-package com.osten.halp.views.main;
+package com.osten.halp.launcher;
 
+import com.osten.halp.views.main.MainWindowView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
