@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBuilder;
@@ -36,6 +37,11 @@ public class SelectableFilterView extends VBox {
     public SelectableFilterView( ProfilingView profilingView) {
         this.parentView = profilingView;
         getChildren().addAll( createField(), addButton() );
+        this.setSpacing( 4 );
+        this.setPadding( new Insets( 4, 4, 4, 4));
+        this.getStyleClass().add( "selectable-filter-view" );
+        VBox.setVgrow(this, Priority.ALWAYS);
+
         System.out.println( "Created SelectableFilterView") ;
     }
 
@@ -48,10 +54,9 @@ public class SelectableFilterView extends VBox {
     }
 
     private HBox addButton() {
-        return HBoxBuilder.create().children(
+        return HBoxBuilder.create().spacing ( 4 ).children(
                 ButtonBuilder
                 .create()
-                .text("+")
                 .graphic(RegionBuilder
                         .create()
                         .styleClass("positive-graphic")
@@ -60,18 +65,19 @@ public class SelectableFilterView extends VBox {
                 .onAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        getChildren().add(0, createField());
+                        getChildren().add( getChildren().size()-1, createField());
                     }
                 })
                 .build(),
-                LabelBuilder.create().text("Add another filter").build()
-        ).build()                             ;
+                LabelBuilder.create().text("Add filter").build()
+        ).build();
 
     }
 
     private ComboBox createFilterComboBox() {
 
         final ComboBox<AdaptiveFilter.FilterType> box = new ComboBox();
+        HBox.setHgrow( box, Priority.ALWAYS );
         box.getItems().addAll(AdaptiveFilter.FilterType.values());
 
         EventHandler<ActionEvent> evt = new javafx.event.EventHandler<javafx.event.ActionEvent>() {
@@ -86,16 +92,15 @@ public class SelectableFilterView extends VBox {
         return box;
     }
 
-    private Button negativeButton() {
+    private Button negativeButton( final ComboBox<AdaptiveFilter.FilterType> comboBox ) {
         return ButtonBuilder
                 .create()
-                .text( "-" )
                 .styleClass()
                 .onAction(new javafx.event.EventHandler<javafx.event.ActionEvent>() {
                     @Override
                     public void handle(javafx.event.ActionEvent actionEvent) {
                         getChildren().remove(((Button) actionEvent.getSource()).getParent());
-                        //TODO remove filter gorgeously from statistic.
+                        getFilterModel().removeFilter( parentView.getSelectedStatistic(), comboBox.getSelectionModel().getSelectedItem() );
                     }
                 })
                 .graphic(
@@ -105,12 +110,14 @@ public class SelectableFilterView extends VBox {
     }
 
     private HBox createField() {
+        ComboBox<AdaptiveFilter.FilterType> comboBox = createFilterComboBox();
+
         return HBoxBuilder
                 .create()
-                .spacing(4)
+                .spacing( 4 )
                 .children(
-                        negativeButton(),
-                        createFilterComboBox()
+                        negativeButton( comboBox ),
+                        comboBox
                 )
                 .build();
     }

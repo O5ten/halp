@@ -15,3 +15,18 @@
 	-fx-padding: 10;
 }
 
+.negative-graphic{
+    -fx-background-color: pink;
+}
+
+.positive-graphic{
+    -fx-background-color:   linear-gradient( from 0% 50% to 100% 50%, transparent 0%, transparent 40%, black 50%, transparent 60%, transparent 100% ),
+                            linear-gradient( from 50% 0% to 50% 100%, transparent 0%, transparent 40%, black 50%, transparent 60%, transparent 100% );
+    -fx-padding: 8;
+}
+
+.negative-graphic{
+    -fx-background-color: linear-gradient( from 50% 0% to 50% 100%, transparent 0%, transparent 40%, black 50%, transparent 60%, transparent 100% );
+    -fx-padding: 8;
+}
+

@@ -91,21 +91,25 @@ public class LongFilterModel implements FilterModel<Long> {
 
     @Override
     public void removeFilter(String statisticName, AdaptiveFilter.FilterType type) {
+        AdaptiveFilter<Long> filterToRemove = null;
+
         for ( AdaptiveFilter<Long> filter : filters.get( statisticName )){
             if( filter.getType() == type ){
-                filters.get( statisticName ).remove( filter );
+                filterToRemove = filter;
                 System.out.println( "Statistic " + statisticName + " removes filter of type " + filter.getType() );
-                if( filters.size() == 0){
-                    System.out.println( "Statistic " + statisticName + " has now no active filters." );
-                    filters.remove( statisticName );
-                }
             }
+        }
+        filters.get( statisticName ).remove( filterToRemove );
+
+        if( filters.get( statisticName ).size() == 0){
+            System.out.println( "Statistic " + statisticName + " has now no active filters." );
+            filters.remove( statisticName );
         }
     }
 
 
     @Override
-    public Map<AdaptiveFilter.FilterType, Long> estimate(String name) {
+    public synchronized Map<AdaptiveFilter.FilterType, Long> estimate(String name) {
         Map<AdaptiveFilter.FilterType, Long> estimates = new HashMap<AdaptiveFilter.FilterType, Long>();
 
         for (AdaptiveFilter<Long> filter : filters.get( name )){
