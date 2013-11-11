@@ -1,6 +1,7 @@
 package com.osten.halp.impl.profiling;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
+import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongDataPoint;
 import com.osten.halp.impl.statistics.LongStatistic;
@@ -9,21 +10,28 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Created with IntelliJ IDEA.
- * User: server
- * Date: 2013-11-06
- * Time: 11:33
- * To change this template use File | Settings | File Templates.
+ * This is a Geometric Moving Average filter.
+ * Algorithm is as follows:
+ * <p/>
+ * Estimation:              Theta
+ * Weight of measurement:   W
+ * Measurement:             Y
+ * Lambda:                  a design parameter to adapt the speed and probable error of this filter
+ * <p/>
+ * Estimation algorithm:
+ * Theta = sum( k = 0 TO k = infinity) of ( Wk * Yt )
+ * Or
+ * Estimation of next value = the sum from start to end of measurements
  */
-public class BasicLMSFilter implements AdaptiveFilter<Long> {
+public class BasicGMAFilter implements AdaptiveFilter<Long> {
 
     private Statistic<Long> estimates;
     private Statistic<Long> residuals;
     private Statistic<Long> measurements;
     private FilterType filterType;
 
-    public BasicLMSFilter(){
-        this.filterType = FilterType.BasicLMS;
+    public BasicGMAFilter(){
+        this.filterType = FilterType.BasicGMA;
     }
 
     @Override
@@ -38,12 +46,11 @@ public class BasicLMSFilter implements AdaptiveFilter<Long> {
         this.residuals.setType( Statistic.AggregatedStatisticType.Residual );
     }
 
-
-
     private LongStatistic performAlgorithm() {
         LongStatistic estimates = new LongStatistic(measurements.getName());
 
         //TODO Algorithm
+
         return estimates;
     }
 
@@ -68,8 +75,9 @@ public class BasicLMSFilter implements AdaptiveFilter<Long> {
 
     @Override
     public Statistic<Long> getResiduals() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return residuals;
     }
+
 
     @Override
     public Properties getParameters() {
@@ -83,11 +91,11 @@ public class BasicLMSFilter implements AdaptiveFilter<Long> {
 
     @Override
     public FilterType getType() {
-       return filterType;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
-    public Enum[] getEnums(){
-        return FilterType.values();
+    public Enum[] getEnums() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

@@ -1,5 +1,7 @@
 package com.osten.halp.api.model.profiling;
 
+import com.osten.halp.api.model.statistics.Statistic;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -17,25 +19,19 @@ public interface AdaptiveFilter<Data> extends Enumerable{
      * @param measurement the actual measurement
      * @return The residue between the measured data and its actual estimation.
      */
-    public Data adapt( Data measurement );
-
-    /**
-     * Estimates a new value based on the latest batch of measurements.
-     * @return
-     */
-    public Data estimate();
+    public void adapt( Statistic<Data> measurement );
 
     /**
      * Returns a list of all the historical estimates this filter has done.
      * @return
      */
-    public List<Data> getAllEstimates();
+    public Statistic<Data> getEstimates();
 
     /**
      * Get all residuals this filter has produced after adaptations.
      * @return
      */
-    public List<Data> getAllResiduals();
+    public Statistic<Data> getResiduals();
 
     /**
      *
@@ -53,6 +49,6 @@ public interface AdaptiveFilter<Data> extends Enumerable{
 
 
     public enum FilterType {
-        LMS
+        BasicLMS, BasicRLS, BasicGMA
     }
 }

@@ -4,8 +4,10 @@ import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.profiling.StopRule;
 import com.osten.halp.api.model.shared.FilterModel;
+import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
 import com.osten.halp.impl.profiling.BasicLMSFilter;
+import com.osten.halp.impl.profiling.BasicRLSFilter;
 
 import java.util.*;
 
@@ -27,26 +29,10 @@ public class LongFilterModel implements FilterModel<Long> {
     }
 
     @Override
-    public Map<AdaptiveFilter.FilterType, Long> adapt(String name, Long actualValue) {
-
-        Map<AdaptiveFilter.FilterType, Long> residues = new HashMap<AdaptiveFilter.FilterType, Long>();
-
+    public void adapt(String name, Statistic<Long> measurements) {
         for (AdaptiveFilter<Long> filter : filters.get(name)) {
-            residues.put(filter.getType(), filter.adapt(actualValue));
+           filter.adapt( measurements );
         }
-
-        return residues;
-    }
-
-    @Override
-    public Map<AdaptiveFilter.FilterType, Long> getEstimations(String name) {
-        Map<AdaptiveFilter.FilterType, Long> residuals = new HashMap<AdaptiveFilter.FilterType, Long>();
-
-        for (AdaptiveFilter<Long> filter : filters.get(name)) {
-            residuals.put(filter.getType(), filter.estimate());
-        }
-
-        return residuals;
     }
 
     @Override
@@ -71,7 +57,10 @@ public class LongFilterModel implements FilterModel<Long> {
         AdaptiveFilter<Long> filter;
 
         switch (filterType) {
-            case LMS:
+            case BasicRLS:
+                filter = new BasicRLSFilter();
+                break;
+            case BasicLMS:
                 filter = new BasicLMSFilter();
                 break;
             default:
@@ -105,17 +94,5 @@ public class LongFilterModel implements FilterModel<Long> {
             System.out.println( "Statistic " + statisticName + " has now no active filters." );
             filters.remove( statisticName );
         }
-    }
-
-
-    @Override
-    public synchronized Map<AdaptiveFilter.FilterType, Long> estimate(String name) {
-        Map<AdaptiveFilter.FilterType, Long> estimates = new HashMap<AdaptiveFilter.FilterType, Long>();
-
-        for (AdaptiveFilter<Long> filter : filters.get( name )){
-            estimates.put( filter.getType(), filter.estimate() );
-        }
-
-        return estimates;
     }
 }

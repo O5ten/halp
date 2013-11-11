@@ -4,6 +4,7 @@ import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,18 +19,37 @@ public class LongStatistic implements Statistic<Long>
 	private String name;
 	private DataType dataType;
 	private List<DataPoint<Long>> data;
+    private AggregatedStatisticType aggregatedType;
 
     public LongStatistic( String name ){
         this.name = name;
         this.dataType = Statistic.DataType.Unknown;
         this.data = new ArrayList<DataPoint<Long>>();
+        this.aggregatedType = AggregatedStatisticType.Not_Aggregated;
     }
 
 	public LongStatistic( String name, DataType dataType ){
 		this.name = name;
 		this.dataType = dataType;
         this.data = new ArrayList<DataPoint<Long>>();
-	}
+        this.aggregatedType = AggregatedStatisticType.Not_Aggregated;
+
+    }
+
+    public LongStatistic( String name, AggregatedStatisticType aggregatedType ){
+        this.name = name;
+        this.aggregatedType = aggregatedType;
+        this.data = new ArrayList<DataPoint<Long>>();
+        this.aggregatedType = AggregatedStatisticType.Not_Aggregated;
+    }
+
+    public LongStatistic( Statistic<Long> statistic){
+        this.name = statistic.getName();
+        this.data = Collections.unmodifiableList( statistic.getData() );
+        this.aggregatedType = statistic.getAggregatedType();
+        this.dataType = statistic.getType();
+    }
+
 
 	@Override
 	public void setData( List<DataPoint<Long>> data, DataType dataType )
@@ -67,15 +87,30 @@ public class LongStatistic implements Statistic<Long>
 		return dataType;
 	}
 
+    @Override
+    public AggregatedStatisticType getAggregatedType(){
+    return aggregatedType;
+}
+
 	@Override
 	public void setType( DataType dataType )
 	{
 		this.dataType = dataType;
 	}
 
-	@Override
+    @Override
+    public void setType(AggregatedStatisticType aggregatedType) {
+        this.aggregatedType = aggregatedType;
+    }
+
+    @Override
 	public String getName()
 	{
 		return name;
 	}
+
+    @Override
+    public Statistic<Long> copyOf(){
+        return new LongStatistic ( this );
+    }
 }
