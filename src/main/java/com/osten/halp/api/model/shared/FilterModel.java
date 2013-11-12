@@ -40,7 +40,7 @@ public interface FilterModel<Data> {
      * @param statisticName the name of the statistic holding the filters.
      * @return the Filter
      */
-    public List<AdaptiveFilter<Data>> getFilters(String statisticName);
+    public List<AdaptiveFilter<Data>> getFiltersByStatisticName( String statisticName );
 
 
     /**

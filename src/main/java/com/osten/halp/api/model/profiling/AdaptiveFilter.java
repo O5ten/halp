@@ -49,6 +49,6 @@ public interface AdaptiveFilter<Data> extends Enumerable{
 
 
     public enum FilterType {
-        BasicLMS, BasicRLS, BasicGMA
+        BasicLMS, BasicRLS, BasicWLS
     }
 }

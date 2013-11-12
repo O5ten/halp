@@ -8,6 +8,7 @@ import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
 import com.osten.halp.impl.profiling.BasicLMSFilter;
 import com.osten.halp.impl.profiling.BasicRLSFilter;
+import com.osten.halp.impl.profiling.BasicWLSFilter;
 
 import java.util.*;
 
@@ -48,8 +49,14 @@ public class LongFilterModel implements FilterModel<Long> {
     }
 
     @Override
-    public List<AdaptiveFilter<Long>> getFilters(String statisticName) {
-        return Collections.unmodifiableList(filters.get(statisticName));
+    public List<AdaptiveFilter<Long>> getFiltersByStatisticName( String statisticName ) {
+		 List<AdaptiveFilter<Long>> filterList = filters.get( statisticName );
+		 if( filterList != null)
+		 {
+		 		return Collections.unmodifiableList( filters.get(statisticName) );
+	 	 }else{
+			 	return Collections.unmodifiableList( new ArrayList<AdaptiveFilter<Long>>() );
+		 }
     }
 
     @Override
@@ -57,12 +64,15 @@ public class LongFilterModel implements FilterModel<Long> {
         AdaptiveFilter<Long> filter;
 
         switch (filterType) {
-            case BasicRLS:
-                filter = new BasicRLSFilter();
+            case BasicWLS:
+                filter = new BasicWLSFilter();
                 break;
             case BasicLMS:
                 filter = new BasicLMSFilter();
                 break;
+				case BasicRLS:
+					 filter = new BasicRLSFilter();
+					break;
             default:
                 throw new UnsupportedFilterException();
         }

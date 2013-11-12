@@ -135,7 +135,7 @@ public interface Statistic<Data>
 	}
 
     public enum AggregatedStatisticType{
-        Residual, Estimation, Measurement, Not_Aggregated
+        Residual, Estimation, Measurement, Variance, Not_Aggregated
     }
 
     public Statistic<Data> copyOf();
