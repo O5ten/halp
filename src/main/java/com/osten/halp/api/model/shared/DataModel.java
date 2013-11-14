@@ -19,6 +19,7 @@ public abstract class DataModel<Data>
 	public abstract void setData( List<Statistic<Data>> data);
     public abstract List<String> getStatisticNames();
     public abstract Statistic<Data> getDataByName( String name );
+    public abstract void resetModel();
 
 	public void printModel(  )
 	{

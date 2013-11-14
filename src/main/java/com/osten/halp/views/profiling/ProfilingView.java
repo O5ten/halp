@@ -1,6 +1,7 @@
 package com.osten.halp.views.profiling;
 
 import com.osten.halp.api.model.gui.PopulatableView;
+import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
@@ -63,9 +64,22 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 	{
 		getTabsSelectionModel().selectNext();
 
+        applyFilters();
+
 		parentView.rePopulateViews();
-		System.out.println( "(Not really) Applying filters" );
+		System.out.println( "Applying filters" );
 	}
+
+    public void applyFilters(){
+        for( Statistic<Long> statistic : getDataModel().getData() ){
+            for ( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( statistic.getName() ) ){
+                filter.adapt( statistic );
+                filter.printAggregatedData(); //TODO Remove when distributing
+
+
+            }
+        }
+    }
 
 	public SelectionModel getTabsSelectionModel()
 	{
@@ -158,7 +172,7 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 			if( !statisticTypeSelector.getItems().isEmpty() )
 			{
 				String name = getSelectedStatistic();
-				System.out.println( "Defining " + name + " to the statistic-type " + newType );
+				System.out.println("Defining " + name + " to the statistic-type " + newType);
 				getDataModel().getDataByName( name ).setType( newType );
 
 				if( adaptiveFilterList.getChildren().isEmpty() )

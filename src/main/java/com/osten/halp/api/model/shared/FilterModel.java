@@ -42,6 +42,10 @@ public interface FilterModel<Data> {
      */
     public List<AdaptiveFilter<Data>> getFiltersByStatisticName( String statisticName );
 
+    /**
+     * Clears out all the data.
+     */
+    public void resetModel();
 
     /**
      * Creates a new filter according to the type selected.

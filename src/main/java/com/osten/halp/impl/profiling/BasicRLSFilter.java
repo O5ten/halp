@@ -3,6 +3,7 @@ package com.osten.halp.impl.profiling;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.statistics.Statistic;
 
+import java.util.HashMap;
 import java.util.Properties;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Properties;
  * Time: 3:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicRLSFilter implements AdaptiveFilter<Long>
+public class BasicRLSFilter extends AdaptiveFilter<Long>
 {
 
 	FilterType filtertype;
@@ -39,25 +40,28 @@ public class BasicRLSFilter implements AdaptiveFilter<Long>
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	@Override
-	public Properties getParameters()
-	{
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
-	}
+    @Override
+    public HashMap<String, Number> getParameters() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
-	@Override
-	public void setParameters( Properties properties )
-	{
-		//To change body of implemented methods use File | Settings | File Templates.
-	}
+    @Override
+    public void setParameters(HashMap<String, Number> properties) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
-	@Override
+   	@Override
 	public FilterType getType()
 	{
 		return filtertype;
 	}
 
-	@Override
+    @Override
+    public void printAggregatedData() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
 	public Enum[] getEnums()
 	{
 		return new Enum[0];  //To change body of implemented methods use File | Settings | File Templates.

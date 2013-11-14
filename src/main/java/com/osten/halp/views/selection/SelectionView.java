@@ -75,6 +75,10 @@ public class SelectionView extends HBox implements Initializable {
         final LongDataCruncher data = new LongDataCruncher();
         final ObservableList<String> selection = selectionList.getSelectionModel().getSelectedItems();
 
+        parentWindow.getDataModel().getData().clear();
+        parentWindow.getFilterModel().resetModel();
+
+
         executor.submit(new Runnable() {
 
             @Override

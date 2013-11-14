@@ -27,6 +27,7 @@ public class LongFilterModel implements FilterModel<Long> {
 
     public LongFilterModel() {
         filters = new HashMap<String, List<AdaptiveFilter<Long>>>();
+        rules = new HashMap<String, List<StopRule<Long>>>();
     }
 
     @Override
@@ -57,6 +58,12 @@ public class LongFilterModel implements FilterModel<Long> {
 	 	 }else{
 			 	return Collections.unmodifiableList( new ArrayList<AdaptiveFilter<Long>>() );
 		 }
+    }
+
+    @Override
+    public void resetModel() {
+        this.filters.clear();
+        this.rules.clear();
     }
 
     @Override

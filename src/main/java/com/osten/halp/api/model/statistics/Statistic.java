@@ -61,6 +61,8 @@ public interface Statistic<Data>
 	 */
 	public String getName();
 
+    public void setName( String name );
+
 	public void setType( DataType dataType );
 
     public void setType ( AggregatedStatisticType dataType );

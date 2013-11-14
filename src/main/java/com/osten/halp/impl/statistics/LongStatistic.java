@@ -21,11 +21,12 @@ public class LongStatistic implements Statistic<Long>
 	private List<DataPoint<Long>> data;
     private AggregatedStatisticType aggregatedType;
 
+    public LongStatistic(){
+        this( "kastamattomat" );
+    }
+
     public LongStatistic( String name ){
-        this.name = name;
-        this.dataType = Statistic.DataType.Unknown;
-        this.data = new ArrayList<DataPoint<Long>>();
-        this.aggregatedType = AggregatedStatisticType.Not_Aggregated;
+        this( name, Statistic.DataType.Unknown);
     }
 
 	public LongStatistic( String name, DataType dataType ){
@@ -49,6 +50,7 @@ public class LongStatistic implements Statistic<Long>
         this.aggregatedType = statistic.getAggregatedType();
         this.dataType = statistic.getType();
     }
+
 
 
 	@Override
@@ -101,6 +103,11 @@ public class LongStatistic implements Statistic<Long>
     @Override
     public void setType(AggregatedStatisticType aggregatedType) {
         this.aggregatedType = aggregatedType;
+    }
+
+    @Override
+    public void setName(String name){
+        this.name = name;
     }
 
     @Override

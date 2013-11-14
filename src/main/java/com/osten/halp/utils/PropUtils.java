@@ -1,5 +1,7 @@
 package com.osten.halp.utils;
 
+import javafx.beans.property.Property;
+
 /**
  * Created with IntelliJ IDEA.
  * User: osten

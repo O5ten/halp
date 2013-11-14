@@ -5,6 +5,7 @@ import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongDataPoint;
 import com.osten.halp.impl.statistics.LongStatistic;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ import java.util.Properties;
  * Time: 11:33
  * To change this template use File | Settings | File Templates.
  */
-public class BasicLMSFilter implements AdaptiveFilter<Long> {
+public class BasicLMSFilter extends AdaptiveFilter<Long> {
 
     private Statistic<Long> estimates;
     private Statistic<Long> residuals;
@@ -37,8 +38,6 @@ public class BasicLMSFilter implements AdaptiveFilter<Long> {
         this.residuals = calculateResiduals();
         this.residuals.setType( Statistic.AggregatedStatisticType.Residual );
     }
-
-
 
     private LongStatistic performAlgorithm() {
         LongStatistic estimates = new LongStatistic(measurements.getName());
@@ -72,18 +71,24 @@ public class BasicLMSFilter implements AdaptiveFilter<Long> {
     }
 
     @Override
-    public Properties getParameters() {
+    public HashMap<String, Number> getParameters() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
-    public void setParameters(Properties properties) {
+    public void setParameters(HashMap<String, Number> properties) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
 
     @Override
     public FilterType getType() {
        return filterType;
+    }
+
+    @Override
+    public void printAggregatedData() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

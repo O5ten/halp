@@ -49,4 +49,9 @@ public class LongDataModel extends DataModel<Long>
         }
         throw new RuntimeException("Cannot find " + name + " among crunched data, this should not be possible because names of statistics do not change.");
     }
+
+    @Override
+    public void resetModel() {
+        crunchedData.clear();
+    }
 }
