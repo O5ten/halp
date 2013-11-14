@@ -20,7 +20,7 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
     /**
      * DEFAULTS
      */
-    private final int DEFAULT_WINDOW_SIZE = 5;
+    private final int DEFAULT_WINDOW_SIZE = 3;
 
     /*******************************
      * PROPERTIES OF THIS FILTER
@@ -45,6 +45,9 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
     public void adapt(Statistic<Long> measurements) {
         this.signal_measurements = measurements.copyOf();
         this.getMeasurements().setType(Statistic.AggregatedStatisticType.Measurement);
+        this.signal_estimates.setName( measurements.getName() );
+        this.signal_variance.setName( measurements.getName() );
+        this.residuals.setName( measurements.getName() );
         performAlgorithm();
     }
 

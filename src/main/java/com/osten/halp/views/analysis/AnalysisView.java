@@ -1,17 +1,23 @@
 package com.osten.halp.views.analysis;
 
 import com.osten.halp.api.model.gui.PopulatableView;
+import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.impl.statistics.LongStatistic;
 import com.osten.halp.utils.FXMLUtils;
 import com.osten.halp.views.main.MainWindowView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
@@ -30,6 +36,9 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 
 	MainWindowView parentView;
 
+    @FXML
+    ToggleButton filterButton;
+
 	@FXML
 	LineChart<Number,Number> lineChart;
 
@@ -40,10 +49,32 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 		FXMLUtils.load( this );
 	}
 
+    @FXML
+    public void handleFilterButton( ActionEvent actionEvent ){
+        if(filterButton.selectedProperty().get()){
+            for( Statistic<Long> data : getDataModel().getData() ){
+                for( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( data.getName() )){
+                    lineChart.getData().add( toSeries( filter.getEstimates() ) );
+                }
+            }
+        }else{
+            rebuildLineChart();
+        }
+    }
+
 	@Override
 	public void initialize( URL url, ResourceBundle resourceBundle )
 	{
-
+         filterButton.selectedProperty().addListener(new ChangeListener<Boolean>(){
+             @Override
+             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                 if(newValue){
+                     filterButton.setText( "Hide Filters" );
+                 }else{
+                     filterButton.setText( "Show Filters" );
+                 }
+             }
+         });
     }
 
 
