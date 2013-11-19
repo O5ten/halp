@@ -20,7 +20,7 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
     /**
      * DEFAULTS
      */
-    private final int DEFAULT_WINDOW_SIZE = 3;
+    private final int DEFAULT_WINDOW_SIZE = 4;
 
     /*******************************
      * PROPERTIES OF THIS FILTER
@@ -37,8 +37,8 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
         initialize( settings, FilterType.BasicWLS);
     }
 
-    public BasicWLSFilter(HashMap<String, Number> settings) {
-        initialize(settings, FilterType.BasicWLS);
+    public BasicWLSFilter(HashMap<String, Number> settings, FilterType type) {
+        initialize( settings, type);
     }
 
     @Override
@@ -50,6 +50,8 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
         this.residuals.setName( measurements.getName() );
         performAlgorithm();
     }
+
+
 
     /**
      * The implemented algorithm of this Filter.

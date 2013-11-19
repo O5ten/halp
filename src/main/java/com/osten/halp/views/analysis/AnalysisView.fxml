@@ -12,6 +12,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import java.net.URL?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ListView?>
 <fx:root type="javafx.scene.layout.HBox"
           xmlns:fx="http://javafx.com/fxml"
           styleClass="analysis-view, inner-view">
@@ -21,12 +22,20 @@
     </stylesheets>
     <VBox HBox.hgrow="ALWAYS" styleClass="line-chart-container" >
         <Label text="Analysis" styleClass="header" />
-        <LineChart fx:id="lineChart" VBox.vgrow="ALWAYS">
-            <xAxis><NumberAxis label="Time" tickUnit="1"/></xAxis>
-            <yAxis><NumberAxis label=""/></yAxis>
-        </LineChart>
+        <HBox spacing="10" VBox.vgrow="ALWAYS">
+            <LineChart fx:id="lineChart" animated="false" HBox.Hgrow="ALWAYS">
+                   <xAxis><NumberAxis label="Time" tickUnit="1"/></xAxis>
+                   <yAxis><NumberAxis label=""/></yAxis>
+            </LineChart>
+            <VBox HBox.hgrow="SOMETIMES" spacing="5">
+                <Label styleClass="sub-header" text="Data Series"/>
+                <VBox VBox.vgrow="ALWAYS" styleClass="statistic-selector" alignment="TOP_CENTER" spacing="5" fx:id="statisticSelector"/>
+                <Label styleClass="sub-header" text="Points of Interest"/>
+                <VBox VBox.vgrow="ALWAYS" styleClass="point-of-interest" alignment="TOP_CENTER" spacing="5" fx:id="pointsOfInterest"/>
+            </VBox>
+        </HBox>
         <HBox>
-            <ToggleButton fx:id="filterButton" text="Show Filters" onAction="#handleFilterButton"/>
+            <ToggleButton fx:id="filterButton" text="Display Filters" onAction="#handleFilterButton"/>
         </HBox>
     </VBox>
 

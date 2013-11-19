@@ -11,3 +11,12 @@
  	-fx-background-radius: 10;
  	-fx-padding: 5;
 }
+
+.statistic-selector{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}

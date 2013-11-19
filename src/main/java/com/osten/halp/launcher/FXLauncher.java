@@ -25,7 +25,7 @@ public class FXLauncher extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
-        stage.setTitle("HALP - Heuristic Algorithms for Lightweight Performancetesting");
+        stage.setTitle("HALP - Heuristic Analysis for Lazy Performancetesters");
         stage.setScene( new Scene(new MainWindowView(), 950, 700) );
         stage.show();
     }

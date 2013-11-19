@@ -6,9 +6,9 @@ import com.osten.halp.api.model.profiling.StopRule;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.BasicLMSFilter;
-import com.osten.halp.impl.profiling.BasicRLSFilter;
 import com.osten.halp.impl.profiling.BasicWLSFilter;
+import com.osten.halp.impl.profiling.LargeWindowWLSFilter;
+import com.osten.halp.impl.profiling.TinyWindowWLSFilter;
 
 import java.util.*;
 
@@ -40,6 +40,9 @@ public class LongFilterModel implements FilterModel<Long> {
     @Override
     public AdaptiveFilter<Long> getFilter(String statisticName, AdaptiveFilter.FilterType filterType) {
         AdaptiveFilter<Long> foundFilter = null;
+        if( filters.get(statisticName) == null ){
+            return foundFilter;
+        }
         for ( AdaptiveFilter<Long> filter : filters.get( statisticName ) ){
             if( filter.getType() == filterType){
                 foundFilter = filter;
@@ -54,9 +57,9 @@ public class LongFilterModel implements FilterModel<Long> {
 		 List<AdaptiveFilter<Long>> filterList = filters.get( statisticName );
 		 if( filterList != null)
 		 {
-		 		return Collections.unmodifiableList( filters.get(statisticName) );
+		 		return filters.get(statisticName);
 	 	 }else{
-			 	return Collections.unmodifiableList( new ArrayList<AdaptiveFilter<Long>>() );
+			 	return new ArrayList<AdaptiveFilter<Long>>();
 		 }
     }
 
@@ -74,12 +77,12 @@ public class LongFilterModel implements FilterModel<Long> {
             case BasicWLS:
                 filter = new BasicWLSFilter();
                 break;
-            case BasicLMS:
-                filter = new BasicLMSFilter();
+            case LargeWindowWLS:
+                filter = new LargeWindowWLSFilter();
                 break;
-				case BasicRLS:
-					 filter = new BasicRLSFilter();
-					break;
+            case TinyWindowWLS:
+                filter = new TinyWindowWLSFilter();
+                break;
             default:
                 throw new UnsupportedFilterException();
         }

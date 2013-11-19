@@ -36,6 +36,15 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
         this.getResiduals().setType(Statistic.AggregatedStatisticType.Residual);
         this.signal_variance = new LongStatistic();
         this.getVariance().setType(Statistic.AggregatedStatisticType.Variance);
+        this.signal_measurements = new LongStatistic();
+        this.signal_measurements.setType(Statistic.AggregatedStatisticType.Measurement);
+    }
+
+    public void reset(){
+        this.signal_estimates.getData().clear();
+        this.residuals.getData().clear();
+        this.signal_variance.getData().clear();
+        this.signal_measurements.getData().clear();
     }
 
     /**
@@ -139,6 +148,6 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public enum FilterType {
-        BasicLMS, BasicRLS, BasicWLS
+        TinyWindowWLS, LargeWindowWLS, BasicWLS
     }
 }

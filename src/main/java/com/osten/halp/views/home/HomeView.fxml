@@ -9,7 +9,7 @@
 <?import javafx.scene.web.WebView?>
 
 <fx:root type="javafx.scene.layout.HBox"
-         xmlns:fx="http://javafx.com/fxml" styleClass="start-view">
+         xmlns:fx="http://javafx.com/fxml" styleClass="start-view, inner-view">
     <stylesheets>
         <URL value="@../common-style.css"/>
         <URL value="@HomeView.css" />

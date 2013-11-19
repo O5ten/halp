@@ -160,10 +160,9 @@ public class SelectionView extends HBox implements Initializable {
                 public void run() {
                     ObservableList<String> observableHeaders = FXCollections.observableArrayList(headers);
                     selectionList.setItems(observableHeaders);
+                    selectionList.getSelectionModel().selectAll();
                 }
             });
-
-
         }
     }
 

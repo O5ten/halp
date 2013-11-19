@@ -73,10 +73,9 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
     public void applyFilters(){
         for( Statistic<Long> statistic : getDataModel().getData() ){
             for ( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( statistic.getName() ) ){
+                filter.reset();
                 filter.adapt( statistic );
-                filter.printAggregatedData(); //TODO Remove when distributing
-
-
+                filter.printAggregatedData(); //TODO Remove printout
             }
         }
     }
@@ -89,16 +88,20 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 	@Override
 	public void populate( DataModel<Long> dataModel, FilterModel<Long> filterModel, ProfileModel<Long> profileModel )
 	{
-
 		System.out.println( "ProfilingView Repopulated using: " );
-		dataModel.printModel();
+		dataModel.printModel(); //TODO Remove printout
 
 		statisticSelector.getItems().clear();
 		statisticTypeSelector.getItems().clear();
+        adaptiveFilterList.getChildren().clear();
 
 		statisticSelector.getItems().addAll( FXCollections.observableList( getDataModel().getStatisticNames() ) );
 		statisticSelector.getSelectionModel().selectFirst();
+
+        Statistic<Long> selectedStatistic = getDataModel().getDataByName( statisticSelector.getSelectionModel().getSelectedItem() );
+
 		statisticTypeSelector.getItems().addAll( Statistic.DataType.values() );
+        statisticTypeSelector.getSelectionModel().select( selectedStatistic.getType());
 	}
 
 	@Override
@@ -158,6 +161,13 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 				adaptiveFilterList.getChildren().clear();
 				Statistic.DataType type = getDataModel().getDataByName( selectedItem ).getType();
 				statisticTypeSelector.getSelectionModel().select( type );
+
+                SelectableFilterView filterView = new SelectableFilterView( ProfilingView.this );
+
+                for( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( selectedItem )  ){
+                    filterView.getFields().add( filterView.getFields().size() - 1, filterView.createFilterComboBox( filter.getType() ));
+                }
+
 				System.out.println( getSelectedStatistic().toString() + " of type " + type + " selected." );
 			}
 		}
@@ -165,7 +175,6 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 
 	private ChangeListener<Statistic.DataType> handleStatisticTypeSelected = new ChangeListener<Statistic.DataType>()
 	{
-
 		@Override
 		public void changed( ObservableValue<? extends Statistic.DataType> observableValue, Statistic.DataType oldType, Statistic.DataType newType )
 		{
@@ -182,6 +191,8 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 			}
 		}
 	};
+
+
 
 	private ChangeListener handleProfileSelected = new ChangeListener()
 	{

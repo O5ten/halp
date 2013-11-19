@@ -5,7 +5,7 @@
 
 .inner-view{
     -fx-background-color: -light-color,
-                          linear-gradient(from 50% 0% to 50% 100%, transparent 2%, #000000 ) ;
+                          linear-gradient(from 50% 0% to 50% 100%, transparent 2%, -light-color) ;
     -fx-background-radius: 3;
     -fx-border-color: -dark-color;
     -fx-border-width: 3 0 0 0;
