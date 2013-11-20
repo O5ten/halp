@@ -84,20 +84,26 @@ public class SelectableFilterView extends VBox {
     private void refreshOptionsInComboBoxes(List<AdaptiveFilter.FilterType> filterTypes) {
 
         for (ComboBox<AdaptiveFilter.FilterType> comboBox : listOfComboBoxes) {
-            AdaptiveFilter.FilterType filterType = comboBox.getSelectionModel().getSelectedItem();
+
+            AdaptiveFilter.FilterType selectedType = null;
+
+            selectedType = comboBox.getSelectionModel().getSelectedItem();
             comboBox.getItems().clear();
+            comboBox.getItems().add(selectedType);
+
             comboBox.getItems().addAll(filterTypes);
-            comboBox.getItems().add(filterType);
-            comboBox.getSelectionModel().select(filterType);
+            comboBox.getSelectionModel().clearSelection();
+            comboBox.getSelectionModel().select( selectedType );
         }
     }
 
     public ComboBox createFilterComboBox(AdaptiveFilter.FilterType selectedType) {
         final ComboBox<AdaptiveFilter.FilterType> box = new ComboBox();
         HBox.setHgrow(box, Priority.ALWAYS);
-        box.getItems().add(selectedType);
-        box.getSelectionModel().select(selectedType);
+
+        box.getSelectionModel().select(getFreeFilters().get(0));
         listOfComboBoxes.add(box);
+
         List<AdaptiveFilter.FilterType> filterTypes = getFreeFilters();
         box.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AdaptiveFilter.FilterType>() {
             @Override
