@@ -6,9 +6,10 @@ import com.osten.halp.api.model.profiling.StopRule;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.BasicWLSFilter;
-import com.osten.halp.impl.profiling.LargeWindowWLSFilter;
-import com.osten.halp.impl.profiling.TinyWindowWLSFilter;
+import com.osten.halp.impl.profiling.kalman.BasicKalmanFilter;
+import com.osten.halp.impl.profiling.wls.BasicWLSFilter;
+import com.osten.halp.impl.profiling.wls.LargeWindowWLSFilter;
+import com.osten.halp.impl.profiling.wls.TinyWindowWLSFilter;
 
 import java.util.*;
 
@@ -82,6 +83,9 @@ public class LongFilterModel implements FilterModel<Long> {
                 break;
             case TinyWindowWLS:
                 filter = new TinyWindowWLSFilter();
+                break;
+            case BasicKalman:
+                filter = new BasicKalmanFilter();
                 break;
             default:
                 throw new UnsupportedFilterException();

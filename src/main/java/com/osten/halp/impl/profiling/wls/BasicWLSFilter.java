@@ -1,10 +1,9 @@
-package com.osten.halp.impl.profiling;
+package com.osten.halp.impl.profiling.wls;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongDataPoint;
-import com.osten.halp.impl.statistics.LongStatistic;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -47,7 +46,7 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
         this.getMeasurements().setType(Statistic.AggregatedStatisticType.Measurement);
         this.signal_estimates.setName( measurements.getName() );
         this.signal_variance.setName( measurements.getName() );
-        this.residuals.setName( measurements.getName() );
+        this.signal_residuals.setName( measurements.getName() );
         performAlgorithm();
     }
 

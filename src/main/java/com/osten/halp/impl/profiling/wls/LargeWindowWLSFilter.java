@@ -1,4 +1,4 @@
-package com.osten.halp.impl.profiling;
+package com.osten.halp.impl.profiling.wls;
 
 import java.util.HashMap;
 

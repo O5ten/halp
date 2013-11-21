@@ -1,4 +1,4 @@
-package com.osten.halp.impl.profiling;
+package com.osten.halp.impl.profiling.relations;
 
 import com.osten.halp.api.model.profiling.Relation;
 

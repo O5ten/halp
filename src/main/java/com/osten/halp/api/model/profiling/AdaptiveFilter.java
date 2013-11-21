@@ -15,8 +15,8 @@ import java.util.HashMap;
  */
 public abstract class AdaptiveFilter<Data> implements Enumerable{
 
-    protected Statistic<Long> signal_estimates;     /* theta_hat of t */
-    protected Statistic<Long> residuals;            /* */
+    protected Statistic<Long> signal_estimates;
+    protected Statistic<Long> signal_residuals;
     protected Statistic<Long> signal_measurements;
     protected Statistic<Long> signal_variance;
 
@@ -32,7 +32,7 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
 
         this.signal_estimates = new LongStatistic();
         this.getEstimates().setType(Statistic.AggregatedStatisticType.Estimation);
-        this.residuals = new LongStatistic();
+        this.signal_residuals = new LongStatistic();
         this.getResiduals().setType(Statistic.AggregatedStatisticType.Residual);
         this.signal_variance = new LongStatistic();
         this.getVariance().setType(Statistic.AggregatedStatisticType.Variance);
@@ -42,7 +42,7 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
 
     public void reset(){
         this.signal_estimates.getData().clear();
-        this.residuals.getData().clear();
+        this.signal_residuals.getData().clear();
         this.signal_variance.getData().clear();
         this.signal_measurements.getData().clear();
     }
@@ -120,19 +120,12 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
         return AdaptiveFilter.FilterType.values();
     }
 
-    /**
-     * The N most recent samples are weighted depending on time away from estimation.
-     * By default its an inverse logarithmic function with a sum resulting in 1.
-     * The Relevance_factor is the level of decline of that logarithmic function as of
-     * Wk: [ 1/(2*F) ] where F is the distance from estimation position k for each value
-     * up to at the most the length of RECENT_SAMPLES.
-     */
     public Statistic<Long> getEstimates() {
         return signal_estimates;
     }
 
     public Statistic<Long> getResiduals() {
-        return residuals;
+        return signal_residuals;
     }
 
     public Statistic<Long> getMeasurements() {
@@ -148,6 +141,6 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public enum FilterType {
-        TinyWindowWLS, LargeWindowWLS, BasicWLS
+        TinyWindowWLS, LargeWindowWLS, BasicWLS, BasicKalman, NoisyKalman, StableKalman
     }
 }
