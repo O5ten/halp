@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class BasicKalmanFilter extends AdaptiveFilter<Long> {
 
     /* customizable, will make the filter converge faster or slower */
-    private final double DEFAULT_NOISE_VARIANCE = 0.05;
+    private final double DEFAULT_NOISE_VARIANCE = 0.02;
     private final double DEFAULT_INITIAL_ESTIMATE = 0;
     private final double DEFAULT_INITIAL_ERROR_COVARIANCE = 1;
 
