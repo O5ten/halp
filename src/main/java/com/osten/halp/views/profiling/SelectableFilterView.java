@@ -2,6 +2,7 @@ package com.osten.halp.views.profiling;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.shared.FilterModel;
+import com.osten.halp.api.model.statistics.Statistic;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -16,7 +17,6 @@ import javafx.scene.control.LabelBuilder;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,165 +26,199 @@ import java.util.List;
  * Time: 16:23
  * To change this template use File | Settings | File Templates.
  */
-public class SelectableFilterView extends VBox {
-    private ProfilingView parentView;
+public class SelectableFilterView extends VBox
+{
+	private ProfilingView parentView;
 
-    private List<ComboBox<AdaptiveFilter.FilterType>> listOfComboBoxes;
+	private List<ComboBox<AdaptiveFilter.FilterType>> listOfComboBoxes;
 
-    public SelectableFilterView(ProfilingView profilingView) {
-        this.parentView = profilingView;
-        this.listOfComboBoxes = new ArrayList<ComboBox<AdaptiveFilter.FilterType>>();
-        String statisticName = parentView.getSelectedStatistic();
-        getChildren().add(addButton());
+	private String selectedStatistic;
 
-        for (AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName(statisticName)) {
-            getChildren().addAll(createField(filter.getType()));
-        }
+	public SelectableFilterView( ProfilingView profilingView )
+	{
+		this.parentView = profilingView;
+		this.listOfComboBoxes = new ArrayList<ComboBox<AdaptiveFilter.FilterType>>();
+		selectedStatistic = parentView.getSelectedStatistic();
+		getChildren().add( addButton() );
 
-        this.setSpacing(4);
-        this.setPadding(new Insets(4, 4, 4, 4));
-        this.getStyleClass().add("selectable-filter-view");
-        VBox.setVgrow(this, Priority.ALWAYS);
+		List<AdaptiveFilter<Long>> filterList = getFilterModel().getFiltersByStatisticName( selectedStatistic );
 
-        System.out.println("Created SelectableFilterView");
-    }
+		for( AdaptiveFilter<Long> filter : filterList )
+		{
+			getChildren().addAll( createField( filter.getType() ) );
+		}
 
-    public ObservableList<Node> getFields() {
-        return getChildren();
-    }
+		this.setSpacing( 4 );
+		this.setPadding( new Insets( 4, 4, 4, 4 ) );
+		this.getStyleClass().add( "selectable-filter-view" );
+		VBox.setVgrow( this, Priority.ALWAYS );
 
-    private FilterModel<Long> getFilterModel() {
-        return parentView.getFilterModel();
-    }
+		System.out.println( "Created SelectableFilterView" );
+	}
 
-    private HBox addButton() {
-        return HBoxBuilder.create().spacing(4).children(
-                ButtonBuilder
-                        .create()
-                        .graphic(RegionBuilder
-                                .create()
-                                .styleClass("positive-graphic")
-                                .build()
-                        )
-                        .onAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                List<AdaptiveFilter.FilterType> filterTypes = getFreeFilters();
-                                if (filterTypes.size() > 0) {
-                                    getChildren().add(getChildren().size() - 1, createField());
-                                }
-                            }
-                        })
-                        .build(),
-                LabelBuilder.create().text("Add filter").build()
-        ).build();
+	public ObservableList<Node> getFields()
+	{
+		return getChildren();
+	}
 
-    }
+	private FilterModel<Long> getFilterModel()
+	{
+		return parentView.getFilterModel();
+	}
 
-    private void refreshOptionsInComboBoxes(List<AdaptiveFilter.FilterType> filterTypes) {
+	private HBox addButton()
+	{
+		return HBoxBuilder.create().spacing( 4 ).children(
+				ButtonBuilder
+						.create()
+						.graphic( RegionBuilder
+								.create()
+								.styleClass( "positive-graphic" )
+								.build()
+						)
+						.onAction( new EventHandler<ActionEvent>()
+						{
+							@Override
+							public void handle( ActionEvent actionEvent )
+							{
+								List<AdaptiveFilter.FilterType> filterTypes = getFreeFilters();
+								if( filterTypes.size() > 0 )
+								{
+									getChildren().add( getChildren().size() - 1, createField() );
+								}
+							}
+						} )
+						.build(),
+				LabelBuilder.create().text( "Add filter" ).build()
+		).build();
 
-        for (ComboBox<AdaptiveFilter.FilterType> comboBox : listOfComboBoxes) {
+	}
 
-            AdaptiveFilter.FilterType selectedType = null;
+	private void refreshOptionsInComboBoxes( List<AdaptiveFilter.FilterType> filterTypes )
+	{
 
-            selectedType = comboBox.getSelectionModel().getSelectedItem();
-            comboBox.getItems().clear();
-            comboBox.getItems().add(selectedType);
+		for( ComboBox<AdaptiveFilter.FilterType> comboBox : listOfComboBoxes )
+		{
 
-            comboBox.getItems().addAll(filterTypes);
-            comboBox.getSelectionModel().clearSelection();
-            comboBox.getSelectionModel().select( selectedType );
-        }
-    }
+			AdaptiveFilter.FilterType selectedType = null;
 
-    public ComboBox createFilterComboBox(AdaptiveFilter.FilterType selectedType) {
-        final ComboBox<AdaptiveFilter.FilterType> box = new ComboBox();
-        HBox.setHgrow(box, Priority.ALWAYS);
+			selectedType = comboBox.getSelectionModel().getSelectedItem();
+			comboBox.getItems().clear();
+			comboBox.getItems().add( selectedType );
 
-        box.getSelectionModel().select(getFreeFilters().get(0));
-        listOfComboBoxes.add(box);
+			comboBox.getItems().addAll( filterTypes );
+			comboBox.getSelectionModel().clearSelection();
+			comboBox.getSelectionModel().select( selectedType );
+		}
+	}
 
-        List<AdaptiveFilter.FilterType> filterTypes = getFreeFilters();
-        box.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AdaptiveFilter.FilterType>() {
-            @Override
-            public void changed(ObservableValue<? extends AdaptiveFilter.FilterType> observableValue, AdaptiveFilter.FilterType oldFilterType, AdaptiveFilter.FilterType newFilterType) {
-                if (newFilterType != null) {
-                    String statistic = parentView.getSelectedStatistic();
+	public ComboBox createFilterComboBox( AdaptiveFilter.FilterType selectedType )
+	{
+		final ComboBox<AdaptiveFilter.FilterType> box = new ComboBox();
+		HBox.setHgrow( box, Priority.ALWAYS );
 
-                    boolean noFiltersExistSoThereIsNothingToRemove = !getFilterModel().getFiltersByStatisticName(statistic).isEmpty();
+		if( getFilterModel().statisticHasFilter( selectedStatistic, selectedType )){
+			box.getSelectionModel().select( selectedType );
+		}else{
+			box.getSelectionModel().select( getFreeFilters().get( 0 ) );
+		}
 
-                    if (noFiltersExistSoThereIsNothingToRemove) {
-                        getFilterModel().removeFilter(statistic, oldFilterType);
-                    }
+		listOfComboBoxes.add( box );
 
-                    boolean filterDoesNotExistYet = getFilterModel().getFilter(statistic, newFilterType) == null;
-                    if (filterDoesNotExistYet) {
-                        getFilterModel().createFilter(statistic, newFilterType);
-                    }
-                }
-            }
-        });
-        refreshOptionsInComboBoxes(filterTypes);
-        return box;
-    }
+		List<AdaptiveFilter.FilterType> filterTypes = getFreeFilters();
+		box.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<AdaptiveFilter.FilterType>()
+		{
+			@Override
+			public void changed( ObservableValue<? extends AdaptiveFilter.FilterType> observableValue, AdaptiveFilter.FilterType oldFilterType, AdaptiveFilter.FilterType newFilterType )
+			{
+				if( newFilterType != null )
+				{
+					String statistic = parentView.getSelectedStatistic();
 
-    private List<AdaptiveFilter.FilterType> getFreeFilters() {
+					boolean noFiltersExistSoThereIsNothingToRemove = !getFilterModel().getFiltersByStatisticName( statistic ).isEmpty();
 
-        List<AdaptiveFilter.FilterType> freeFilters = new ArrayList();
+					if( noFiltersExistSoThereIsNothingToRemove )
+					{
+						getFilterModel().removeFilter( statistic, oldFilterType );
+					}
 
-        for (AdaptiveFilter.FilterType type : AdaptiveFilter.FilterType.values()) {
-            freeFilters.add(type);
-        }
+					boolean filterDoesNotExistYet = getFilterModel().getFilter( statistic, newFilterType ) == null;
+					if( filterDoesNotExistYet )
+					{
+						getFilterModel().createFilter( statistic, newFilterType );
+					}
+				}
+			}
+		} );
+		refreshOptionsInComboBoxes( filterTypes );
+		return box;
+	}
 
-        for (ComboBox<AdaptiveFilter.FilterType> box : listOfComboBoxes) {
-            freeFilters.remove(box.getSelectionModel().getSelectedItem());
-        }
+	private List<AdaptiveFilter.FilterType> getFreeFilters()
+	{
 
-        return freeFilters;
-    }
+		List<AdaptiveFilter.FilterType> freeFilters = new ArrayList();
 
-    private Button negativeButton(final ComboBox<AdaptiveFilter.FilterType> comboBox) {
-        return ButtonBuilder
-                .create()
-                .styleClass()
-                .onAction(new javafx.event.EventHandler<javafx.event.ActionEvent>() {
-                    @Override
-                    public void handle(javafx.event.ActionEvent actionEvent) {
-                        getChildren().remove(((Button) actionEvent.getSource()).getParent());
-                        getFilterModel().removeFilter(parentView.getSelectedStatistic(), comboBox.getSelectionModel().getSelectedItem());
-                        listOfComboBoxes.remove(comboBox);
-                        refreshOptionsInComboBoxes( getFreeFilters() );
-                    }
-                })
-                .graphic(
-                        RegionBuilder.create().styleClass("negative-graphic").build()
-                )
-                .build();
-    }
+		for( AdaptiveFilter.FilterType type : AdaptiveFilter.FilterType.values() )
+		{
+			freeFilters.add( type );
+		}
 
-    public HBox createField(AdaptiveFilter.FilterType selectedType) {
-        ComboBox<AdaptiveFilter.FilterType> comboBox = createFilterComboBox(selectedType);
+		for( ComboBox<AdaptiveFilter.FilterType> box : listOfComboBoxes )
+		{
+			freeFilters.remove( box.getSelectionModel().getSelectedItem() );
+		}
 
-        return HBoxBuilder
-                .create()
-                .spacing(4)
-                .children(
-                        negativeButton(comboBox),
-                        comboBox
-                )
-                .build();
-    }
+		return freeFilters;
+	}
 
-    private HBox createField() {
-        ComboBox<AdaptiveFilter.FilterType> comboBox = createFilterComboBox(AdaptiveFilter.FilterType.values()[0]);
+	private Button negativeButton( final ComboBox<AdaptiveFilter.FilterType> comboBox )
+	{
+		return ButtonBuilder
+				.create()
+				.styleClass()
+				.onAction( new javafx.event.EventHandler<javafx.event.ActionEvent>()
+				{
+					@Override
+					public void handle( javafx.event.ActionEvent actionEvent )
+					{
+						getChildren().remove( ( ( Button )actionEvent.getSource() ).getParent() );
+						getFilterModel().removeFilter( parentView.getSelectedStatistic(), comboBox.getSelectionModel().getSelectedItem() );
+						listOfComboBoxes.remove( comboBox );
+						refreshOptionsInComboBoxes( getFreeFilters() );
+					}
+				} )
+				.graphic(
+						RegionBuilder.create().styleClass( "negative-graphic" ).build()
+				)
+				.build();
+	}
 
-        return HBoxBuilder
-                .create()
-                .spacing(4)
-                .children(
-                        negativeButton(comboBox),
-                        comboBox
-                )
-                .build();
-    }
+	public HBox createField( AdaptiveFilter.FilterType selectedType )
+	{
+		ComboBox<AdaptiveFilter.FilterType> comboBox = createFilterComboBox( selectedType );
+
+		return HBoxBuilder
+				.create()
+				.spacing( 4 )
+				.children(
+						negativeButton( comboBox ),
+						comboBox
+				)
+				.build();
+	}
+
+	private HBox createField()
+	{
+		ComboBox<AdaptiveFilter.FilterType> comboBox = createFilterComboBox( AdaptiveFilter.FilterType.values()[0] );
+
+		return HBoxBuilder
+				.create()
+				.spacing( 4 )
+				.children(
+						negativeButton( comboBox ),
+						comboBox
+				)
+				.build();
+	}
 }

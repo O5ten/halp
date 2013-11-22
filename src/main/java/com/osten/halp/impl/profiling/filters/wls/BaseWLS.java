@@ -1,4 +1,4 @@
-package com.osten.halp.impl.profiling.wls;
+package com.osten.halp.impl.profiling.filters.wls;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.statistics.DataPoint;
@@ -15,11 +15,11 @@ import java.util.HashMap;
  * Time: 14:03
  * To change this template use File | Settings | File Templates.
  */
-public class BasicWLSFilter extends AdaptiveFilter<Long> {
+public class BaseWLS extends AdaptiveFilter<Long> {
     /**
      * DEFAULTS
      */
-    private final int DEFAULT_WINDOW_SIZE = 4;
+    private final int DEFAULT_WINDOW_SIZE = 5;
 
     /*******************************
      * PROPERTIES OF THIS FILTER
@@ -30,13 +30,13 @@ public class BasicWLSFilter extends AdaptiveFilter<Long> {
      */
     public static final String WINDOW_SIZE_PROPERTY = "WINDOW_SIZE_PROPERTY";
 
-    public BasicWLSFilter() {
+    public BaseWLS() {
         HashMap<String, Number> settings = new HashMap<String, Number>();
         settings.put(WINDOW_SIZE_PROPERTY, DEFAULT_WINDOW_SIZE);
-        initialize( settings, FilterType.BasicWLS);
+        initialize( settings, FilterType.BaseWLS );
     }
 
-    public BasicWLSFilter(HashMap<String, Number> settings, FilterType type) {
+    public BaseWLS( HashMap<String, Number> settings, FilterType type ) {
         initialize( settings, type);
     }
 

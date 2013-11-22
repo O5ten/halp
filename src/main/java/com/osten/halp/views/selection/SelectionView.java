@@ -93,7 +93,10 @@ public class SelectionView extends HBox implements Initializable {
 
                         @Override
                         public void run() {
-                            parentWindow.getDataModel().setData(compiledData);
+                            parentWindow.getFilterModel().resetModel();
+									 parentWindow.getDataModel().resetModel();
+									 parentWindow.getProfileModel().resetModel();
+									 parentWindow.getDataModel().setData(compiledData);
                             parentWindow.rePopulateViews();
                             getTabsSelectionModel().selectNext();
                         }

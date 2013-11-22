@@ -4,12 +4,11 @@ import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.profiling.StopRule;
 import com.osten.halp.api.model.shared.FilterModel;
-import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.kalman.BasicKalmanFilter;
-import com.osten.halp.impl.profiling.wls.BasicWLSFilter;
-import com.osten.halp.impl.profiling.wls.LargeWindowWLSFilter;
-import com.osten.halp.impl.profiling.wls.TinyWindowWLSFilter;
+import com.osten.halp.impl.profiling.filters.kalman.Kalman;
+import com.osten.halp.impl.profiling.filters.wls.BaseWLS;
+import com.osten.halp.impl.profiling.filters.wls.FastWLS;
+import com.osten.halp.impl.profiling.filters.wls.SlowWLS;
 
 import java.util.*;
 
@@ -29,13 +28,6 @@ public class LongFilterModel implements FilterModel<Long> {
     public LongFilterModel() {
         filters = new HashMap<String, List<AdaptiveFilter<Long>>>();
         rules = new HashMap<String, List<StopRule<Long>>>();
-    }
-
-    @Override
-    public void adapt(String name, Statistic<Long> measurements) {
-        for (AdaptiveFilter<Long> filter : filters.get(name)) {
-           filter.adapt( measurements );
-        }
     }
 
     @Override
@@ -64,6 +56,8 @@ public class LongFilterModel implements FilterModel<Long> {
 		 }
     }
 
+
+
     @Override
     public void resetModel() {
         this.filters.clear();
@@ -75,17 +69,17 @@ public class LongFilterModel implements FilterModel<Long> {
         AdaptiveFilter<Long> filter;
 
         switch (filterType) {
-            case BasicWLS:
-                filter = new BasicWLSFilter();
+            case BaseWLS:
+                filter = new BaseWLS();
                 break;
-            case LargeWindowWLS:
-                filter = new LargeWindowWLSFilter();
+            case SlowWLS:
+                filter = new SlowWLS();
                 break;
-            case TinyWindowWLS:
-                filter = new TinyWindowWLSFilter();
+            case FastWLS:
+                filter = new FastWLS();
                 break;
-            case BasicKalman:
-                filter = new BasicKalmanFilter();
+            case Kalman:
+                filter = new Kalman();
                 break;
             default:
                 throw new UnsupportedFilterException();
@@ -102,7 +96,13 @@ public class LongFilterModel implements FilterModel<Long> {
         }
     }
 
-    @Override
+	@Override
+	public boolean statisticHasFilter( String statisticName, AdaptiveFilter.FilterType type )
+	{
+		return getFilter( statisticName, type ) != null;
+	}
+
+	@Override
     public void removeFilter(String statisticName, AdaptiveFilter.FilterType type) {
         AdaptiveFilter<Long> filterToRemove = null;
 
