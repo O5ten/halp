@@ -2,6 +2,7 @@ package com.osten.halp.api.model.profiling;
 
 import com.osten.halp.api.model.statistics.Statistic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -17,12 +18,19 @@ public abstract class ChangeDetector<Data> implements Enumerable{
 
     private List<Detection<Data>> detections;
     private HashMap<String, Number> settings;
+    private DetectorType type;
 
     /**
      * The central method that each type of ChangeDetector-implementation MUST implement.
      * @param filter
      */
     public abstract void detect( AdaptiveFilter<Data> filter );
+
+    public void initialize( HashMap<String, Number> settings ){
+
+        detections = new ArrayList<Detection<Data>>();
+        setSettings( settings );
+    }
 
     public List<Detection<Data>> getDetections(){
         return detections;
@@ -36,13 +44,23 @@ public abstract class ChangeDetector<Data> implements Enumerable{
         this.settings = settings;
     }
 
+    public Number getSetting(String settingKey){
+        return this.settings.get( settingKey );
+    }
+
+    public DetectorType getType(){
+        return type;
+    }
+
+    public void setType(DetectorType type ){
+        this.type = type;
+    }
+
     public Enum[] getEnums(){
         return DetectorType.values();
     }
 
-    private enum DetectorType{
-        GLR, CUSUM, SPRT,
+    public enum DetectorType{
+        CUSUM, SPRT,
     }
-
-
 }

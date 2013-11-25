@@ -8,6 +8,7 @@ package com.osten.halp.api.model.profiling;
  * To change this template use File | Settings | File Templates.
  */
 public class Detection<Data> {
+
     private Data discretePointInTime;
     private Data magnitude;
 

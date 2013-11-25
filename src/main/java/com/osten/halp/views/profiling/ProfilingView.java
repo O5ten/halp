@@ -3,6 +3,7 @@ package com.osten.halp.views.profiling;
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.Statistic;
@@ -115,6 +116,10 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 	{
 		return parentView.getFilterModel();
 	}
+
+    public DetectorModel<Long> getDetectorModel(){
+        return parentView.getDetectorModel();
+    }
 
 	@Override
 	public ProfileModel<Long> getProfileModel()

@@ -2,9 +2,11 @@ package com.osten.halp.views.main;
 
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.impl.shared.LongDataModel;
+import com.osten.halp.impl.shared.LongDetectorModel;
 import com.osten.halp.impl.shared.LongFilterModel;
 import com.osten.halp.impl.shared.LongProfileModel;
 import com.osten.halp.views.analysis.AnalysisView;
@@ -61,6 +63,7 @@ public class MainWindowView extends BorderPane {
     //Domain
     private DataModel<Long> dataModel;
     private FilterModel<Long> filterModel;
+    private DetectorModel<Long> detectorModel;
     private ProfileModel<Long> profileModel;
 
     public DataModel<Long> getDataModel() {
@@ -75,9 +78,13 @@ public class MainWindowView extends BorderPane {
         return profileModel;
     }
 
+    public DetectorModel<Long> getDetectorModel(){
+        return detectorModel;
+    }
+
     public void rePopulateViews() {
         for (PopulatableView p : popViews) {
-            p.populate(dataModel, filterModel, profileModel);
+            p.populate(dataModel, filterModel, detectorModel, profileModel);
         }
     }
 
@@ -131,6 +138,7 @@ public class MainWindowView extends BorderPane {
         dataModel = new LongDataModel();
         filterModel = new LongFilterModel();
         profileModel = new LongProfileModel();
+        detectorModel = new LongDetectorModel();
     }
 
     public ExecutorService getExecutor() {

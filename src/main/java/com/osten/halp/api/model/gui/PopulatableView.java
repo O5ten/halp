@@ -1,6 +1,7 @@
 package com.osten.halp.api.model.gui;
 
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 
@@ -13,7 +14,7 @@ import com.osten.halp.api.model.shared.ProfileModel;
  */
 public interface PopulatableView<Type>
 {
-	public void populate( DataModel<Type> properties, FilterModel<Type> filterModel, ProfileModel<Type> profileModel);
+	public void populate( DataModel<Type> properties, FilterModel<Type> filterModel, DetectorModel<Type> detectorModel, ProfileModel<Type> profileModel );
 	public DataModel<Type> getDataModel();
     public FilterModel<Type> getFilterModel();
     public ProfileModel<Type> getProfileModel();

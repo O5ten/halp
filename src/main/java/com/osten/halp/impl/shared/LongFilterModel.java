@@ -2,14 +2,13 @@ package com.osten.halp.impl.shared;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
-import com.osten.halp.api.model.profiling.StopRule;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.kalman.BasicKalmanFilter;
-import com.osten.halp.impl.profiling.wls.BasicWLSFilter;
-import com.osten.halp.impl.profiling.wls.LargeWindowWLSFilter;
-import com.osten.halp.impl.profiling.wls.TinyWindowWLSFilter;
+import com.osten.halp.impl.profiling.filter.kalman.BasicKalmanFilter;
+import com.osten.halp.impl.profiling.filter.wls.BasicWLSFilter;
+import com.osten.halp.impl.profiling.filter.wls.LargeWindowWLSFilter;
+import com.osten.halp.impl.profiling.filter.wls.TinyWindowWLSFilter;
 
 import java.util.*;
 
@@ -23,12 +22,9 @@ import java.util.*;
 public class LongFilterModel implements FilterModel<Long> {
 
     Map<String, List<AdaptiveFilter<Long>>> filters;
-    Map<String, List<StopRule<Long>>> rules;
-    Map<String, List<ChangeDetector<Long>>> detectors;
 
     public LongFilterModel() {
         filters = new HashMap<String, List<AdaptiveFilter<Long>>>();
-        rules = new HashMap<String, List<StopRule<Long>>>();
     }
 
     @Override
@@ -58,16 +54,15 @@ public class LongFilterModel implements FilterModel<Long> {
 		 List<AdaptiveFilter<Long>> filterList = filters.get( statisticName );
 		 if( filterList != null)
 		 {
-		 		return filters.get(statisticName);
+		 	 return filters.get(statisticName);
 	 	 }else{
-			 	return new ArrayList<AdaptiveFilter<Long>>();
+			 return new ArrayList<AdaptiveFilter<Long>>();
 		 }
     }
 
     @Override
     public void resetModel() {
         this.filters.clear();
-        this.rules.clear();
     }
 
     @Override
