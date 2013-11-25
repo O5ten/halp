@@ -31,6 +31,8 @@ public interface ProfileModel<Data> {
      */
     public AdaptiveFilter<Data> getFilterByProfile( ProfileModel.Profile profile, Statistic.DataType dataType);
 
+	 public void resetModel();
+
     public static enum Profile {
         Custom, Soak, Load, Baseline, Stress, Peak
     }

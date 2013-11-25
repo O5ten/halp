@@ -1,4 +1,4 @@
-package com.osten.halp.impl.profiling.filter.wls;
+package com.osten.halp.impl.profiling.filters.wls;
 
 import java.util.HashMap;
 
@@ -9,13 +9,14 @@ import java.util.HashMap;
  * Time: 16:01
  * To change this template use File | Settings | File Templates.
  */
-public class TinyWindowWLSFilter extends BasicWLSFilter {
+public class FastWLS extends BaseWLS
+{
 
-    private final static int TINY_WINDOW_SIZE = 2;
+    private final static int TINY_WINDOW_SIZE = 3;
 
-    public TinyWindowWLSFilter(){
+    public FastWLS(){
         HashMap<String, Number> settings = new HashMap<String, Number>();
         settings.put(WINDOW_SIZE_PROPERTY, TINY_WINDOW_SIZE);
-        initialize( settings, FilterType.TinyWindowWLS);
+        initialize( settings, FilterType.FastWLS );
     }
 }

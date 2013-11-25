@@ -9,6 +9,7 @@ import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.utils.FXMLUtils;
 import com.osten.halp.views.main.MainWindowView;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -65,21 +66,32 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 	{
 		getTabsSelectionModel().selectNext();
 
-        applyFilters();
-
-		parentView.rePopulateViews();
 		System.out.println( "Applying filters" );
+		Platform.runLater( new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				applyFilters();
+				parentView.rePopulateViews();
+			}
+		} );
 	}
 
-    public void applyFilters(){
-        for( Statistic<Long> statistic : getDataModel().getData() ){
-            for ( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( statistic.getName() ) ){
-                filter.reset();
-                filter.adapt( statistic );
-                filter.printAggregatedData(); //TODO Remove printout
-            }
-        }
-    }
+	public void applyFilters()
+	{
+
+		for( Statistic<Long> statistic : getDataModel().getData() )
+		{
+			for( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( statistic.getName() ) )
+			{
+				filter.reset();
+				filter.adapt( statistic );
+				filter.printAggregatedData(); //TODO Remove printout
+			}
+		}
+	}
 
 	public SelectionModel getTabsSelectionModel()
 	{
@@ -94,15 +106,15 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 
 		statisticSelector.getItems().clear();
 		statisticTypeSelector.getItems().clear();
-        adaptiveFilterList.getChildren().clear();
+		adaptiveFilterList.getChildren().clear();
 
 		statisticSelector.getItems().addAll( FXCollections.observableList( getDataModel().getStatisticNames() ) );
 		statisticSelector.getSelectionModel().selectFirst();
 
-        Statistic<Long> selectedStatistic = getDataModel().getDataByName( statisticSelector.getSelectionModel().getSelectedItem() );
+		Statistic<Long> selectedStatistic = getDataModel().getDataByName( statisticSelector.getSelectionModel().getSelectedItem() );
 
 		statisticTypeSelector.getItems().addAll( Statistic.DataType.values() );
-        statisticTypeSelector.getSelectionModel().select( selectedStatistic.getType());
+		statisticTypeSelector.getSelectionModel().select( selectedStatistic.getType() );
 	}
 
 	@Override
@@ -166,12 +178,12 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 				adaptiveFilterList.getChildren().clear();
 				Statistic.DataType type = getDataModel().getDataByName( selectedItem ).getType();
 				statisticTypeSelector.getSelectionModel().select( type );
+				SelectableFilterView filterView = new SelectableFilterView( ProfilingView.this );
 
-                SelectableFilterView filterView = new SelectableFilterView( ProfilingView.this );
-
-                for( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( selectedItem )  ){
-                    filterView.getFields().add( filterView.getFields().size() - 1, filterView.createFilterComboBox( filter.getType() ));
-                }
+				for( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( selectedItem ) )
+				{
+					filterView.getFields().add( filterView.getFields().size() - 1, filterView.createFilterComboBox( filter.getType() ) );
+				}
 
 				System.out.println( getSelectedStatistic().toString() + " of type " + type + " selected." );
 			}
@@ -186,7 +198,7 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 			if( !statisticTypeSelector.getItems().isEmpty() )
 			{
 				String name = getSelectedStatistic();
-				System.out.println("Defining " + name + " to the statistic-type " + newType);
+				System.out.println( "Defining " + name + " to the statistic-type " + newType );
 				getDataModel().getDataByName( name ).setType( newType );
 
 				if( adaptiveFilterList.getChildren().isEmpty() )
@@ -196,7 +208,6 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 			}
 		}
 	};
-
 
 
 	private ChangeListener handleProfileSelected = new ChangeListener()

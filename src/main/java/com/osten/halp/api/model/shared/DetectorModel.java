@@ -27,6 +27,6 @@ public interface DetectorModel<Data> {
 
     public void createDetector( String statisticName, ChangeDetector.DetectorType type );
 
-    public void removeFilter( String statisticName, ChangeDetector.DetectorType type );
+    public void removeDetector(String statisticName, ChangeDetector.DetectorType type);
 
 }

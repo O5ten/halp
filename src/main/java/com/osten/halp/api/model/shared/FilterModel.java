@@ -15,23 +15,13 @@ import java.util.Map;
  */
 public interface FilterModel<Data> {
 
-    /**
-     * Adapt performs the rough calculation needed for a statistic to turn into a filter, an estimation and a residual.
-     * This should _NOT_ run in an interface-thread.
-     *
-     * @param name        What it this filter called
-     * @param actualValue
-     * @return Returns a map of the margins of error between actualValue and Estimation, the key is the name of the filter.
-     */
-    public void adapt(String name, Statistic<Data> actualValue);
-
-    /**
-     * Returns the specific filter that a statisticname holds.
-     *
-     * @param filterType the name of the statistic owning the filter.
-     * @param statisticName the name of the statistic holding the filters.
-     * @return the Filter
-     */
+            /**
+         * Returns the specific filter that a statisticname holds.
+         *
+         * @param filterType the name of the statistic owning the filter.
+         * @param statisticName the name of the statistic holding the filters.
+         * @return the Filter
+         */
     public AdaptiveFilter<Data> getFilter(String statisticName, AdaptiveFilter.FilterType filterType);
 
     /**
@@ -54,6 +44,12 @@ public interface FilterModel<Data> {
      * @param type
      */
     public void createFilter( String statisticName, AdaptiveFilter.FilterType type );
+
+	/**
+	 * Does a statistic have the filter-type already.
+	 * @return true or false.
+	 */
+	public boolean statisticHasFilter( String statisticName, AdaptiveFilter.FilterType type);
 
     /**
      * Removes an old filter according to the type deselected.

@@ -141,6 +141,6 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public enum FilterType {
-        TinyWindowWLS, LargeWindowWLS, BasicWLS, BasicKalman, NoisyKalman, StableKalman
+		 FastWLS, SlowWLS, BaseWLS, Kalman
     }
 }

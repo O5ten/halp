@@ -1,6 +1,5 @@
 package com.osten.halp.views.profiling;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,17 +26,17 @@ import java.util.List;
  */
 public class SelectableDetectorView extends SelectableView{
 
-    private List<ComboBox<AdaptiveFilter.FilterType>> listOfComboBoxes;
+    private List<ComboBox<ChangeDetector.DetectorType>> listOfComboBoxes;
 
     public SelectableDetectorView(ProfilingView parent) {
         super(parent);
 
-        this.listOfComboBoxes = new ArrayList<ComboBox<AdaptiveFilter.FilterType>>();
+        this.listOfComboBoxes = new ArrayList<ComboBox<ChangeDetector.DetectorType>>();
         String statisticName = parentView.getSelectedStatistic();
         getChildren().add(addButton());
 
-        for (ChangeDetector<Long> filter : getDetectorModel().getDetectorsByStatistic(statisticName)) {
-            getChildren().addAll(createField(filter.getType()));
+        for (ChangeDetector<Long> detector : getDetectorModel().getDetectorsByStatistic(statisticName)) {
+            getChildren().addAll(createField(detector.getType()));
         }
     }
 
@@ -53,78 +52,78 @@ public class SelectableDetectorView extends SelectableView{
                         .onAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                List<AdaptiveFilter.FilterType> filterTypes = getFreeFilters();
-                                if (filterTypes.size() > 0) {
+                                List<ChangeDetector.DetectorType> detectorTypes = getFreeDetectors();
+                                if (detectorTypes.size() > 0) {
                                     getChildren().add(getChildren().size() - 1, createField());
                                 }
                             }
                         })
                         .build(),
-                LabelBuilder.create().text("Add filter").build()
+                LabelBuilder.create().text("Add Detector").build()
         ).build();
 
     }
 
-    private void refreshOptionsInComboBoxes(List<AdaptiveFilter.FilterType> filterTypes) {
+    private void refreshOptionsInComboBoxes(List<ChangeDetector.DetectorType> detectorTypes) {
 
-        for (ComboBox<AdaptiveFilter.FilterType> comboBox : listOfComboBoxes) {
+        for (ComboBox<ChangeDetector.DetectorType> comboBox : listOfComboBoxes) {
 
-            AdaptiveFilter.FilterType selectedType = null;
+            ChangeDetector.DetectorType selectedType = null;
 
             selectedType = comboBox.getSelectionModel().getSelectedItem();
             comboBox.getItems().clear();
             comboBox.getItems().add(selectedType);
 
-            comboBox.getItems().addAll(filterTypes);
+            comboBox.getItems().addAll(detectorTypes);
             comboBox.getSelectionModel().clearSelection();
             comboBox.getSelectionModel().select( selectedType );
         }
     }
 
-    public ComboBox createFilterComboBox(ChangeDetector.DetectorType selectedType) {
+    public ComboBox createDetectorCombobox(ChangeDetector.DetectorType selectedType) {
         final ComboBox<ChangeDetector.DetectorType> box = new ComboBox();
         HBox.setHgrow(box, Priority.ALWAYS);
 
-        box.getSelectionModel().select(getFreeFilters().get(0));
+        box.getSelectionModel().select(getFreeDetectors().get(0));
         listOfComboBoxes.add(box);
 
-        List<ChangeDetector.DetectorType> filterTypes = getFreeFilters();
-        box.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AdaptiveFilter.FilterType>() {
+        List<ChangeDetector.DetectorType> detectorTypes = getFreeDetectors();
+        box.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ChangeDetector.DetectorType>() {
             @Override
-            public void changed(ObservableValue<? extends AdaptiveFilter.FilterType> observableValue, AdaptiveFilter.FilterType oldFilterType, AdaptiveFilter.FilterType newFilterType) {
-                if (newFilterType != null) {
+            public void changed(ObservableValue<? extends ChangeDetector.DetectorType> observableValue, ChangeDetector.DetectorType oldDetectorType, ChangeDetector.DetectorType newDetectorType) {
+                if (newDetectorType != null) {
                     String statistic = parentView.getSelectedStatistic();
 
-                    boolean noFiltersExistSoThereIsNothingToRemove = !getFilterModel().getFiltersByStatisticName(statistic).isEmpty();
+                    boolean noDetectorsExistSoThereIsNothingToRemove = !getDetectorModel().getDetectorsByStatistic(statistic).isEmpty();
 
-                    if (noFiltersExistSoThereIsNothingToRemove) {
-                        getFilterModel().removeFilter(statistic, oldFilterType);
+                    if (noDetectorsExistSoThereIsNothingToRemove) {
+                        getDetectorModel().removeDetector(statistic, oldDetectorType);
                     }
 
-                    boolean filterDoesNotExistYet = getFilterModel().getFilter(statistic, newFilterType) == null;
-                    if (filterDoesNotExistYet) {
-                        getFilterModel().createFilter(statistic, newFilterType);
+                    boolean detectorDoesNotExistYet = getDetectorModel().getDetector(statistic, newDetectorType) == null;
+                    if (detectorDoesNotExistYet) {
+                        getDetectorModel().createDetector(statistic, newDetectorType);
                     }
                 }
             }
         });
-        refreshOptionsInComboBoxes(filterTypes);
+        refreshOptionsInComboBoxes(detectorTypes);
         return box;
     }
 
-    private List<ChangeDetector.DetectorType> getFreeFilters() {
+    private List<ChangeDetector.DetectorType> getFreeDetectors() {
 
-        List<ChangeDetector.DetectorType> freeFilters = new ArrayList();
+        List<ChangeDetector.DetectorType> freeDetectors = new ArrayList();
 
         for (ChangeDetector.DetectorType type : ChangeDetector.DetectorType.values()) {
-            freeFilters.add(type);
+            freeDetectors.add(type);
         }
 
-        for (ComboBox<AdaptiveFilter.FilterType> box : listOfComboBoxes) {
-            freeFilters.remove(box.getSelectionModel().getSelectedItem());
+        for (ComboBox<ChangeDetector.DetectorType> box : listOfComboBoxes) {
+            freeDetectors.remove(box.getSelectionModel().getSelectedItem());
         }
 
-        return freeFilters;
+        return freeDetectors;
     }
 
     private Button negativeButton(final ComboBox<ChangeDetector.DetectorType> comboBox) {
@@ -135,9 +134,9 @@ public class SelectableDetectorView extends SelectableView{
                     @Override
                     public void handle(javafx.event.ActionEvent actionEvent) {
                         getChildren().remove(((Button) actionEvent.getSource()).getParent());
-                        getDetectorModel().removeFilter(parentView.getSelectedStatistic(), comboBox.getSelectionModel().getSelectedItem());
+                        getDetectorModel().removeDetector(parentView.getSelectedStatistic(), comboBox.getSelectionModel().getSelectedItem());
                         listOfComboBoxes.remove(comboBox);
-                        refreshOptionsInComboBoxes( getFreeFilters() );
+                        refreshOptionsInComboBoxes( getFreeDetectors() );
                     }
                 })
                 .graphic(
@@ -147,7 +146,7 @@ public class SelectableDetectorView extends SelectableView{
     }
 
     public HBox createField(ChangeDetector.DetectorType selectedType) {
-        ComboBox<ChangeDetector.DetectorType> comboBox = createFilterComboBox(selectedType);
+        ComboBox<ChangeDetector.DetectorType> comboBox = createDetectorCombobox(selectedType);
 
         return HBoxBuilder
                 .create()
@@ -160,7 +159,7 @@ public class SelectableDetectorView extends SelectableView{
     }
 
     private HBox createField() {
-        ComboBox<ChangeDetector.DetectorType> comboBox = createFilterComboBox(ChangeDetector.DetectorType.values()[0]);
+        ComboBox<ChangeDetector.DetectorType> comboBox = createDetectorCombobox(ChangeDetector.DetectorType.values()[0]);
 
         return HBoxBuilder
                 .create()

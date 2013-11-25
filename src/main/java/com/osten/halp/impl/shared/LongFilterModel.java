@@ -2,13 +2,13 @@ package com.osten.halp.impl.shared;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
+import com.osten.halp.api.model.profiling.StopRule;
 import com.osten.halp.api.model.shared.FilterModel;
-import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.filter.kalman.BasicKalmanFilter;
-import com.osten.halp.impl.profiling.filter.wls.BasicWLSFilter;
-import com.osten.halp.impl.profiling.filter.wls.LargeWindowWLSFilter;
-import com.osten.halp.impl.profiling.filter.wls.TinyWindowWLSFilter;
+import com.osten.halp.impl.profiling.filters.kalman.Kalman;
+import com.osten.halp.impl.profiling.filters.wls.BaseWLS;
+import com.osten.halp.impl.profiling.filters.wls.FastWLS;
+import com.osten.halp.impl.profiling.filters.wls.SlowWLS;
 
 import java.util.*;
 
@@ -22,16 +22,12 @@ import java.util.*;
 public class LongFilterModel implements FilterModel<Long> {
 
     Map<String, List<AdaptiveFilter<Long>>> filters;
+    Map<String, List<StopRule<Long>>> rules;
+    Map<String, List<ChangeDetector<Long>>> detectors;
 
     public LongFilterModel() {
         filters = new HashMap<String, List<AdaptiveFilter<Long>>>();
-    }
-
-    @Override
-    public void adapt(String name, Statistic<Long> measurements) {
-        for (AdaptiveFilter<Long> filter : filters.get(name)) {
-           filter.adapt( measurements );
-        }
+        rules = new HashMap<String, List<StopRule<Long>>>();
     }
 
     @Override
@@ -54,15 +50,16 @@ public class LongFilterModel implements FilterModel<Long> {
 		 List<AdaptiveFilter<Long>> filterList = filters.get( statisticName );
 		 if( filterList != null)
 		 {
-		 	 return filters.get(statisticName);
+		 		return filters.get(statisticName);
 	 	 }else{
-			 return new ArrayList<AdaptiveFilter<Long>>();
+			 	return new ArrayList<AdaptiveFilter<Long>>();
 		 }
     }
 
     @Override
     public void resetModel() {
         this.filters.clear();
+        this.rules.clear();
     }
 
     @Override
@@ -70,17 +67,17 @@ public class LongFilterModel implements FilterModel<Long> {
         AdaptiveFilter<Long> filter;
 
         switch (filterType) {
-            case BasicWLS:
-                filter = new BasicWLSFilter();
+            case BaseWLS:
+                filter = new BaseWLS();
                 break;
-            case LargeWindowWLS:
-                filter = new LargeWindowWLSFilter();
+            case SlowWLS:
+                filter = new SlowWLS();
                 break;
-            case TinyWindowWLS:
-                filter = new TinyWindowWLSFilter();
+            case FastWLS:
+                filter = new FastWLS();
                 break;
-            case BasicKalman:
-                filter = new BasicKalmanFilter();
+            case Kalman:
+                filter = new Kalman();
                 break;
             default:
                 throw new UnsupportedFilterException();
@@ -95,6 +92,11 @@ public class LongFilterModel implements FilterModel<Long> {
             filterList.add( filter );
             filters.put( statisticName, filterList );
         }
+    }
+
+    @Override
+    public boolean statisticHasFilter(String statisticName, AdaptiveFilter.FilterType type) {
+        return getFilter( statisticName, type ) != null;
     }
 
     @Override

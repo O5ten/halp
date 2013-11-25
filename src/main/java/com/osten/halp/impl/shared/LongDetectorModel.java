@@ -88,7 +88,7 @@ public class LongDetectorModel implements DetectorModel<Long> {
     }
 
     @Override
-    public void removeFilter(String statisticName, ChangeDetector.DetectorType detectorType) {
+    public void removeDetector(String statisticName, ChangeDetector.DetectorType detectorType) {
         ChangeDetector<Long> filterToRemove = null;
 
         for (ChangeDetector<Long> detector : detectors.get(statisticName)) {

@@ -25,4 +25,11 @@ public class LongProfileModel implements ProfileModel<Long> {
     public AdaptiveFilter<Long> getFilterByProfile(Profile profile, Statistic.DataType dataType) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+	@Override
+	public void resetModel()
+	{
+		//throw new UnsupportedOperationException("Not yet implemented");
+		//Nothing to reset, yet.
+	}
 }
