@@ -1,4 +1,4 @@
-package com.osten.halp.impl.profiling.kalman;
+package com.osten.halp.impl.profiling.filter.kalman;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.statistics.DataPoint;

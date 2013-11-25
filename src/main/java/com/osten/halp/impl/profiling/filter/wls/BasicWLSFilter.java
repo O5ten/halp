@@ -1,4 +1,4 @@
-package com.osten.halp.impl.profiling.wls;
+package com.osten.halp.impl.profiling.filter.wls;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.statistics.DataPoint;
