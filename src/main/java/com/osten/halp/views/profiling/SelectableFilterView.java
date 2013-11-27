@@ -26,35 +26,26 @@ import java.util.List;
  * Time: 16:23
  * To change this template use File | Settings | File Templates.
  */
-public class SelectableFilterView extends VBox {
-    private ProfilingView parentView;
+public class SelectableFilterView extends SelectableView {
 
     private List<ComboBox<AdaptiveFilter.FilterType>> listOfComboBoxes;
 
     public SelectableFilterView(ProfilingView profilingView) {
-        this.parentView = profilingView;
+        super( profilingView );
         this.listOfComboBoxes = new ArrayList<ComboBox<AdaptiveFilter.FilterType>>();
         String statisticName = parentView.getSelectedStatistic();
-        getChildren().add(addButton());
 
         for (AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName(statisticName)) {
-            getChildren().addAll(createField(filter.getType()));
+            getChildren().addAll( createField( filter.getType() ) );
         }
 
-        this.setSpacing(4);
-        this.setPadding(new Insets(4, 4, 4, 4));
-        this.getStyleClass().add("selectable-filter-view");
-        VBox.setVgrow(this, Priority.ALWAYS);
+        getChildren().add(addButton());
 
         System.out.println("Created SelectableFilterView");
     }
 
     public ObservableList<Node> getFields() {
         return getChildren();
-    }
-
-    private FilterModel<Long> getFilterModel() {
-        return parentView.getFilterModel();
     }
 
     private HBox addButton() {

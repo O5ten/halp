@@ -45,8 +45,8 @@ public class BaseWLS extends AdaptiveFilter<Long> {
         this.signal_measurements = measurements.copyOf();
         this.getMeasurements().setType(Statistic.AggregatedStatisticType.Measurement);
         this.signal_estimates.setName( measurements.getName() );
-        this.signal_variance.setName( measurements.getName() );
-        this.signal_residuals.setName( measurements.getName() );
+        this.signal_noise_variance.setName( measurements.getName() );
+        this.signal_noise.setName( measurements.getName() );
         performAlgorithm();
     }
 

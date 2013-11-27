@@ -29,15 +29,16 @@ public class SelectableDetectorView extends SelectableView{
     private List<ComboBox<ChangeDetector.DetectorType>> listOfComboBoxes;
 
     public SelectableDetectorView(ProfilingView parent) {
-        super(parent);
+        super( parent );
 
         this.listOfComboBoxes = new ArrayList<ComboBox<ChangeDetector.DetectorType>>();
         String statisticName = parentView.getSelectedStatistic();
-        getChildren().add(addButton());
 
-        for (ChangeDetector<Long> detector : getDetectorModel().getDetectorsByStatistic(statisticName)) {
+        for (ChangeDetector<Long> detector : getDetectorModel().getDetectorsByStatisticName(statisticName)) {
             getChildren().addAll(createField(detector.getType()));
         }
+
+        getChildren().add(addButton());
     }
 
     private HBox addButton() {
@@ -94,7 +95,7 @@ public class SelectableDetectorView extends SelectableView{
                 if (newDetectorType != null) {
                     String statistic = parentView.getSelectedStatistic();
 
-                    boolean noDetectorsExistSoThereIsNothingToRemove = !getDetectorModel().getDetectorsByStatistic(statistic).isEmpty();
+                    boolean noDetectorsExistSoThereIsNothingToRemove = !getDetectorModel().getDetectorsByStatisticName(statistic).isEmpty();
 
                     if (noDetectorsExistSoThereIsNothingToRemove) {
                         getDetectorModel().removeDetector(statistic, oldDetectorType);

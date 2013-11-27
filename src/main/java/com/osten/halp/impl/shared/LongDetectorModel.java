@@ -4,7 +4,9 @@ import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.detector.CusumDetector;
+import com.osten.halp.impl.profiling.detector.Accumulation;
+import com.osten.halp.impl.profiling.detector.Cusum;
+import com.osten.halp.impl.profiling.detector.Sprt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ public class LongDetectorModel implements DetectorModel<Long> {
     }
 
     @Override
-    public List<ChangeDetector<Long>> getDetectorsByStatistic(String statisticName) {
+    public List<ChangeDetector<Long>> getDetectorsByStatisticName(String statisticName) {
         List<ChangeDetector<Long>> filterList = detectors.get(statisticName);
         if (filterList != null) {
             return detectors.get(statisticName);
@@ -70,17 +72,23 @@ public class LongDetectorModel implements DetectorModel<Long> {
 
         switch (detectorType) {
             case CUSUM:
-                detector = new CusumDetector();
+                detector = new Cusum();
+                break;
+            case SPRT:
+                detector = new Sprt();
+                break;
+            case Accumulator:
+                detector = new Accumulation();
                 break;
             default:
                 throw new UnsupportedFilterException();
         }
 
         if (detectors.containsKey(statisticName)) {
-            System.out.println("Statistic " + statisticName + " added filter of type " + detector.getType());
+            System.out.println("Statistic " + statisticName + " added Change Detector of type " + detector.getType());
             detectors.get(statisticName).add(detector);
         } else {
-            System.out.println("Statistic " + statisticName + " created and filter of type " + detector.getType() + " added ");
+            System.out.println("Statistic " + statisticName + " created and Change Detector of type " + detector.getType() + " added ");
             ArrayList<ChangeDetector<Long>> detectorList = new ArrayList<ChangeDetector<Long>>();
             detectorList.add(detector);
             detectors.put(statisticName, detectorList);

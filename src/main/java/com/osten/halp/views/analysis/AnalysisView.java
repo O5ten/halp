@@ -2,7 +2,9 @@ package com.osten.halp.views.analysis;
 
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
+import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.shared.DataModel;
+import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.DataPoint;
@@ -115,12 +117,11 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
     }
 
     @Override
-    public void populate(DataModel<Long> properties, FilterModel<Long> filterModel, ProfileModel<Long> profileModel) {
-
+    public void populate(DataModel<Long> dataModel, FilterModel<Long> filterModel, DetectorModel<Long> detectorModel, ProfileModel<Long> profileModel) {
 
         rebuildStatisticSelector();
         rebuildLineChart();
-        properties.printModel();
+        dataModel.printModel();
     }
 
     private void rebuildLineChart() {

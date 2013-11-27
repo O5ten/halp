@@ -10,10 +10,10 @@ import com.osten.halp.api.model.profiling.ChangeDetector;
  * Time: 15:28
  * To change this template use File | Settings | File Templates.
  */
-public class SprtDetector extends ChangeDetector<Long> {
+public class Sprt extends ChangeDetector<Long> {
 
     @Override
     public void detect(AdaptiveFilter<Long> filter) {
-        throw new UnsupportedOperationException("Not yet implemented");
+         //Do NOTHING, yet.
     }
 }

@@ -19,7 +19,7 @@ public interface DetectorModel<Data> {
      **/
     public void detect( String statisticName, AdaptiveFilter<Data> filter);
 
-    public List<ChangeDetector<Data>> getDetectorsByStatistic( String name );
+    public List<ChangeDetector<Data>> getDetectorsByStatisticName(String name);
 
     public ChangeDetector<Data> getDetector( String statisticName, ChangeDetector.DetectorType type );
 

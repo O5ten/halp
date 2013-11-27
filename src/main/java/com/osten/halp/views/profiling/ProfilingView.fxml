@@ -39,10 +39,6 @@
                     <Label styleClass="sub-header" text="Change Detector"/>
                     <VBox VBox.vgrow="ALWAYS" fx:id="changeDetectorList"/>
                 </VBox>
-                <VBox VBox.vgrow="ALWAYS">
-                    <Label styleClass="sub-header" text="Stop Rules"/>
-                    <VBox VBox.vgrow="ALWAYS" fx:id="stopRuleList"/>
-                </VBox>
             </VBox>
             <VBox HBox.hgrow="ALWAYS">
                 <Label styleClass="sub-header" text="Indication Correlations"/>

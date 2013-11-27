@@ -26,8 +26,8 @@ public abstract class ChangeDetector<Data> implements Enumerable{
      */
     public abstract void detect( AdaptiveFilter<Data> filter );
 
-    public void initialize( HashMap<String, Number> settings ){
-
+    protected void initialize( HashMap<String, Number> settings, DetectorType type ){
+        this.type = type;
         detections = new ArrayList<Detection<Data>>();
         setSettings( settings );
     }
@@ -60,7 +60,15 @@ public abstract class ChangeDetector<Data> implements Enumerable{
         return DetectorType.values();
     }
 
+    public void printDetections(){
+        System.out.print( "Detections Time-->{ Magnitude }\n[ " );
+        for( Detection<Data> detection : detections){
+            System.out.print( detection.getDiscretePointInTime() + "-->{ " + detection.getMagnitude() + "} " );
+        }
+        System.out.println( " ]" );
+    }
+
     public enum DetectorType{
-        CUSUM, SPRT,
+        CUSUM, Accumulator, SPRT
     }
 }

@@ -16,27 +16,30 @@ import java.util.List;
  * Time: 15:28
  * To change this template use File | Settings | File Templates.
  */
-public class CusumDetector extends ChangeDetector<Long> {
+public class Cusum extends ChangeDetector<Long> {
 
-    private final static int DEFAULT_THRESHOLD = 5;
-    private final static double DEFAULT_DRIFT = 0.5;
-    private final static int DEFAULT_ROBUSTNESS = 2;
+    private final static int DEFAULT_THRESHOLD = 100;
+    private final static double DEFAULT_DRIFT = 0.8;
+    private final static int DEFAULT_ROBUSTNESS = 3;
 
     public final static String ROBUSTNESS_PROPERTY = "ROBUSTNESS";
     public final static String DRIFT_PROPERTY = "DRIFT";
     public final static String THRESHOLD_PROPERTY = "THRESHOLD";
 
-    public CusumDetector() {
+    /**
+     * Cusum collects every increase or decrease
+     */
+    public Cusum() {
 
         HashMap<String, Number> settings = new HashMap<String, Number>();
         settings.put(ROBUSTNESS_PROPERTY, DEFAULT_ROBUSTNESS);
         settings.put(DRIFT_PROPERTY, DEFAULT_DRIFT);
         settings.put(THRESHOLD_PROPERTY, DEFAULT_THRESHOLD);
-        initialize( settings );
+        initialize( settings, DetectorType.CUSUM );
     }
 
-    public CusumDetector(HashMap<String, Number> settings) {
-        initialize( settings );
+    public Cusum(HashMap<String, Number> settings) {
+        initialize( settings, DetectorType.CUSUM );
     }
 
     @Override
@@ -59,7 +62,7 @@ public class CusumDetector extends ChangeDetector<Long> {
             double residual = residuals.get( i ).getData();
             double variance = variances.get( i ).getData();
 
-            //normalize residual, but avoid division by zero. That's bad.
+            //normalize residual, but avoid division by zero. Cause that's bad.
             if(variance != 0){
                 residual = Math.pow(residual, 2 ) / Math.pow( variance, 2 );
             }else{

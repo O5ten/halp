@@ -16,9 +16,9 @@ import java.util.HashMap;
 public abstract class AdaptiveFilter<Data> implements Enumerable{
 
     protected Statistic<Long> signal_estimates;
-    protected Statistic<Long> signal_residuals;
+    protected Statistic<Long> signal_noise;
     protected Statistic<Long> signal_measurements;
-    protected Statistic<Long> signal_variance;
+    protected Statistic<Long> signal_noise_variance;
 
     protected FilterType filterType;
 
@@ -32,9 +32,9 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
 
         this.signal_estimates = new LongStatistic();
         this.getEstimates().setType(Statistic.AggregatedStatisticType.Estimation);
-        this.signal_residuals = new LongStatistic();
+        this.signal_noise = new LongStatistic();
         this.getResiduals().setType(Statistic.AggregatedStatisticType.Residual);
-        this.signal_variance = new LongStatistic();
+        this.signal_noise_variance = new LongStatistic();
         this.getVariance().setType(Statistic.AggregatedStatisticType.Variance);
         this.signal_measurements = new LongStatistic();
         this.signal_measurements.setType(Statistic.AggregatedStatisticType.Measurement);
@@ -42,8 +42,8 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
 
     public void reset(){
         this.signal_estimates.getData().clear();
-        this.signal_residuals.getData().clear();
-        this.signal_variance.getData().clear();
+        this.signal_noise.getData().clear();
+        this.signal_noise_variance.getData().clear();
         this.signal_measurements.getData().clear();
     }
 
@@ -102,13 +102,13 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
         }
         System.out.println("]");
 
-        System.out.print("Signal Variance:\n[ ");
+        System.out.print("Signal Noise Variance:\n[ ");
         for (DataPoint<Long> point : getVariance().getData()) {
             System.out.print(point.getData() + " ");
         }
         System.out.println("]");
 
-        System.out.print("Signal Residuals:\n[ ");
+        System.out.print("Signal Noise:\n[ ");
         for (DataPoint<Long> point : getResiduals().getData()) {
             System.out.print(point.getData() + " ");
         }
@@ -125,7 +125,7 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public Statistic<Long> getResiduals() {
-        return signal_residuals;
+        return signal_noise;
     }
 
     public Statistic<Long> getMeasurements() {
@@ -133,7 +133,7 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public Statistic<Long> getVariance() {
-        return signal_variance;
+        return signal_noise_variance;
     }
 
     public FilterType getFilterType() {
@@ -141,6 +141,6 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public enum FilterType {
-		 FastWLS, SlowWLS, BaseWLS, Kalman
+        Kalman, FastWLS, SlowWLS, BaseWLS
     }
 }
