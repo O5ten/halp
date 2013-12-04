@@ -148,12 +148,19 @@ public class SelectionView extends HBox implements Initializable {
              * Build TableView using DataFX
              ************************/
             final String[] headers = readHeaders(file);
-            CSVDataSource csvData = readCSVFile(file, headers);
-            this.csvData = csvData;
-            table.getItems().clear();
-            table.setItems(csvData.getData());
-            table.getColumns().clear();
-            table.getColumns().addAll(csvData.getColumns());
+
+            if( isCsvWellFormed( file ) ){
+                CSVDataSource csvData = readCSVFile(file, headers);
+                this.csvData = csvData;
+
+                table.getItems().clear();
+                table.setItems(csvData.getData());
+                table.getColumns().clear();
+                table.getColumns().addAll(csvData.getColumns());
+
+            }else{
+                table.getItems().clear();
+            }
 
             /************************
              * Build ListView using DataFX
@@ -161,9 +168,11 @@ public class SelectionView extends HBox implements Initializable {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
+
                     ObservableList<String> observableHeaders = FXCollections.observableArrayList(headers);
                     selectionList.setItems(observableHeaders);
                     selectionList.getSelectionModel().selectAll();
+
                 }
             });
         }
@@ -179,6 +188,17 @@ public class SelectionView extends HBox implements Initializable {
             e.printStackTrace();
         }
         return headers;
+    }
+
+    private boolean isCsvWellFormed( File file ){
+
+        CSVReader reader = null;
+        try {
+            reader = new CSVReader(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return reader.isFileWellFormed();
     }
 
     private CSVDataSource readCSVFile(File file, String[] headers) {

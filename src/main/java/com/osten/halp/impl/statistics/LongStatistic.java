@@ -111,6 +111,11 @@ public class LongStatistic implements Statistic<Long>
     }
 
     @Override
+    public int size() {
+        return data.size();
+    }
+
+    @Override
 	public String getName()
 	{
 		return name;

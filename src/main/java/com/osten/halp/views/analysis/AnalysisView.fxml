@@ -27,7 +27,7 @@
                    <xAxis><NumberAxis label="Time" tickUnit="1"/></xAxis>
                    <yAxis><NumberAxis label=""/></yAxis>
             </LineChart>
-            <VBox HBox.hgrow="SOMETIMES" spacing="5">
+            <VBox HBox.hgrow="SOMETIMES" spacing="5" minWidth="400">
                 <Label styleClass="sub-header" text="Data Series"/>
                 <VBox VBox.vgrow="ALWAYS" styleClass="statistic-selector" alignment="TOP_CENTER" spacing="5" fx:id="statisticSelector"/>
                 <Label styleClass="sub-header" text="Points of Interest"/>

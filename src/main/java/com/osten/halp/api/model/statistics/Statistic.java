@@ -63,6 +63,9 @@ public interface Statistic<Data>
 
     public void setName( String name );
 
+    public int size();
+
+
 	public void setType( DataType dataType );
 
     public void setType ( AggregatedStatisticType dataType );
@@ -133,7 +136,7 @@ public interface Statistic<Data>
          */
 	public enum DataType
 	{
-		Throughput, Time, Garbage_collection, Memory, CPU, Accumulative, Linear, Average, Rate, Moving_rate, Zero, Unknown
+		Throughput, ResponseTime, RAM, Swap, CPU, Accumulative, Rate, Zero, Unknown
 	}
 
     public enum AggregatedStatisticType{

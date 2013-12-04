@@ -180,18 +180,11 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
                 SelectableFilterView filterView = new SelectableFilterView(ProfilingView.this);
                 adaptiveFilterList.getChildren().clear();
                 adaptiveFilterList.getChildren().add(filterView);
-               /*for ( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName(name)) {
-                    filterView.getFields().add(filterView.getFields().size() - 1, filterView.createField(filter.getType()));
-                }*/
 
                 //Detectors
                 SelectableDetectorView detectorView = new SelectableDetectorView(ProfilingView.this);
                 changeDetectorList.getChildren().clear();
                 changeDetectorList.getChildren().add(detectorView);
-
-               /* for (final ChangeDetector<Long> detector : getDetectorModel().getDetectorsByStatisticName(name)) {
-                    detectorView.getFields().add(detectorView.getFields().size() - 1, detectorView.createDetectorCombobox(detector.getType()));
-                }*/
             }
         }
     };

@@ -22,7 +22,7 @@
         </HBox>
         <VBox fx:id="settingsBox"/>
         <HBox spacing="5" VBox.vgrow="ALWAYS">
-            <VBox HBox.hgrow="SOMETIMES">
+            <VBox HBox.hgrow="ALWAYS">
                 <Label styleClass="sub-header" text="Statistic"/>
                 <ListView fx:id="statisticSelector" VBox.vgrow="ALWAYS"/>
             </VBox>

@@ -34,6 +34,6 @@ public interface ProfileModel<Data> {
 	 public void resetModel();
 
     public static enum Profile {
-        Custom, Soak, Load, Baseline, Stress, Peak
+        Custom, CPU, Memory, Network, ALL
     }
 }

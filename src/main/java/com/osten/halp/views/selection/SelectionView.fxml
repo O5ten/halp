@@ -34,7 +34,7 @@
                     <Label text="View data" styleClass="sub-header"/>
                     <TableView VBox.vgrow="ALWAYS" fx:id="table" />
                 </VBox>
-                <VBox HBox.hgrow="SOMETIMES">
+                <VBox HBox.hgrow="ALWAYS">
                     <Label text="CTRL + Click to select what data to profile" styleClass="sub-header"/>
                     <ListView VBox.vgrow="ALWAYS" fx:id="selectionList"/>
                 </VBox>

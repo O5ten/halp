@@ -7,6 +7,7 @@ import com.osten.halp.errorhandling.UnsupportedFilterException;
 import com.osten.halp.impl.profiling.detector.Accumulation;
 import com.osten.halp.impl.profiling.detector.Cusum;
 import com.osten.halp.impl.profiling.detector.Sprt;
+import com.osten.halp.impl.profiling.detector.Zero;
 
 import java.util.ArrayList;
 import java.util.HashMap;

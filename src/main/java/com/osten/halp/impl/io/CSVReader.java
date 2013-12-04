@@ -53,11 +53,33 @@ public class CSVReader implements DataReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return split(sb.toString());
+        return csvSplit(sb.toString());
     }
 
-    private String[] split(String string) {
-        return string.split(splitregexp);
+    private String[] csvSplit(String csvString) {
+        if(csvString.endsWith(",")){
+            String[] splitString = csvString.split( splitregexp );
+            String[] aLittleLongerString = new String[csvString.length()+1];
+            for( int i = 0; i < splitString.length; i++ ){
+                aLittleLongerString[i] = splitString[i];
+            }
+            aLittleLongerString[splitString.length] = "";
+            return aLittleLongerString;
+        }else{
+            return csvString.split(splitregexp);
+        }
+
+    }
+
+    public boolean isFileWellFormed(){
+        for( String[] s : readFile() ){
+            for( String value : s ){
+                if( value.equals( "" )){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /*******************************************
@@ -92,8 +114,10 @@ public class CSVReader implements DataReader {
                 line = reader.readLine();
 
                 if( line != null){
-                    csvList.add( split( line ) );
+                    csvList.add( csvSplit(line) );
                 }
+
+
             }
 
             reader.close();
@@ -103,4 +127,5 @@ public class CSVReader implements DataReader {
         }
         return csvList;
     }
+
 }
