@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class FastWLS extends BaseWLS
 {
 
-    private final static int TINY_WINDOW_SIZE = 3;
+    private final static int TINY_WINDOW_SIZE = 2;
 
     public FastWLS(){
         HashMap<String, Number> settings = new HashMap<String, Number>();

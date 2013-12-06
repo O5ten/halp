@@ -41,10 +41,10 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
     }
 
     public void reset(){
-        this.signal_estimates.getData().clear();
-        this.signal_noise.getData().clear();
-        this.signal_noise_variance.getData().clear();
-        this.signal_measurements.getData().clear();
+        this.signal_estimates.getDataAsList().clear();
+        this.signal_noise.getDataAsList().clear();
+        this.signal_noise_variance.getDataAsList().clear();
+        this.signal_measurements.getDataAsList().clear();
     }
 
     /**
@@ -91,26 +91,26 @@ public abstract class AdaptiveFilter<Data> implements Enumerable{
         System.out.println( "=========== " + this.getMeasurements().getName() + " ===========" );
 
         System.out.print("Signal Measurements:\n[ ");
-        for (DataPoint<Long> point : getMeasurements().getData()) {
-            System.out.print(point.getData() + " ");
+        for (DataPoint<Long> point : getMeasurements().getDataAsList()) {
+            System.out.print(point.getValue() + " ");
         }
         System.out.println("]");
 
         System.out.print("Signal Estimates:\n[ ");
-        for (DataPoint<Long> point : getEstimates().getData()) {
-            System.out.print(point.getData() + " ");
+        for (DataPoint<Long> point : getEstimates().getDataAsList()) {
+            System.out.print(point.getValue() + " ");
         }
         System.out.println("]");
 
         System.out.print("Signal Noise Variance:\n[ ");
-        for (DataPoint<Long> point : getVariance().getData()) {
-            System.out.print(point.getData() + " ");
+        for (DataPoint<Long> point : getVariance().getDataAsList()) {
+            System.out.print(point.getValue() + " ");
         }
         System.out.println("]");
 
         System.out.print("Signal Noise:\n[ ");
-        for (DataPoint<Long> point : getResiduals().getData()) {
-            System.out.print(point.getData() + " ");
+        for (DataPoint<Long> point : getResiduals().getDataAsList()) {
+            System.out.print(point.getValue() + " ");
         }
         System.out.println("]");
     }

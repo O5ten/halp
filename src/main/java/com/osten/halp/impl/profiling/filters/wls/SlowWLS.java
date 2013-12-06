@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class SlowWLS extends BaseWLS
 {
 
-    private final static int LARGE_WINDOW_SIZE = 8;
+    private final static int LARGE_WINDOW_SIZE = 30;
 
     public SlowWLS(){
         HashMap<String, Number> settings = new HashMap<String, Number>();

@@ -1,11 +1,8 @@
 package com.osten.halp.api.model.profiling;
 
-import com.osten.halp.api.model.statistics.Statistic;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,14 +58,15 @@ public abstract class ChangeDetector<Data> implements Enumerable{
     }
 
     public void printDetections(){
-        System.out.print( "Detections Time-->{ Magnitude }\n[ " );
+        System.out.println("Detection set: " + this.getType());
+        System.out.print( "time: [from, to]-->{ Magnitude }\n[ " );
         for( Detection<Data> detection : detections){
-            System.out.print( detection.getDiscretePointInTime() + "-->{ " + detection.getMagnitude() + "} " );
+            System.out.print( " time: [" + detection.getStart() + ", " + detection.getStop() + " ]-->{ " + detection.getMagnitude() + "} " );
         }
         System.out.println( " ]" );
     }
 
     public enum DetectorType{
-        CUSUM, Accumulator, SPRT
+        CUSUM, Passivity, Activity,
     }
 }

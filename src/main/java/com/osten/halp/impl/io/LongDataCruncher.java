@@ -2,7 +2,6 @@ package com.osten.halp.impl.io;
 
 import com.osten.halp.api.model.io.DataCruncher;
 import com.osten.halp.api.model.io.DataReader;
-import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongDataPoint;
 import com.osten.halp.impl.statistics.LongStatistic;
@@ -42,7 +41,7 @@ public class LongDataCruncher implements DataCruncher<Long> {
                         //Finishing up if any trailing empty fields.
                         if(row == data.size()-1 && counter > 0){
                             while( counter != 0 ){
-                                long value = stat.getData().get( stat.size()-1 ).getData();
+                                long value = stat.getDataAsList().get( stat.size()-1 ).getValue();
                                 stat.addData( new LongDataPoint( value ) );
                                 counter--;
                             }
@@ -51,8 +50,8 @@ public class LongDataCruncher implements DataCruncher<Long> {
                     }else{
                         //Fill in the blanks with linear data.
                         if( counter > 0 ){
-                            long a = stat.getData().isEmpty() ? new LongDataPoint( data.get( row )[ column ] ).getData() : stat.getData().get( stat.size()-1 ).getData();
-                            long b = new LongDataPoint (data.get( row) [ column ] ).getData();
+                            long a = stat.getDataAsList().isEmpty() ? new LongDataPoint( data.get( row )[ column ] ).getValue() : stat.getDataAsList().get( stat.size()-1 ).getValue();
+                            long b = new LongDataPoint (data.get( row) [ column ] ).getValue();
 
                             long diff = ( b - a ) / counter;
 
@@ -72,7 +71,7 @@ public class LongDataCruncher implements DataCruncher<Long> {
                     }
                 }
 
-                if(!stat.getData().isEmpty()){
+                if(!stat.getDataAsList().isEmpty()){
                     statistics.add(stat);
                 }
             }

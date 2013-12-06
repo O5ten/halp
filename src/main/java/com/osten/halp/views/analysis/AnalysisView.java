@@ -2,7 +2,6 @@ package com.osten.halp.views.analysis;
 
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
@@ -22,7 +21,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleButtonBuilder;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -107,10 +105,10 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
         XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
         series.setName(statistic.getName());
 
-        List<DataPoint<Long>> data = statistic.getData();
+        List<DataPoint<Long>> data = statistic.getDataAsList();
 
         for (int i = 0; i < data.size(); i++) {
-            series.getData().add(new XYChart.Data<Number, Number>(i + 0.05, data.get(i).getData()));
+            series.getData().add(new XYChart.Data<Number, Number>(i + 0.05, data.get(i).getValue()));
         }
 
         return series;

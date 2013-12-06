@@ -46,7 +46,7 @@ public class LongStatistic implements Statistic<Long>
 
     public LongStatistic( Statistic<Long> statistic){
         this.name = statistic.getName();
-        this.data = Collections.unmodifiableList( statistic.getData() );
+        this.data = Collections.unmodifiableList( statistic.getDataAsList() );
         this.aggregatedType = statistic.getAggregatedType();
         this.dataType = statistic.getType();
     }
@@ -72,7 +72,7 @@ public class LongStatistic implements Statistic<Long>
 	}
 
 	@Override
-	public List<DataPoint<Long>> getData()
+	public List<DataPoint<Long>> getDataAsList()
 	{
 		return data;
 	}

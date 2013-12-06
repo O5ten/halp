@@ -9,7 +9,7 @@ package com.osten.halp.api.model.statistics;
  */
 public interface DataPoint<T>
 {
-	public T getData();
+	public T getValue();
 	public void setData( T data );
 }
 

@@ -18,7 +18,7 @@ public class Kalman extends AdaptiveFilter<Long>
 {
 
 	/* customizable, will make the filter converge faster or slower */
-	private final double DEFAULT_NOISE_VARIANCE = 0.1;
+	private final double DEFAULT_NOISE_VARIANCE = 0.0001;
 	private final double DEFAULT_INITIAL_ESTIMATE = 0;
 	private final double DEFAULT_INITIAL_ERROR_COVARIANCE = 1;
 
@@ -62,29 +62,29 @@ public class Kalman extends AdaptiveFilter<Long>
         double noiseMeanAccumulator = 0;
         double noiseMeanCounter = 0;
 
-		this.signal_estimates.getData().add( new LongDataPoint( settings.get( INITIAL_ESTIMATE_PROPERTY ).longValue() ) );
-		this.signal_noise_variance.getData().add( new LongDataPoint( settings.get( INITIAL_ERROR_COVARIANCE_PROPERTY ).longValue() ) );
+		this.signal_estimates.addData( new LongDataPoint( settings.get( INITIAL_ESTIMATE_PROPERTY ).longValue() ) );
+		this.signal_noise_variance.addData( new LongDataPoint( settings.get( INITIAL_ERROR_COVARIANCE_PROPERTY ).longValue() ) );
 
-		for( int i = 0; i < measurements.getData().size(); i++ )
+		for( int i = 0; i < getMeasurements().getDataAsList().size(); i++ )
 		{
-			DataPoint<Long> measurement = measurements.getData().get( i );
+			DataPoint<Long> measurement = getMeasurements().getDataAsList().get( i );
 
 			//This measurement compared to the latest estimate produces a residual which can be measured in terms of change detection.
-			double residual = signal_estimates.getData().get( i ).getData() - measurement.getData();
+			double residual = signal_estimates.getDataAsList().get( i ).getValue() - measurement.getValue();
             noiseMeanCounter++;
             noiseMeanAccumulator += residual;
             double currentMean = noiseMeanAccumulator / noiseMeanCounter;
 
             //Noise variance update.
             double varianceAccumulator = 0;
-            for( int j = 0; j < measurements.getData().size(); j++ ){
-                varianceAccumulator = Math.pow(measurements.getData().get(j).getData() - currentMean, 2);
+            for( int j = 0; j < getMeasurements().getDataAsList().size(); j++ ){
+                varianceAccumulator = Math.pow(getMeasurements().getDataAsList().get(j).getValue() - currentMean, 2);
             }
-            double currentNoiseVariance = Math.sqrt( varianceAccumulator / measurements.getData().size() );
+            double currentNoiseVariance = Math.sqrt( varianceAccumulator / getMeasurements().getDataAsList().size() );
 
 			//Correction
-			double kalmanGain = priorErrorCovariance / ( priorErrorCovariance + environmentNoise );
-			double actualEstimate = priorEstimate + kalmanGain * ( measurement.getData() - priorEstimate );
+			double kalmanGain = priorErrorCovariance / ( priorErrorCovariance + (environmentNoise ) );
+			double actualEstimate = priorEstimate + kalmanGain * ( measurement.getValue() - priorEstimate );
 			double actualErrorCovariance = ( 1 - kalmanGain ) * priorErrorCovariance;
 
 			//For next round
@@ -92,9 +92,9 @@ public class Kalman extends AdaptiveFilter<Long>
 			priorErrorCovariance = actualErrorCovariance;
 
 			//And place everything where it should be.
-			signal_estimates.getData().add( new LongDataPoint( Math.round( actualEstimate ) ) );
-			signal_noise_variance.getData().add( new LongDataPoint( Math.round( currentNoiseVariance ) ) );
-			signal_noise.getData().add( new LongDataPoint( Math.abs( Math.round( residual ) ) ) );
+			signal_estimates.getDataAsList().add( new LongDataPoint( Math.round( actualEstimate ) ) );
+			signal_noise_variance.getDataAsList().add( new LongDataPoint( Math.round( currentNoiseVariance ) ) );
+			signal_noise.getDataAsList().add( new LongDataPoint( Math.abs( Math.round( residual ) ) ) );
 		}
 		printAggregatedData();
 	}

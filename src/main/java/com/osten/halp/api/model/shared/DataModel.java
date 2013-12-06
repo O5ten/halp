@@ -3,7 +3,6 @@ package com.osten.halp.api.model.shared;
 import com.osten.halp.api.model.statistics.DataPoint;
 import com.osten.halp.api.model.statistics.Statistic;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,9 +26,9 @@ public abstract class DataModel<Data>
 		for( Statistic<Data> statistic : getData() )
 		{
 			System.out.print( statistic.getName() + "= [ " );
-			for( DataPoint<Data> point : statistic.getData() )
+			for( DataPoint<Data> point : statistic.getDataAsList() )
 			{
-				System.out.print( point.getData() + " " );
+				System.out.print( point.getValue() + " " );
 			}
 			System.out.println( "]" );
 		}

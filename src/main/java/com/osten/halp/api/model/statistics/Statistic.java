@@ -40,7 +40,7 @@ public interface Statistic<Data>
 	 * Returns all the data that this statistic represents.
 	 * @return
 	 */
-	public List<DataPoint<Data>> getData();
+	public List<DataPoint<Data>> getDataAsList();
 
 	/**
 	 * Returns the data by using the index.
@@ -69,6 +69,8 @@ public interface Statistic<Data>
 	public void setType( DataType dataType );
 
     public void setType ( AggregatedStatisticType dataType );
+
+
 
     public AggregatedStatisticType getAggregatedType();
 
@@ -114,9 +116,9 @@ public interface Statistic<Data>
          * A rate that moves with time, let's say a linear increase, in correlation to this rate not
          * changing drastically then an alarm at a TP stat that does change drastically is more definite.
          *
-         * Zero:
+         * Activity:
          * ==================================
-         * Statistic is and should be Zero in the best case scenario, examples are dropped messages, discarded messages
+         * Statistic is and should be Activity in the best case scenario, examples are dropped messages, discarded messages
          * 404 Resource cannot be found, 500 Internal Server Error,
          *
          * Time

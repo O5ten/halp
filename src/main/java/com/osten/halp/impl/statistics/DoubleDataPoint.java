@@ -18,7 +18,7 @@ public class DoubleDataPoint implements DataPoint<Double>
 	}
 
 	@Override
-	public Double getData()
+	public Double getValue()
 	{
 		return data;
 	}

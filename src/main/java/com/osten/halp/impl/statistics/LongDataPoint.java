@@ -24,7 +24,7 @@ public class LongDataPoint implements DataPoint<Long> {
     }
 
     @Override
-    public Long getData() {
+    public Long getValue() {
         return data;
     }
 

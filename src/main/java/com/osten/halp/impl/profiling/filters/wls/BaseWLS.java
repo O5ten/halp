@@ -16,14 +16,11 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class BaseWLS extends AdaptiveFilter<Long> {
+
     /**
      * DEFAULTS
      */
-    private final int DEFAULT_WINDOW_SIZE = 5;
-
-    /*******************************
-     * PROPERTIES OF THIS FILTER
-     *******************************/
+    private final int DEFAULT_WINDOW_SIZE = 4;
 
     /**
      * The N most recent samples will be used to calculate the estimation.
@@ -33,24 +30,22 @@ public class BaseWLS extends AdaptiveFilter<Long> {
     public BaseWLS() {
         HashMap<String, Number> settings = new HashMap<String, Number>();
         settings.put(WINDOW_SIZE_PROPERTY, DEFAULT_WINDOW_SIZE);
-        initialize( settings, FilterType.BaseWLS );
+        initialize(settings, FilterType.BaseWLS);
     }
 
-    public BaseWLS( HashMap<String, Number> settings, FilterType type ) {
-        initialize( settings, type);
+    public BaseWLS(HashMap<String, Number> settings, FilterType type) {
+        initialize(settings, type);
     }
 
     @Override
     public void adapt(Statistic<Long> measurements) {
         this.signal_measurements = measurements.copyOf();
         this.getMeasurements().setType(Statistic.AggregatedStatisticType.Measurement);
-        this.signal_estimates.setName( measurements.getName() );
-        this.signal_noise_variance.setName( measurements.getName() );
-        this.signal_noise.setName( measurements.getName() );
+        this.signal_estimates.setName(measurements.getName());
+        this.signal_noise_variance.setName(measurements.getName());
+        this.signal_noise.setName(measurements.getName());
         performAlgorithm();
     }
-
-
 
     /**
      * The implemented algorithm of this Filter.
@@ -63,41 +58,54 @@ public class BaseWLS extends AdaptiveFilter<Long> {
 
         //define window
         ArrayDeque<DataPoint<Long>> window = new ArrayDeque<DataPoint<Long>>(maximumWindowSize);
+        double noiseMeanCounter = 0;
+        double noiseMeanAccumulator = 0;
+        double lastEstimate = -1; //The recursive estimation
+        getEstimates().addData( new LongDataPoint( 0L ) );
+        getVariance().addData( new LongDataPoint( 1L ) );
 
-        long lastEstimate = -1; //The recursive estimation
-        for (DataPoint<Long> measuredValue : getMeasurements().getData()) {
+        for ( int i = 0; i < getMeasurements().getDataAsList().size(); i++){
+
             if (window.size() == maximumWindowSize) {
                 window.removeLast();
             }
-            window.addFirst(measuredValue);
+            window.addFirst( getMeasurements().getDataByIndex( i ) );
 
             //Estimate Theta of t : Signal estimation.
             int L = window.size();
 
-            long estimate = 0;
+            double estimate = 0;
             if (window.size() == 1) {
-                estimate = window.getFirst().getData() + ((window.getFirst().getData() - window.getLast().getData()) / L);
+                estimate = window.getFirst().getValue() + ((window.getFirst().getValue() - window.getLast().getValue()) / L);
                 lastEstimate = estimate;
             } else {
-                estimate = lastEstimate + ((window.getFirst().getData() - window.getLast().getData()) / L);
-                lastEstimate = estimate;
+                double accumulator = 0;
+                double loss = 1;
+                for ( DataPoint<Long> measurement : window ){
+                    loss /= 2;
+                    accumulator += loss * measurement.getValue();
+                }
+                accumulator += loss * getMeasurements().getDataByIndex( i ).getValue();
+
+                estimate = accumulator;
             }
 
-            getEstimates().getData().add(new LongDataPoint(estimate));
+            //Calculate everything needed for change detectors.
+            double residual = getEstimates().getDataByIndex( i ).getValue() - getMeasurements().getDataByIndex(i).getValue();
+            noiseMeanCounter++;
+            noiseMeanAccumulator += residual;
+            double currentMean = noiseMeanAccumulator / noiseMeanCounter;
 
-            //Minimize error of latest measures in window.
-            long lossFactor = 0;
-            for (DataPoint<Long> point : window) {
-                lossFactor += Math.pow(measuredValue.getData() - estimate, 2);
+            double varianceAccumulator = 0;
+            for( int j = 0; j < getMeasurements().size(); j++ ){
+                varianceAccumulator = Math.pow(getMeasurements().getDataByIndex( j ).getValue() - currentMean, 2);
             }
+            double currentNoiseVariance = Math.sqrt( varianceAccumulator / getMeasurements().getDataAsList().size());
 
-            //Estimated signal noise
-            long estimated_noise = Math.round(1.0 / L * lossFactor);
-            this.getResiduals().getData().add(new LongDataPoint(estimated_noise));
-
-            //Estimated signal variance
-            double signal_variance = (1.0 / Math.pow(L, 2)) * lossFactor;
-            this.getVariance().getData().add(new LongDataPoint(Math.round(signal_variance)));
+            //And place everything where it should be.
+            getEstimates().getDataAsList().add( new LongDataPoint( Math.round( estimate ) ) );
+            getVariance().getDataAsList().add(new LongDataPoint(Math.round(currentNoiseVariance)));
+            getResiduals().getDataAsList().add( new LongDataPoint( Math.abs( Math.round( residual ) ) ) );
         }
     }
 

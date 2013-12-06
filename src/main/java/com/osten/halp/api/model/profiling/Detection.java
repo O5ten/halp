@@ -9,16 +9,40 @@ package com.osten.halp.api.model.profiling;
  */
 public class Detection<Data> {
 
-    private Data discretePointInTime;
+    private Data start;
+    private Data stop;
     private Data magnitude;
+    private Data lastTouched;
 
-    public Detection( Data discretePointInTime, Data magnitude){
-        this.discretePointInTime = discretePointInTime;
+    public Detection( Data start, Data magnitude){
+        this.start = start;
+        this.lastTouched = start;
         this.magnitude = magnitude;
+        this.stop = start;
     }
 
-    public Data getDiscretePointInTime() {
-        return discretePointInTime;
+    public Data getStart() {
+        return start;
+    }
+
+    public Data getTouched(){
+        return lastTouched;
+    }
+
+    public void touch( Data time ){
+        this.lastTouched = time;
+    }
+
+    public Data getStop(){
+        return stop;
+    }
+
+    public boolean hasStop(){
+        return start != stop;
+    }
+
+    public void setStop( Data stop ){
+        this.stop = stop;
     }
 
     public Data getMagnitude() {

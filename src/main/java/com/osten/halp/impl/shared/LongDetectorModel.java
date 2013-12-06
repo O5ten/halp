@@ -4,10 +4,9 @@ import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
-import com.osten.halp.impl.profiling.detector.Accumulation;
+import com.osten.halp.impl.profiling.detector.Passivity;
 import com.osten.halp.impl.profiling.detector.Cusum;
-import com.osten.halp.impl.profiling.detector.Sprt;
-import com.osten.halp.impl.profiling.detector.Zero;
+import com.osten.halp.impl.profiling.detector.Activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,11 +74,11 @@ public class LongDetectorModel implements DetectorModel<Long> {
             case CUSUM:
                 detector = new Cusum();
                 break;
-            case SPRT:
-                detector = new Sprt();
+            case Passivity:
+                detector = new Passivity();
                 break;
-            case Accumulator:
-                detector = new Accumulation();
+            case Activity:
+                detector = new Activity();
                 break;
             default:
                 throw new UnsupportedFilterException();

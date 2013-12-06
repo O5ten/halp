@@ -4,7 +4,6 @@ import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
 import com.osten.halp.api.model.profiling.Detection;
 import com.osten.halp.api.model.statistics.DataPoint;
-import com.osten.halp.api.model.statistics.Statistic;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,16 +17,16 @@ import java.util.List;
  */
 public class Cusum extends ChangeDetector<Long> {
 
-    private final static int DEFAULT_THRESHOLD = 100;
+    private final static int DEFAULT_THRESHOLD = 1000;
     private final static double DEFAULT_DRIFT = 0.8;
-    private final static int DEFAULT_ROBUSTNESS = 3;
+    private final static int DEFAULT_ROBUSTNESS = 2;
 
     public final static String ROBUSTNESS_PROPERTY = "ROBUSTNESS";
     public final static String DRIFT_PROPERTY = "DRIFT";
     public final static String THRESHOLD_PROPERTY = "THRESHOLD";
 
     /**
-     * Cusum collects every increase or decrease
+     * Cusum collects every increase or decreasem that successively climbs over the default_threshold.
      */
     public Cusum() {
 
@@ -53,14 +52,20 @@ public class Cusum extends ChangeDetector<Long> {
         double negativeCusum = 0;
         double positiveCusum = 0;
 
-        List<DataPoint<Long>> residuals = filter.getResiduals().getData();
-        List<DataPoint<Long>> variances = filter.getVariance().getData();
+        List<DataPoint<Long>> residuals = filter.getResiduals().getDataAsList();
+        List<DataPoint<Long>> variances = filter.getVariance().getDataAsList();
 
         for(int i = 0; i < residuals.size(); i++){
 
+            List<Detection<Long>> detections = getDetections();
+            Detection<Long> lastDetection = null;
+            if(!detections.isEmpty()){
+                lastDetection = detections.get(detections.size()-1);
+            }
+
             //Get residual
-            double residual = residuals.get( i ).getData();
-            double variance = variances.get( i ).getData();
+            double residual = residuals.get( i ).getValue();
+            double variance = variances.get( i ).getValue();
 
             //normalize residual, but avoid division by zero. Cause that's bad.
             if(variance != 0){
@@ -78,16 +83,39 @@ public class Cusum extends ChangeDetector<Long> {
                 robustness--;
                 if(robustness == 0){
 
-                    getDetections().add( new Detection<Long>( new Long( i ) , Math.round( Math.max( positiveCusum, negativeCusum) ) ) );
+                    if( detections.isEmpty() || lastDetection.hasStop() ){
+                        detections.add( new Detection<Long> ( new Long( i ), Math.round( Math.max( positiveCusum, negativeCusum ) ) ) );
 
-                    positiveCusum = 0;
-                    negativeCusum = 0;
+                        positiveCusum = 0;
+                        negativeCusum = 0;
 
-                    robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
+                        robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
+                    }else{
+                        if( i - lastDetection.getTouched() > getSetting( ROBUSTNESS_PROPERTY ).intValue() ){
+                            lastDetection.setStop( new Long( i ) );
+                        }else{
+                            lastDetection.touch( new Long( i ) );
+                        }
+                    }
                 }
             }else{
+
+                boolean detectionsExist = detections.size() > 0;
+                boolean lastDetectionIsNotAlreadyStopped = !lastDetection.hasStop();
+
+                if( detectionsExist && lastDetectionIsNotAlreadyStopped){
+                    if((i - lastDetection.getTouched()) > robustness ){
+                        lastDetection.setStop( new Long(i) );
+                    }
+                }
+
+
                 robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
             }
+        }
+        Detection<Long> lastDetection = getDetections().get(getDetections().size()-1);
+        if(!lastDetection.hasStop()){
+            lastDetection.setStop( new Long( residuals.size() ) );
         }
     }
 }
