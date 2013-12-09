@@ -60,6 +60,7 @@
                     <include>**/*.html</include>
                     <include>**/*.css</include>
                     <include>**/*.csv</include>
+                    <include>**/*.xml</include>
                 </includes>
             </resource>
             <resource>

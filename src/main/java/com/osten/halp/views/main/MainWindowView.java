@@ -14,6 +14,7 @@ import com.osten.halp.views.selection.SelectionView;
 import com.osten.halp.views.profiling.ProfilingView;
 import com.osten.halp.views.home.HomeView;
 import com.osten.halp.utils.FXMLUtils;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -139,6 +140,7 @@ public class MainWindowView extends BorderPane {
         filterModel = new LongFilterModel();
         profileModel = new LongProfileModel();
         detectorModel = new LongDetectorModel();
+
     }
 
     public ExecutorService getExecutor() {

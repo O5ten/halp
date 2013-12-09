@@ -20,18 +20,21 @@ public interface ProfileModel<Data> {
      * It goes to work when selecting a data-type fora statistic. It checks for other datatypes and sees if any connection related to this
      * specific profile can be done.
      */
-
     public List<Relation> getRelations();
 
     /**
      * Using
      * @param dataType
-     * @param profile What profile is currently selected by the user, this has some effect on what kind of filter is suggested for a dataType.
      * @return
      */
-    public AdaptiveFilter<Data> getFilterByProfile( ProfileModel.Profile profile, Statistic.DataType dataType);
+    public AdaptiveFilter.FilterType getFilterByDataType( Statistic.DataType dataType);
+    public String getDescriptionByProfile( Profile profile );
+    public String getDescription();
 
-	 public void resetModel();
+
+
+	public void resetModel();
+    public void buildProfiles();
 
     public static enum Profile {
         Custom, CPU, Memory, Network, ALL

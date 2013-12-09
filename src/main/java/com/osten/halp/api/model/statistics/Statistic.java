@@ -138,7 +138,7 @@ public interface Statistic<Data>
          */
 	public enum DataType
 	{
-		Throughput, ResponseTime, RAM, Swap, CPU, Accumulative, Rate, Zero, Unknown
+		Throughput, ResponseTime, Memory, Swap, CPU, Accumulative, Rate, Zero, Unknown
 	}
 
     public enum AggregatedStatisticType{

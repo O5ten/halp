@@ -108,8 +108,6 @@ public class Cusum extends ChangeDetector<Long> {
                         lastDetection.setStop( new Long(i) );
                     }
                 }
-
-
                 robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
             }
         }
