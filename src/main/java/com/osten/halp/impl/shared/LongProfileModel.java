@@ -230,11 +230,11 @@ public class LongProfileModel implements ProfileModel<Long> {
 
 		for(Statistic<Long> statistic : detectionsByStatistic.keySet() ){
 
-			Bottleneck potentialBottleneck = new Bottleneck();
+			//TODO
 
 		}
 
-		 //TODO
+
 
 		return bottlenecks;
 	 }

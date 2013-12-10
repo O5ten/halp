@@ -10,8 +10,6 @@ import java.util.List;
  */
 public class Bottleneck
 {
-	private List<Statistic> relevantStatistics;
-	private List<Detection> relevantDetections;
 	private int startTime;
 	private int stopTime;
 	private ProfileModel.Profile type;
@@ -22,24 +20,6 @@ public class Bottleneck
 	 */
 	public Bottleneck(){
 
-	}
-
-	/**
-	 * Detections used to detect this bottleneck.
-	 * @return
-	 */
-	public List<Detection> getRelevantDetections()
-	{
-		return relevantDetections;
-	}
-
-	/**
-	 * Change the relevant detections for this bottleneck.
-	 * @param relevantDetections
-	 */
-	public void setRelevantDetections( List<Detection> relevantDetections )
-	{
-		this.relevantDetections = relevantDetections;
 	}
 
 	public int getStartTime()
@@ -80,15 +60,5 @@ public class Bottleneck
 	public void setDescription( String description )
 	{
 		this.description = description;
-	}
-
-	public List<Statistic> getRelevantStatistics()
-	{
-		return relevantStatistics;
-	}
-
-	public void setRelevantStatistics( List<Statistic> relevantStatistics )
-	{
-		this.relevantStatistics = relevantStatistics;
 	}
 }
