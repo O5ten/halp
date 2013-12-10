@@ -77,11 +77,6 @@ public interface Statistic<Data>
         /**
          * What type of data is this.
          *
-         * Garbage Collection:
-         * ==================================
-         * - Garbage collection usually has this pattern, with regular and BIG sudden changes.
-         *   they should not be detected as changes, however, if this data stops changing regularly then we have a problem.
-         *
          * Throughput,
          * ==================================
          * A value that can change drastically as the number of users increase or decreases.

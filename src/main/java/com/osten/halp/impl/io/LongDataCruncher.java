@@ -8,7 +8,9 @@ import com.osten.halp.impl.statistics.LongStatistic;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,84 +19,106 @@ import java.util.*;
  * Time: 5:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LongDataCruncher implements DataCruncher<Long> {
+public class LongDataCruncher implements DataCruncher<Long>
+{
 
-    @Override
-    public List<Statistic<Long>> crunch(DataReader reader, ObservableList<String> requiredHeaders) {
+	@Override
+	public List<Statistic<Long>> crunch( DataReader reader, ObservableList<String> requiredHeaders )
+	{
 
-        ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
+		ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
 
-        try {
-            String[] headers = reader.readLine(1);
-            ArrayList<String[]> data = reader.readFile();
-            List<Integer> positions = locatePositions(requiredHeaders, headers);
+		try
+		{
+			String[] headers = reader.readLine( 1 );
+			ArrayList<String[]> data = reader.readFile();
+			List<Integer> positions = locatePositions( requiredHeaders, headers );
 
-            for (int column : positions) {
-                LongStatistic stat = new LongStatistic(headers[column]);
-                int counter = 0;
-                //Why 1? it ignores the header
-                for (int row = 1; row < data.size(); row++) {
+			for( int column : positions )
+			{
+				LongStatistic stat = new LongStatistic( headers[column] );
+				int counter = 0;
+				//Why 1? it ignores the header
+				for( int row = 1; row < data.size(); row++ )
+				{
 
-                    if( data.get(row)[column].equals("") ){
-                        counter++;
+					if( data.get( row )[column].equals( "" ) )
+					{
+						counter++;
 
-                        //Finishing up if any trailing empty fields.
-                        if(row == data.size()-1 && counter > 0){
-                            while( counter != 0 ){
-                                long value = stat.getDataAsList().get( stat.size()-1 ).getValue();
-                                stat.addData( new LongDataPoint( value ) );
-                                counter--;
-                            }
-                        }
-                        continue;
-                    }else{
-                        //Fill in the blanks with linear data.
-                        if( counter > 0 ){
-                            long a = stat.getDataAsList().isEmpty() ? new LongDataPoint( data.get( row )[ column ] ).getValue() : stat.getDataAsList().get( stat.size()-1 ).getValue();
-                            long b = new LongDataPoint (data.get( row) [ column ] ).getValue();
+						//Finishing up if any trailing empty fields.
+						if( row == data.size() - 1 && counter > 0 )
+						{
+							while( counter != 0 )
+							{
+								long value = stat.getDataAsList().get( stat.size() - 1 ).getValue();
+								stat.addData( new LongDataPoint( value ) );
+								counter--;
+							}
+						}
+						continue;
+					}
+					else
+					{
+						//Fill in the blanks with linear data.
+						if( counter > 0 )
+						{
+							long a = stat.getDataAsList().isEmpty() ? new LongDataPoint( data.get( row )[column] ).getValue() : stat.getDataAsList().get( stat.size() - 1 ).getValue();
+							long b = new LongDataPoint( data.get( row )[column] ).getValue();
 
-                            long diff = ( b - a ) / counter;
+							long diff = ( b - a ) / counter;
 
-                            while( counter != 0 ){
-                                a += diff;
-                                stat.addData( new LongDataPoint( a ) );
-                                counter--;
-                            }
-                            continue;
-                        }
-                    }
-                    try {
-                        stat.addData(new LongDataPoint( data.get(row)[column] ) );
-                    } catch (NumberFormatException e) {
-                        System.out.println("cannot parse " + stat.getName() + ", is [ " + data.get(row)[column]+ " ] really a number? Ignoring and continuing with the rest.");
-                        break;
-                    }
-                }
+							while( counter != 0 )
+							{
+								a += diff;
+								stat.addData( new LongDataPoint( a ) );
+								counter--;
+							}
+							continue;
+						}
+					}
+					try
+					{
+						stat.addData( new LongDataPoint( data.get( row )[column] ) );
+					}
+					catch( NumberFormatException e )
+					{
+						System.out.println( "cannot parse " + stat.getName() + ", is [ " + data.get( row )[column] + " ] really a number? Ignoring and continuing with the rest." );
+						break;
+					}
+				}
 
-                if(!stat.getDataAsList().isEmpty()){
-                    statistics.add(stat);
-                }
-            }
+				if( !stat.getDataAsList().isEmpty() )
+				{
+					statistics.add( stat );
+				}
+			}
 
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+		}
+		catch( IOException exception )
+		{
+			exception.printStackTrace();
+		}
 
-        return statistics;
-    }
+		return statistics;
+	}
 
-    private List<Integer> locatePositions(ObservableList<String> requiredHeaders, String[] headers) {
+	private List<Integer> locatePositions( ObservableList<String> requiredHeaders, String[] headers )
+	{
 
-        LinkedList<Integer> headerIndices = new LinkedList<Integer>();
+		LinkedList<Integer> headerIndices = new LinkedList<Integer>();
 
-        for (int i = 0; i < requiredHeaders.size(); i++) {
-            for (int j = 0; j < headers.length; j++) {
-                if (requiredHeaders.get(i).compareTo(headers[j]) == 0) {
-                    headerIndices.add(j);
-                    break;
-                }
-            }
-        }
-        return headerIndices;
-    }
+		for( int i = 0; i < requiredHeaders.size(); i++ )
+		{
+			for( int j = 0; j < headers.length; j++ )
+			{
+				if( requiredHeaders.get( i ).compareTo( headers[j] ) == 0 )
+				{
+					headerIndices.add( j );
+					break;
+				}
+			}
+		}
+		return headerIndices;
+	}
 }

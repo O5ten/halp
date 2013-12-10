@@ -1,6 +1,8 @@
 package com.osten.halp.impl.shared;
 
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
+import com.osten.halp.api.model.profiling.Bottleneck;
+import com.osten.halp.api.model.profiling.Detection;
 import com.osten.halp.api.model.profiling.Relation;
 import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.Statistic;
@@ -70,7 +72,13 @@ public class LongProfileModel implements ProfileModel<Long> {
         return descriptions.get(selectedProfile);
     }
 
-    @Override
+	@Override
+	public void selectProfile( Profile profile )
+	{
+		this.selectedProfile = profile;
+	}
+
+	@Override
     public void resetModel() {
         //Nothing to reset, yet.
     }
@@ -207,11 +215,29 @@ public class LongProfileModel implements ProfileModel<Long> {
     }
 
     /**
-     * The only thing that can be modified.
+     * The only thing that should be possible to modify in this model.
      */
     public Profile getSelectedProfile() {
         return selectedProfile;
     }
+
+
+	@Override
+	public List<Bottleneck> getBottlenecks( Map<Statistic<Long>, List<Detection>> detectionsByStatistic){
+
+		List<Bottleneck> bottlenecks = new ArrayList<Bottleneck>();
+		List<Relation> relations = getRelations();
+
+		for(Statistic<Long> statistic : detectionsByStatistic.keySet() ){
+
+			Bottleneck potentialBottleneck = new Bottleneck();
+
+		}
+
+		 //TODO
+
+		return bottlenecks;
+	 }
 
     public void setSelectedProfile(Profile selectedProfile) {
         this.selectedProfile = selectedProfile;
