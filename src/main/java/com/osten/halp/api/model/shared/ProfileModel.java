@@ -1,9 +1,6 @@
 package com.osten.halp.api.model.shared;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.Bottleneck;
-import com.osten.halp.api.model.profiling.Detection;
-import com.osten.halp.api.model.profiling.Relation;
+import com.osten.halp.api.model.profiling.*;
 import com.osten.halp.api.model.statistics.Statistic;
 
 import java.util.List;
@@ -53,7 +50,7 @@ public interface ProfileModel<Data>
 
 	public Profile getSelectedProfile();
 
-	public List<Bottleneck> getBottlenecks(  Map<Statistic<Long>, List<Detection>> detectionsByStatistic );
+	public PointsOfInterest getPointsOfInterests( Map<Statistic<Long>, List<Detection<Data>>> detectionsByStatistic );
 
 	public void resetModel();
 

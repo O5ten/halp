@@ -13,7 +13,7 @@ public class Range
 		this.from = from;
 	}
 
-	public Long getFrom()
+	public Long getStart()
 	{
 		return from;
 	}
@@ -23,7 +23,7 @@ public class Range
 		this.from = from;
 	}
 
-	public Long getTo()
+	public Long getStop()
 	{
 		return to;
 	}

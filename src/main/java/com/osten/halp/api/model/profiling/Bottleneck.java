@@ -20,7 +20,7 @@ public class Bottleneck
 	 */
 	public Bottleneck(){
 
-	}
+   }
 
 	public int getStartTime()
 	{
