@@ -30,7 +30,13 @@ public interface ProfileModel<Data>
 	 * @return
 	 */
 
+	/**
+	 * Defined by relations.xml these two functions returns what filter and or detector should be applied on each type of model.
+	 * @param dataType
+	 * @return
+	 */
 	public AdaptiveFilter.FilterType getFilterByDataType( Statistic.DataType dataType );
+	public ChangeDetector.DetectorType getDetectorByDataType( Statistic.DataType dataType );
 
 	/*
 	 * Fetch description by profile
@@ -46,11 +52,19 @@ public interface ProfileModel<Data>
 	public String getDescription();
 
 
+	/**
+	 * Select what profile is currently selected, has an effect on getRelations-method. The ALL profile does not do anything magical here it is up to the user to make sure that data from all profiles are used and handled.
+	 * @param profile
+	 */
 	public void selectProfile( Profile profile );
 
 	public Profile getSelectedProfile();
 
-	public PointsOfInterest getPointsOfInterests( Map<Statistic<Long>, List<Detection<Data>>> detectionsByStatistic );
+	public PointsOfInterest getPointsOfInterests();
+
+	public Bottleneck getSuggestedBottleneck( List<PointsOfInterest> pois );
+
+	public void generatePointsOfInterests( Map<Statistic<Long>, List<Detection<Data>>> detectionsByStatistic );
 
 	public void resetModel();
 

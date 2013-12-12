@@ -3,6 +3,8 @@ package com.osten.halp.views.profiling;
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
 import com.osten.halp.api.model.profiling.ChangeDetector;
+import com.osten.halp.api.model.profiling.Detection;
+import com.osten.halp.api.model.profiling.PointsOfInterest;
 import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
@@ -24,6 +26,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -85,14 +90,27 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 			{
 				filter.reset();
 				filter.adapt( statistic );
+
 				for( ChangeDetector<Long> detector : getDetectorModel().getDetectorsByStatisticName( statistic.getName() ) )
 				{
 					detector.detect( filter );
 					detector.printDetections();
 				}
-				filter.printAggregatedData(); //TODO Remove printout
+				generatePointsOfInterests();
+            filter.printAggregatedData();
 			}
 		}
+	}
+
+	private void generatePointsOfInterests(){
+		HashMap<Statistic<Long>, List<Detection<Long>>> statisticDetectionMap = new HashMap<Statistic<Long>, List<Detection<Long>>>();
+		for( Statistic<Long> statistic : getDataModel().getData()){
+			statisticDetectionMap.put( statistic, new ArrayList<Detection<Long>>() );
+			for( ChangeDetector<Long> changeDetector : getDetectorModel().getDetectorsByStatisticName( statistic.getName() ) ) {
+				statisticDetectionMap.put( statistic, changeDetector.getDetections() );
+			}
+		}
+		getProfileModel().generatePointsOfInterests( statisticDetectionMap );
 	}
 
 	public SelectionModel getTabsSelectionModel()
@@ -105,7 +123,6 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 	{
 		System.out.println( "ProfilingView Repopulated using: " );
 		dataModel.printModel(); //TODO Remove printout
-
 
 		statisticSelector.getItems().clear();
 		statisticTypeSelector.getItems().clear();
@@ -121,9 +138,30 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 		statisticTypeSelector.getSelectionModel().select( selectedStatistic.getType() );
 	}
 
-	private void setStatisticTypesByProfile()
+	private void setFiltersAndDetectorsByProfileAndStatisticTypes()
 	{
-	  //TODO fix.
+		ProfileModel.Profile selectedProfile = getSelectedProfile();
+		getProfileModel().selectProfile( selectedProfile );
+
+		if( selectedProfile != ProfileModel.Profile.Custom )
+		{
+			getFilterModel().resetModel();
+			getDetectorModel().resetModel();
+		}
+
+		//TODO Handle the ALL profile here when time
+
+		for( Statistic<Long> statistic : getDataModel().getData() )
+		{
+			AdaptiveFilter.FilterType filterType = getProfileModel().getFilterByDataType( statistic.getType() );
+			ChangeDetector.DetectorType detectorType = getProfileModel().getDetectorByDataType( statistic.getType() );
+			if(filterType != null && detectorType != null ){
+				getFilterModel().createFilter( statistic.getName(), filterType );
+				getDetectorModel().createDetector( statistic.getName(), detectorType );
+			}
+		}
+
+
 	}
 
 	@Override
@@ -201,11 +239,14 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 		{
 			if( !statisticTypeSelector.getItems().isEmpty() )
 			{
-
 				String name = getSelectedStatistic();
 
 				System.out.println( name + " is of statistic-type " + newType );
 				getDataModel().getDataByName( name ).setType( newType );
+
+				if( getSelectedProfile() != ProfileModel.Profile.Custom){
+					setFiltersAndDetectorsByProfileAndStatisticTypes();
+				}
 
 				//Filters
 				SelectableFilterView filterView = new SelectableFilterView( ProfilingView.this );
@@ -227,6 +268,7 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 		@Override
 		public void changed( ObservableValue observableValue, Object o, Object o2 )
 		{
+			setFiltersAndDetectorsByProfileAndStatisticTypes();
 			System.out.println( getSelectedProfile().toString() + "-profile selected" );
 		}
 	};

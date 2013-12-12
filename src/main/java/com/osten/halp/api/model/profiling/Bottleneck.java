@@ -10,8 +10,6 @@ import java.util.List;
  */
 public class Bottleneck
 {
-	private int startTime;
-	private int stopTime;
 	private ProfileModel.Profile type;
 	private String description;
 
@@ -21,26 +19,6 @@ public class Bottleneck
 	public Bottleneck(){
 
    }
-
-	public int getStartTime()
-	{
-		return startTime;
-	}
-
-	public void setStartTime( int startTime )
-	{
-		this.startTime = startTime;
-	}
-
-	public int getStopTime()
-	{
-		return stopTime;
-	}
-
-	public void setStopTime( int stopTime )
-	{
-		this.stopTime = stopTime;
-	}
 
 	public ProfileModel.Profile getType()
 	{

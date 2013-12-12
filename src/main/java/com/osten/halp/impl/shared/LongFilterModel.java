@@ -22,12 +22,10 @@ import java.util.*;
 public class LongFilterModel implements FilterModel<Long> {
 
     Map<String, List<AdaptiveFilter<Long>>> filters;
-    Map<String, List<StopRule<Long>>> rules;
     Map<String, List<ChangeDetector<Long>>> detectors;
 
     public LongFilterModel() {
         filters = new HashMap<String, List<AdaptiveFilter<Long>>>();
-        rules = new HashMap<String, List<StopRule<Long>>>();
     }
 
     @Override
@@ -59,7 +57,6 @@ public class LongFilterModel implements FilterModel<Long> {
     @Override
     public void resetModel() {
         this.filters.clear();
-        this.rules.clear();
     }
 
     @Override

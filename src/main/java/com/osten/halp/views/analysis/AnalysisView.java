@@ -2,6 +2,8 @@ package com.osten.halp.views.analysis;
 
 import com.osten.halp.api.model.gui.PopulatableView;
 import com.osten.halp.api.model.profiling.AdaptiveFilter;
+import com.osten.halp.api.model.profiling.PointsOfInterest;
+import com.osten.halp.api.model.profiling.Range;
 import com.osten.halp.api.model.shared.DataModel;
 import com.osten.halp.api.model.shared.DetectorModel;
 import com.osten.halp.api.model.shared.FilterModel;
@@ -18,9 +20,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleButtonBuilder;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RegionBuilder;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -35,162 +38,226 @@ import java.util.ResourceBundle;
  * Time: 15:18
  * To change this template use File | Settings | File Templates.
  */
-public class AnalysisView extends HBox implements Initializable, PopulatableView<Long> {
+public class AnalysisView extends HBox implements Initializable, PopulatableView<Long>
+{
 
-    MainWindowView parentView;
+	MainWindowView parentView;
 
-    @FXML
-    private ToggleButton filterButton;
+	@FXML
+	private ToggleButton filterButton;
 
-    @FXML
-    private LineChart<Number, Number> lineChart;
+	@FXML
+	private LineChart<Number, Number> lineChart;
 
-    @FXML
-    private VBox statisticSelector;
+	@FXML
+	private VBox statisticSelector;
 
-    public AnalysisView(MainWindowView parentView) {
-        this.parentView = parentView;
-        FXMLUtils.load(this);
-    }
+	@FXML
+	private VBox pointsOfInterest;
 
-    @FXML
-    public void handleFilterButton(ActionEvent actionEvent) {
-        rebuildLineChart();
-        if (filterButton.selectedProperty().get()) {
-            for (Statistic<Long> data : getDataModel().getData()) {
-                if(!getSelectedData().contains( data )){
-                    addFiltersByStatistic( data );
-                }
-            }
-        }
-    }
+	public AnalysisView( MainWindowView parentView )
+	{
+		this.parentView = parentView;
+		FXMLUtils.load( this );
+	}
 
-    private void addFiltersByStatistic( Statistic<Long> statistic){
-        for (AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName(statistic.getName())) {
-            if(!getSelectedData().contains( statistic.getName() )){
-                filter.getEstimates().setName(statistic.getName() + "->" + filter.getType() + "->" + filter.getEstimates().getAggregatedType());
-                lineChart.getData().add(asSeries(filter.getEstimates()));
-            }
-        }
-    }
+	@FXML
+	public void handleFilterButton( ActionEvent actionEvent )
+	{
+		rebuildLineChart();
+		if( filterButton.selectedProperty().get() )
+		{
+			for( Statistic<Long> data : getDataModel().getData() )
+			{
+				if( !getSelectedData().contains( data ) )
+				{
+					addFiltersByStatistic( data );
+				}
+			}
+		}
+	}
 
-    private List<String> getSelectedData(){
-        List<String> selectedList = new ArrayList<String>();
-        for( Node child : statisticSelector.getChildren() ){
-            if(child.getId().equals( "hideDataButton" )){
-                ToggleButton button = (ToggleButton)child;
-                if(button.selectedProperty().get()){
-                    selectedList.add( button.getText() );
-                }
-            }
-        }
-        return selectedList;
-    }
+	private void addFiltersByStatistic( Statistic<Long> statistic )
+	{
+		for( AdaptiveFilter<Long> filter : getFilterModel().getFiltersByStatisticName( statistic.getName() ) )
+		{
+			if( !getSelectedData().contains( statistic.getName() ) )
+			{
+				filter.getEstimates().setName( statistic.getName() + "->" + filter.getType() + "->" + filter.getEstimates().getAggregatedType() );
+				lineChart.getData().add( asSeries( filter.getEstimates() ) );
+			}
+		}
+	}
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        filterButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    filterButton.setText("Hide Filters");
-                } else {
-                    filterButton.setText("Display Filters");
-                }
-            }
-        });
-    }
+	private List<String> getSelectedData()
+	{
+		List<String> selectedList = new ArrayList<String>();
+		for( Node child : statisticSelector.getChildren() )
+		{
+			if( child.getId().equals( "hideDataButton" ) )
+			{
+				ToggleButton button = ( ToggleButton )child;
+				if( button.selectedProperty().get() )
+				{
+					selectedList.add( button.getText() );
+				}
+			}
+		}
+		return selectedList;
+	}
 
-    private XYChart.Series asSeries(Statistic<Long> statistic) {
-        XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-        series.setName(statistic.getName());
+	@Override
+	public void initialize( URL url, ResourceBundle resourceBundle )
+	{
+		filterButton.selectedProperty().addListener( new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed( ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue )
+			{
+				if( newValue )
+				{
+					filterButton.setText( "Hide Filters" );
+				}
+				else
+				{
+					filterButton.setText( "Display Filters" );
+				}
+			}
+		} );
+	}
 
-        List<DataPoint<Long>> data = statistic.getDataAsList();
+	private XYChart.Series asSeries( Statistic<Long> statistic )
+	{
+		XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+		series.setName( statistic.getName() );
 
-        for (int i = 0; i < data.size(); i++) {
-            series.getData().add(new XYChart.Data<Number, Number>(i + 0.05, data.get(i).getValue()));
-        }
+		List<DataPoint<Long>> data = statistic.getDataAsList();
 
-        return series;
-    }
+		for( int i = 0; i < data.size(); i++ )
+		{
+			series.getData().add( new XYChart.Data<Number, Number>( i + 0.05, data.get( i ).getValue() ) );
+		}
 
-    @Override
-    public void populate(DataModel<Long> dataModel, FilterModel<Long> filterModel, DetectorModel<Long> detectorModel, ProfileModel<Long> profileModel) {
+		return series;
+	}
 
-        rebuildStatisticSelector();
-        rebuildLineChart();
-        dataModel.printModel();
-    }
+	@Override
+	public void populate( DataModel<Long> dataModel, FilterModel<Long> filterModel, DetectorModel<Long> detectorModel, ProfileModel<Long> profileModel )
+	{
 
-    private void rebuildLineChart() {
-        lineChart.getData().clear();
-        List<String> selectedData = getSelectedData();
-        for (Statistic<Long> statistic : getDataModel().getData()) {
-            if(!selectedData.contains( statistic.getName())){
-                lineChart.getData().add(asSeries(statistic));
-            }
-        }
-    }
+		rebuildStatisticSelector();
+		rebuildLineChart();
+		rebuildPointsOfInterest();
+		dataModel.printModel();
+	}
 
-    private void rebuildStatisticSelector() {
-        statisticSelector.getChildren().clear();
-        for (Statistic<Long> statistic : getDataModel().getData()) {
-            final ToggleButton statisticButton = ToggleButtonBuilder.create().prefWidth(250).id("hideDataButton").text(statistic.getName()).build();
-            statisticButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean selected) {
-                    if (selected) {
-                        removeSeriesByName(statisticButton.getText());
-                        statisticButton.setStyle("-fx-opacity: 0.2;");
-                    } else {
-                        Statistic<Long> data = getDataModel().getDataByName(statisticButton.getText());
-                        lineChart.getData().add(asSeries(data));
-                        statisticButton.setStyle("-fx-opacity: 1;");
+	private void rebuildPointsOfInterest()
+	{
 
-                        //If the filterButton is selected then we should add the filters for that statistic.
-                        if( filterButton.selectedProperty().get() ){
-                            addFiltersByStatistic( data );
-                        }
-                    }
-                }
-            });
-            statisticSelector.getChildren().add(statisticButton);
-        }
-    }
+		pointsOfInterest.getChildren().clear();
 
-    private void removeSeriesByName(String name) {
-        List<XYChart.Series> candidatesForRemoval = new ArrayList<XYChart.Series>();
-        for (XYChart.Series<Number, Number> currentSeries : lineChart.getData()) {
-            //The statistic
-            if (currentSeries.getName().equals(name)) {
-                candidatesForRemoval.add( currentSeries );
-                continue;
-            }
-            //Any filters applied to the chart.
-            if( filterButton.selectedProperty().get() && currentSeries.getName().startsWith( name )){
-                candidatesForRemoval.add( currentSeries );
-                continue;
-            }
-        }
-        for( XYChart.Series series : candidatesForRemoval ) {
-            lineChart.getData().remove(series);
-        }
+		PointsOfInterest poi = getProfileModel().getPointsOfInterests();
+
+		if( poi.getPointOfInterest().get( 0 ).getStop() != 0 )
+		{
+			pointsOfInterest.getChildren().add( LabelBuilder.create().text( poi.getProfile().toString() ).build() );
+
+			for( Range range : poi.getPointOfInterest() )
+			{
+				pointsOfInterest.getChildren().add( LabelBuilder.create().text( "Time --{ " + range.getStart() + " --> " + range.getStop() + "}" ).build() );
+			}
+			pointsOfInterest.getChildren().add( ButtonBuilder.create().text( "Isolate Statistics" ).build() );
+		}
+	}
+
+	private void rebuildLineChart()
+	{
+		lineChart.getData().clear();
+		List<String> selectedData = getSelectedData();
+		for( Statistic<Long> statistic : getDataModel().getData() )
+		{
+			if( !selectedData.contains( statistic.getName() ) )
+			{
+				lineChart.getData().add( asSeries( statistic ) );
+			}
+		}
+	}
+
+	private void rebuildStatisticSelector()
+	{
+		statisticSelector.getChildren().clear();
+		for( Statistic<Long> statistic : getDataModel().getData() )
+		{
+			final ToggleButton statisticButton = ToggleButtonBuilder.create().prefWidth( 250 ).id( "hideDataButton" ).text( statistic.getName() ).build();
+			statisticButton.selectedProperty().addListener( new ChangeListener<Boolean>()
+			{
+				@Override
+				public void changed( ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean selected )
+				{
+					if( selected )
+					{
+						removeSeriesByName( statisticButton.getText() );
+						statisticButton.setStyle( "-fx-opacity: 0.2;" );
+					}
+					else
+					{
+						Statistic<Long> data = getDataModel().getDataByName( statisticButton.getText() );
+						lineChart.getData().add( asSeries( data ) );
+						statisticButton.setStyle( "-fx-opacity: 1;" );
+
+						//If the filterButton is selected then we should add the filters for that statistic.
+						if( filterButton.selectedProperty().get() )
+						{
+							addFiltersByStatistic( data );
+						}
+					}
+				}
+			} );
+			statisticSelector.getChildren().add( statisticButton );
+		}
+	}
+
+	private void removeSeriesByName( String name )
+	{
+		List<XYChart.Series> candidatesForRemoval = new ArrayList<XYChart.Series>();
+		for( XYChart.Series<Number, Number> currentSeries : lineChart.getData() )
+		{
+			//The statistic
+			if( currentSeries.getName().equals( name ) )
+			{
+				candidatesForRemoval.add( currentSeries );
+				continue;
+			}
+			//Any filters applied to the chart.
+			if( filterButton.selectedProperty().get() && currentSeries.getName().startsWith( name ) )
+			{
+				candidatesForRemoval.add( currentSeries );
+				continue;
+			}
+		}
+		for( XYChart.Series series : candidatesForRemoval )
+		{
+			lineChart.getData().remove( series );
+		}
 
 
-    }
+	}
 
-    @Override
-    public DataModel<Long> getDataModel() {
-        return parentView.getDataModel();
-    }
+	@Override
+	public DataModel<Long> getDataModel()
+	{
+		return parentView.getDataModel();
+	}
 
-    @Override
-    public FilterModel<Long> getFilterModel() {
-        return parentView.getFilterModel();
-    }
+	@Override
+	public FilterModel<Long> getFilterModel()
+	{
+		return parentView.getFilterModel();
+	}
 
-    @Override
-    public ProfileModel<Long> getProfileModel() {
-        return parentView.getProfileModel();
-    }
+	@Override
+	public ProfileModel<Long> getProfileModel()
+	{
+		return parentView.getProfileModel();
+	}
 }

@@ -37,6 +37,8 @@ public class LongProfileModel implements ProfileModel<Long>
 		profiles = new HashMap<Profile, List<Relation>>();
 		descriptions = new HashMap<Profile, String>();
 
+		this.selectedProfile = Profile.Custom;
+
 		buildProfiles();
 	}
 
@@ -64,6 +66,20 @@ public class LongProfileModel implements ProfileModel<Long>
 			}
 		}
 		return foundFilter;
+	}
+
+	@Override
+	public ChangeDetector.DetectorType getDetectorByDataType( Statistic.DataType dataType )
+	{
+		ChangeDetector.DetectorType suggestedDetector = null;
+		for( Relation relation : profiles.get( selectedProfile ) )
+		{
+			if( relation.getType() == dataType )
+			{
+				suggestedDetector = relation.getDetector();
+			}
+		}
+		return suggestedDetector;
 	}
 
 	@Override
@@ -287,12 +303,16 @@ public class LongProfileModel implements ProfileModel<Long>
 		return 0;
 	}
 
+	private PointsOfInterest poi = new PointsOfInterest( 0 );
+
 	@Override
-	public PointsOfInterest getPointsOfInterests( Map<Statistic<Long>, List<Detection<Long>>> detectionsByStatistic )
+	public PointsOfInterest getPointsOfInterests(){
+		return poi;
+	}
+
+	@Override
+	public void generatePointsOfInterests( Map<Statistic<Long>, List<Detection<Long>>> detectionsByStatistic )
 	{
-
-		List<Bottleneck> bottlenecks = new ArrayList<Bottleneck>();
-
 		int i = 0;
 		for( Statistic<Long> statistic : detectionsByStatistic.keySet() )
 		{
@@ -301,28 +321,44 @@ public class LongProfileModel implements ProfileModel<Long>
 		}
 
 		PointsOfInterest poi = new PointsOfInterest( i );
+		poi.setProfile( selectedProfile );
 		for( Statistic<Long> statistic : detectionsByStatistic.keySet() )
 		{
 			int state = getStateByStatistic( statistic );
 
+			poi.addInvolvedStatistic( statistic );
+
 			//true
 			if( state > 0 )
 			{
-				poi.and( detectionsByStatistic.get( statistic ));
+				poi.and( detectionsByStatistic.get( statistic ) );
 			}//false
 			else if( state < 0 )
 			{
 				poi.nand( detectionsByStatistic.get( statistic ) );
-			}else{
+			}
+			else
+			{
 				//Super does not matter yet, in theory it could strengthen a guess
 			}
 		}
-
-		return poi;
+		this.poi = poi;
 	}
 
-	public void setSelectedProfile( Profile selectedProfile )
+	@Override
+	public Bottleneck getSuggestedBottleneck( List<PointsOfInterest> pois )
 	{
-		this.selectedProfile = selectedProfile;
+		PointsOfInterest suggestedBottleneck = null;
+		for( PointsOfInterest poi : pois){
+			List<Range> ranges = poi.getPointOfInterest();
+			int accumulator = 0;
+			for(Range range : ranges){
+
+			}
+		}
+		Bottleneck bn = new Bottleneck();
+		bn.setDescription( getDescriptionByProfile( suggestedBottleneck.getProfile() ) );
+		bn.setType( suggestedBottleneck.getProfile() );
+		return bn;
 	}
 }
