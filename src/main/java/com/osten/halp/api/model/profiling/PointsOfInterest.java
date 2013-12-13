@@ -96,8 +96,8 @@ public class PointsOfInterest
 					continue;
 				}
 
-				//Inside to out
-				if( detection.getStart() >= range.getStart() && detection.getStop() > range.getStop() && detection.getStart() <= range.getStop()  )
+				//Inside out
+				if( detection.getStart() >= range.getStart() && detection.getStop() > range.getStop() && detection.getStart() <= range.getStop() )
 				{
 					newPointsOfInterest.add( new Range( range.getStart(), detection.getStart() ) );
 					continue;
@@ -118,15 +118,18 @@ public class PointsOfInterest
 				}
 
 				//Before
-				if( detection.getStop() < range.getStart() ){
-					if( getPointsOfInterest().getLast().equals( range )){
+				if( detection.getStop() < range.getStart() )
+				{
+					if( getPointsOfInterest().getLast().equals( range ) )
+					{
 						newPointsOfInterest.add( range );
 						continue;
 					}
 				}
 
 				//Overlap
-				if(detection.getStart() <= range.getStart() && detection.getStop() >= range.getStop()){
+				if( detection.getStart() <= range.getStart() && detection.getStop() >= range.getStop() )
+				{
 					droppedRanges.add( range );
 				}
 			}
@@ -135,18 +138,128 @@ public class PointsOfInterest
 			{
 				setPointsOfInterest( newPointsOfInterest );
 			}
-			if( newPointsOfInterest.isEmpty() && !droppedRanges.isEmpty()){
-				for(Range range : droppedRanges ){
+			if( newPointsOfInterest.isEmpty() && !droppedRanges.isEmpty() )
+			{
+				for( Range range : droppedRanges )
+				{
 					getPointsOfInterest().remove( range );
 				}
 			}
 		}
 	}
 
+	public void or( List<Detection<Long>> detections )
+	{
+		for( Detection<Long> detection : detections )
+		{
+			LinkedList<Range> newPointsOfInterest = new LinkedList<Range>();
+			long previousDetectionStart = -1;
+
+			for( int i = 0; i < getPointsOfInterest().size(); i++ )
+			{
+				Range range = getPointsOfInterest().get( i );
+
+				//Before and therefore irrelevant.
+				if(detection.getStart() > range.getStart()){
+
+				}
+
+				//Inside
+				if( detection.getStart() >= range.getStart() && detection.getStop() <= range.getStop() )
+				{
+					newPointsOfInterest.add( range );
+					continue;
+				}
+
+				//Inside out
+				if( detection.getStart() >= range.getStart() && detection.getStop() > range.getStop() && detection.getStart() <= range.getStop() )
+				{
+					previousDetectionStart = range.getStart();
+				}
+
+				//Outside to in
+				if( detection.getStart() <= range.getStart() && detection.getStop() >= range.getStart() && detection.getStop() <= range.getStop() )
+				{
+					if( previousDetectionStart != -1 )
+					{
+						newPointsOfInterest.add( new Range( previousDetectionStart, range.getStop() ) );
+						previousDetectionStart = -1;
+					}
+					else
+					{
+						newPointsOfInterest.add( new Range( detection.getStart(), range.getStop() ) );
+					}
+				}
+
+				//Overlap
+				if( detection.getStart() < range.getStart() && detection.getStop() >= range.getStop() )
+				{
+					if( previousDetectionStart == -1 )
+					{
+						previousDetectionStart = detection.getStart();
+					}
+				}
+
+				//After the last one
+				if( detection.getStart() >= range.getStop() && i == getPointOfInterest().size() - 1 )
+				{
+					if(detection.getStart() == range.getStop()){
+						newPointsOfInterest.add( new Range( range.getStart(), detection.getStop() ) );
+
+					}else{
+						newPointsOfInterest.add( range );
+						newPointsOfInterest.add( new Range( detection.getStart(), detection.getStop() ) );
+					}
+					break;
+				}
+
+				//Inbetween two
+				if( detection.getStart() > range.getStop() && detection.getStop() < getPointOfInterest().get( i+1 ).getStart()){
+					newPointsOfInterest.add( new Range( detection.getStart(), detection.getStop()) );
+				}
+
+
+				//Last one
+				if( i == getPointOfInterest().size() - 1 && previousDetectionStart != -1){
+					newPointsOfInterest.add( new Range( previousDetectionStart, detection.getStop() ) );
+				}
+			}
+
+			if( !newPointsOfInterest.isEmpty() )
+			{
+				setPointsOfInterest( newPointsOfInterest );
+			}
+		}
+	}
+
+	public void nor()
+	{
+		throw new UnsupportedOperationException( "Not yet implemented" );
+	}
+
 
 	public LinkedList<Range> getPointsOfInterest()
 	{
 		return pointsOfInterest;
+	}
+
+	public Relevance getRelevance( Range range )
+	{
+
+		long relevance = range.getStop() - range.getStart();
+		if( relevance < 5 )
+		{
+			return Relevance.Irrelevant;
+		}
+		else if( relevance < 10 )
+		{
+			return Relevance.Moderate;
+		}
+		else
+		{
+			return Relevance.Substantial;
+		}
+
 	}
 
 	public void setPointsOfInterest( LinkedList<Range> pointsOfInterest )
@@ -172,5 +285,10 @@ public class PointsOfInterest
 	public void addInvolvedStatistic( Statistic<Long> involvedStatistic )
 	{
 		involvedStatistics.add( involvedStatistic );
+	}
+
+	private enum Relevance
+	{
+		Irrelevant, Moderate, Substantial
 	}
 }

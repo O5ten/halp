@@ -329,17 +329,25 @@ public class LongProfileModel implements ProfileModel<Long>
 			poi.addInvolvedStatistic( statistic );
 
 			//true
-			if( state > 0 )
+			if( state == 1 )
 			{
 				poi.and( detectionsByStatistic.get( statistic ) );
-			}//false
-			else if( state < 0 )
+			}
+			//false
+			else if( state == -1 )
 			{
 				poi.nand( detectionsByStatistic.get( statistic ) );
 			}
+			//Omnitrue
+			else if( state == 2){
+				poi.or( detectionsByStatistic.get( statistic ) );
+			//Omnifalse
+			}else if(state == -2){
+				//poi.nor( detectionsByStatistic.get( statistic ) )
+			}
 			else
 			{
-				//Super does not matter yet, in theory it could strengthen a guess
+				//Does not matter which
 			}
 		}
 		this.poi = poi;

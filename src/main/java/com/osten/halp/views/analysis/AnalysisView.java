@@ -158,15 +158,23 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 
 		PointsOfInterest poi = getProfileModel().getPointsOfInterests();
 
-		if( poi.getPointOfInterest().get( 0 ).getStop() != 0 )
+		if( poi.getPointOfInterest().size() > 1 || poi.getPointOfInterest().get( 0 ).getStop() > 0)
 		{
+			pointsOfInterest.getChildren().clear();
 			pointsOfInterest.getChildren().add( LabelBuilder.create().text( poi.getProfile().toString() ).build() );
-
+			int i = 0;
 			for( Range range : poi.getPointOfInterest() )
 			{
-				pointsOfInterest.getChildren().add( LabelBuilder.create().text( "Time --{ " + range.getStart() + " --> " + range.getStop() + "}" ).build() );
+				if( range.getStart() <= range.getStop()){
+					pointsOfInterest.getChildren().add( LabelBuilder.create().text( poi.getRelevance( range ) + " point of Interest #" + i + " { " + range.getStart() + " --> " + range.getStop() + " }" ).build() );
+				}
+				i++;
 			}
 			pointsOfInterest.getChildren().add( ButtonBuilder.create().text( "Isolate Statistics" ).build() );
+		}
+		if( poi.getPointOfInterest().size() == 1 && poi.getPointOfInterest().get( 0 ).getStop() == 0){
+	      pointsOfInterest.getChildren().clear();
+			pointsOfInterest.getChildren().add( LabelBuilder.create().text( " No points of interest detected " ).build() );
 		}
 	}
 

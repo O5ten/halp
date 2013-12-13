@@ -17,6 +17,8 @@ public class QuantumRelation implements Relation
 
 	public final static int FALSE = -1;
 	public final static int TRUE = 1;
+	public final static int OMNITRUE = 2;
+	public final static int OMNIFALSE = -2;
 	public final static int SUPER = 0;
 
 	private int state;
@@ -100,6 +102,14 @@ public class QuantumRelation implements Relation
 		else if( state.equalsIgnoreCase( "false" ) )
 		{
 			this.state = -1;
+		}
+		else if( state.equalsIgnoreCase( "omnitrue" ) )
+		{
+			this.state = 2;
+		}
+		else if( state.equalsIgnoreCase( "omnifalse" ) )
+		{
+			this.state = -2;
 		}
 		else
 		{
