@@ -188,7 +188,6 @@ public class PointsOfInterest
 				//Do nothing since B segment is inside A.
 				if( A.getStop() > B.getStart() && A.getStop() > B.getStop() )
 				{
-
 					if( hasNext( original, detections ) )
 					{
 						if( first( original, detections ) )
@@ -279,11 +278,27 @@ public class PointsOfInterest
 			}
 			pointsOfInterest = store;
 		}
+		else
+		{
+			if( !detectionList.isEmpty() )
+			{
+				for( Detection<Long> detection : detectionList )
+				{
+					pointsOfInterest.add( detectionToRange( detection ) );
+				}
+				Collections.sort( pointsOfInterest );
+			}
+		}
 	}
 
 	public boolean hasNext( LinkedList<Range> listA, LinkedList<Range> listB )
 	{
 		return listA.size() > 0 && listB.size() > 0;
+	}
+
+	public boolean hasNext( LinkedList<Range> list )
+	{
+		return list.size() > 0;
 	}
 
 
@@ -319,9 +334,99 @@ public class PointsOfInterest
 		return new Range( detection.getStart(), detection.getStop() );
 	}
 
-	public void nor()
+	public void not( List<Detection<Long>> notDetectionList )
 	{
-		throw new UnsupportedOperationException( "Not yet implemented" );
+		if( !notDetectionList.isEmpty() )
+		{
+			LinkedList<Range> original = new LinkedList<Range>();
+			LinkedList<Range> detections = new LinkedList<Range>();
+
+			for( Detection<Long> detection : notDetectionList )
+			{
+				detections.add( detectionToRange( detection ) );
+			}
+
+			original.addAll( pointsOfInterest );
+
+			Collections.sort( detections );
+			Collections.sort( original );
+			//New list of pointsOfInterests;
+			LinkedList<Range> store = new LinkedList<Range>();
+
+			Range A = original.pop();
+			Range B = detections.pop();
+
+			//LinkedList hopping between smallest starts of detections and points of interests and assembles a list containing the OR result of both lists.
+			do
+			{
+				//Identical segments. Remove.
+				if( A.getStop().equals( B.getStop() ) && A.getStart().equals( B.getStart() ) )
+				{
+					A = original.pop();
+					B = detections.pop();
+					continue;
+				}
+
+				//Segment A Before B
+				if( A.getStop() < B.getStart() )
+				{
+					store.add( A );
+					if( hasNext( detections ))
+					A = original.pop();
+					continue;
+				}
+
+				//Segment A After B
+				if( A.getStart() > B.getStop() )
+				{
+					if( hasNext( detections )){
+						B = detections.pop();
+					}
+					continue;
+				}
+
+				//B segment overlaps after A segment.
+				if( A.getStop() >= B.getStart() && A.getStop() < B.getStop() )
+				{
+					store.add( new Range( A.getStart(), B.getStart() ) );
+					A = original.pop();
+					continue;
+				}
+
+				//Do nothing since B segment is inside A.
+				if( A.getStart() < B.getStart() && A.getStop() > B.getStop() )
+				{
+					if( A.getStart() < B.getStart() )
+					{
+						store.add( new Range( A.getStart(), B.getStart() ) );
+					}
+					A = new Range( B.getStop(), A.getStop() );
+					B = detections.pop();
+				}
+
+				if( !hasNext( detections ) )
+				{
+
+					store.add( new Range( A.getStart(), B.getStart() ) );
+
+					if( B.getStop() < A.getStop() )
+					{
+						store.add( new Range( B.getStop(), A.getStop() ) );
+					}
+				}
+			} while( original.size() > 0 || detections.size() > 0 );
+
+			//Cleanup, if anything is left in any of the lists then push them onto store
+			if( original.size() > 0 )
+			{
+				for( Range range : original )
+				{
+					store.add( range );
+				}
+			}
+
+			pointsOfInterest = store;
+		}
 	}
 
 

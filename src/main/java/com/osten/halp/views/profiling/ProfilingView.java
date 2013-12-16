@@ -96,10 +96,10 @@ public class ProfilingView extends HBox implements Initializable, PopulatableVie
 					detector.detect( filter );
 					detector.printDetections();
 				}
-				generatePointsOfInterests();
             filter.printAggregatedData();
 			}
 		}
+		generatePointsOfInterests();
 	}
 
 	private void generatePointsOfInterests(){

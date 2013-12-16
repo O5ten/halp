@@ -49,7 +49,7 @@ public class PointsOfInterestTest
 	public void twoAndOneShouldBeOne(){
 		LongStatistic statistic = new LongStatistic();
 
-		for(long i = 0; i < 1; i++){
+		for(long i = 0; i < 100; i++){
 			statistic.addData( new LongDataPoint( i ) );
 		}
 		List<Detection<Long>> detections = new ArrayList <Detection<Long>>();
@@ -82,7 +82,9 @@ public class PointsOfInterestTest
 		lotsOfOverlappingDetections.add( detection7 );
 
 		PointsOfInterest PoI = new PointsOfInterest( statistic );
-		PoI.or( detections );
+		PoI.and( detections );
+
+		PoI.not( detections );
 
 		PoI.or( lotsOfOverlappingDetections );
 

@@ -11,10 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -322,6 +319,9 @@ public class LongProfileModel implements ProfileModel<Long>
 
 		PointsOfInterest poi = new PointsOfInterest( i );
 		poi.setProfile( selectedProfile );
+		Map<Integer, List<List<Detection<Long>>>> omniDetections = new HashMap<Integer, List<List<Detection<Long>>>>();
+		omniDetections.put( 2, new ArrayList<List<Detection<Long>>>() );
+		omniDetections.put( -2, new ArrayList<List<Detection<Long>>>() );
 		for( Statistic<Long> statistic : detectionsByStatistic.keySet() )
 		{
 			int state = getStateByStatistic( statistic );
@@ -340,15 +340,22 @@ public class LongProfileModel implements ProfileModel<Long>
 			}
 			//Omnitrue
 			else if( state == 2){
-				poi.or( detectionsByStatistic.get( statistic ) );
+				omniDetections.get(state).add( detectionsByStatistic.get( statistic ) );
+
 			//Omnifalse
 			}else if(state == -2){
-				//poi.nor( detectionsByStatistic.get( statistic ) )
+				omniDetections.get(state).add( detectionsByStatistic.get( statistic ) );
 			}
 			else
 			{
 				//Does not matter which
 			}
+		}
+		for ( List<Detection<Long>> detections : omniDetections.get( 2 ) ){
+			poi.or( detections );
+		}
+		for ( List<Detection<Long>> detections : omniDetections.get( -2 ) ){
+			poi.not( detections );
 		}
 		this.poi = poi;
 	}
