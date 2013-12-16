@@ -68,8 +68,23 @@ public class PointsOfInterestTest
 		detections.add( detection3 );
 		detections.add( detection4 );
 
+		List<Detection<Long>> lotsOfOverlappingDetections = new ArrayList<Detection<Long>>();
+
+		Detection<Long> detection5 = new Detection<Long>( 75l, 100l );
+		detection5.setStop( 95l );
+		Detection<Long> detection6 = new Detection<Long>( 99l, 100l );
+		detection6.setStop( 100l );
+		Detection<Long> detection7 = new Detection<Long>( 35l, 100l );
+		detection7.setStop( 40l );
+
+		lotsOfOverlappingDetections.add( detection6 );
+		lotsOfOverlappingDetections.add( detection5 );
+		lotsOfOverlappingDetections.add( detection7 );
+
 		PointsOfInterest PoI = new PointsOfInterest( statistic );
 		PoI.or( detections );
+
+		PoI.or( lotsOfOverlappingDetections );
 
 		PoI.getPointOfInterest();
 

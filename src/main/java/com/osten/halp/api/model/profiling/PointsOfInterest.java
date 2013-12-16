@@ -4,6 +4,7 @@ import com.osten.halp.api.model.shared.ProfileModel;
 import com.osten.halp.api.model.statistics.Statistic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -148,88 +149,174 @@ public class PointsOfInterest
 		}
 	}
 
-	public void or( List<Detection<Long>> detections )
+	public void or( List<Detection<Long>> detectionList )
 	{
-		for( Detection<Long> detection : detections )
+		if( !detectionList.isEmpty() )
 		{
-			LinkedList<Range> newPointsOfInterest = new LinkedList<Range>();
-			long previousDetectionStart = -1;
+			LinkedList<Range> original = new LinkedList<Range>();
+			LinkedList<Range> detections = new LinkedList<Range>();
 
-			for( int i = 0; i < getPointsOfInterest().size(); i++ )
+			for( Detection<Long> detection : detectionList )
 			{
-				Range range = getPointsOfInterest().get( i );
+				detections.add( detectionToRange( detection ) );
+			}
+			Collections.sort( detections );
+			original.addAll( pointsOfInterest );
 
-				//Before and therefore irrelevant.
-				if(detection.getStart() > range.getStart()){
+			//New list of pointsOfInterests;
+			LinkedList<Range> store = new LinkedList<Range>();
 
-				}
 
-				//Inside
-				if( detection.getStart() >= range.getStart() && detection.getStop() <= range.getStop() )
+			Range A;
+			Range B;
+
+			//Initial search first the next first.
+			if( first( original, detections ) )
+			{
+				A = original.pop();
+				B = detections.pop();
+			}
+			else
+			{
+				B = original.pop();
+				A = detections.pop();
+			}
+
+			//LinkedList hopping between smallest starts of detections and points of interests and assembles a list containing the OR result of both lists.
+			do
+			{
+				//Do nothing since B segment is inside A.
+				if( A.getStop() > B.getStart() && A.getStop() > B.getStop() )
 				{
-					newPointsOfInterest.add( range );
-					continue;
-				}
 
-				//Inside out
-				if( detection.getStart() >= range.getStart() && detection.getStop() > range.getStop() && detection.getStart() <= range.getStop() )
-				{
-					previousDetectionStart = range.getStart();
-				}
-
-				//Outside to in
-				if( detection.getStart() <= range.getStart() && detection.getStop() >= range.getStart() && detection.getStop() <= range.getStop() )
-				{
-					if( previousDetectionStart != -1 )
+					if( hasNext( original, detections ) )
 					{
-						newPointsOfInterest.add( new Range( previousDetectionStart, range.getStop() ) );
-						previousDetectionStart = -1;
+						if( first( original, detections ) )
+						{
+							B = detections.pop();
+						}
+						else
+						{
+							B = original.pop();
+						}
 					}
 					else
 					{
-						newPointsOfInterest.add( new Range( detection.getStart(), range.getStop() ) );
+						store.add( A );
 					}
 				}
 
-				//Overlap
-				if( detection.getStart() < range.getStart() && detection.getStop() >= range.getStop() )
+				//B segment overlaps after A segment.
+				if( A.getStop() >= B.getStart() && A.getStop() < B.getStop() )
 				{
-					if( previousDetectionStart == -1 )
+					A = new Range( A.getStart(), B.getStop() );
+
+					if( hasNext( original, detections ) )
 					{
-						previousDetectionStart = detection.getStart();
+						if( first( original, detections ) )
+						{
+							B = original.pop();
+						}
+						else
+						{
+							B = original.pop();
+						}
+					}
+					else
+					{
+						store.add( A );
 					}
 				}
 
-				//After the last one
-				if( detection.getStart() >= range.getStop() && i == getPointOfInterest().size() - 1 )
+				//segment stands alone.
+				if( A.getStop() < B.getStart() )
 				{
-					if(detection.getStart() == range.getStop()){
-						newPointsOfInterest.add( new Range( range.getStart(), detection.getStop() ) );
-
-					}else{
-						newPointsOfInterest.add( range );
-						newPointsOfInterest.add( new Range( detection.getStart(), detection.getStop() ) );
+					store.add( A );
+					if( hasNext( original, detections ) )
+					{
+						if( first( original, B ) )
+						{
+							A = original.pop();
+							B = detections.pop();
+						}
+						else
+						{
+							B = original.pop();
+							A = detections.pop();
+						}
 					}
-					break;
 				}
+			} while( original.size() > 0 && detections.size() > 0 );
 
-				//Inbetween two
-				if( detection.getStart() > range.getStop() && detection.getStop() < getPointOfInterest().get( i+1 ).getStart()){
-					newPointsOfInterest.add( new Range( detection.getStart(), detection.getStop()) );
-				}
-
-
-				//Last one
-				if( i == getPointOfInterest().size() - 1 && previousDetectionStart != -1){
-					newPointsOfInterest.add( new Range( previousDetectionStart, detection.getStop() ) );
-				}
-			}
-
-			if( !newPointsOfInterest.isEmpty() )
+			//Cleanup, if anything is left in any of the lists then push them onto store
+			if( original.size() > 0 )
 			{
-				setPointsOfInterest( newPointsOfInterest );
+				for( Range range : original )
+				{
+					if( store.peekLast().getStop() < range.getStart() )
+					{
+						store.add( range );
+					}
+					else
+					{
+						store.add( new Range( store.pollLast().getStart(), range.getStop() ) );
+					}
+				}
 			}
+			else
+			{
+				for( Range detection : detections )
+				{
+					if( store.peekLast().getStop() < detection.getStart() )
+					{
+						store.add( detection );
+					}
+					else
+					{
+						store.add( new Range( store.pollLast().getStart(), detection.getStop() ) );
+					}
+				}
+			}
+			pointsOfInterest = store;
 		}
+	}
+
+	public boolean hasNext( LinkedList<Range> listA, LinkedList<Range> listB )
+	{
+		return listA.size() > 0 && listB.size() > 0;
+	}
+
+
+	public boolean first( LinkedList<Range> listA, LinkedList<Range> listB )
+	{
+
+		Range a = listA.peek();
+		Range b = listB.peek();
+		if( b.getStart() > a.getStart() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean first( LinkedList<Range> listA, Range B )
+	{
+		if( B.getStart() > listA.peek().getStart() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	private Range detectionToRange( Detection<Long> detection )
+	{
+		return new Range( detection.getStart(), detection.getStop() );
 	}
 
 	public void nor()
