@@ -336,7 +336,7 @@ public class LongProfileModel implements ProfileModel<Long>
 			//false
 			else if( state == -1 )
 			{
-				poi.nand( detectionsByStatistic.get( statistic ) );
+				poi.not( detectionsByStatistic.get( statistic ) );
 			}
 			//Omnitrue
 			else if( state == 2){

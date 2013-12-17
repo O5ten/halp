@@ -21,10 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.RegionBuilder;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,7 +50,10 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	private VBox statisticSelector;
 
 	@FXML
-	private VBox pointsOfInterest;
+	private TextArea pointsOfInterest;
+
+	@FXML
+	private HBox poiVisualizer;
 
 	public AnalysisView( MainWindowView parentView )
 	{
@@ -154,27 +154,56 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 	private void rebuildPointsOfInterest()
 	{
 
-		pointsOfInterest.getChildren().clear();
+		pointsOfInterest.clear();
 
 		PointsOfInterest poi = getProfileModel().getPointsOfInterests();
 
 		if( poi.getPointOfInterest().size() > 1 || poi.getPointOfInterest().get( 0 ).getStop() > 0)
 		{
-			pointsOfInterest.getChildren().clear();
-			pointsOfInterest.getChildren().add( LabelBuilder.create().text( poi.getProfile().toString() ).build() );
+			pointsOfInterest.clear();
+			pointsOfInterest.appendText( " Based on " + poi.getProfile().toString() + "-profiling\n==================================\nPoI severity-level --> # { Time started --> Time Stopped }\n==================================\n\n" );
+			poiVisualizer.getChildren().clear();
 			int i = 0;
 			for( Range range : poi.getPointOfInterest() )
 			{
-				if( range.getStart() <= range.getStop()){
-					pointsOfInterest.getChildren().add( LabelBuilder.create().text( poi.getRelevance( range ) + " point of Interest #" + i + " { " + range.getStart() + " --> " + range.getStop() + " }" ).build() );
+				   if( range.getStart() <= range.getStop()){
+					pointsOfInterest.appendText( poi.getRelevance( range ) + " --> #" + i + " { " + range.getStart() + " --> " + range.getStop() + " }\n" );
 				}
 				i++;
 			}
-			pointsOfInterest.getChildren().add( ButtonBuilder.create().text( "Isolate Statistics" ).build() );
+			pointsOfInterest.appendText( "==================================" );
+
+			poiVisualizer.getChildren().clear();
+			long lastDetection = 0;
+			for( int j = 0; j < poi.getPointOfInterest().size(); j++) {
+				Range range = poi.getPointOfInterest().get( j );
+				String color = "green";
+				switch( poi.getRelevance( range ) ){
+					case Irrelevant:
+						color = "yellow";
+						break;
+					case Moderate:
+						color = "red";
+						break;
+					case Substantial:
+						color = "black";
+					default:
+				}
+				Region region = RegionBuilder.create().style( "-fx-background-color: green;" ).maxHeight( 15 ).minWidth( Math.abs( range.getStart() - lastDetection ) ).maxWidth( 50 ).build();
+				poiVisualizer.getChildren().add( region );
+
+				if(j == 100){
+					poiVisualizer.getChildren().add( RegionBuilder.create().style( "-fx-background-color: black;" ).minHeight( 25 ).maxHeight( 25 ).minWidth( 5 ).build() );
+				}
+
+				Region region2 = RegionBuilder.create().style( "-fx-background-color: " + color + ";" ).maxHeight( 15 ).minWidth( range.getStop() - range.getStart() ).maxWidth( 50 ).build();
+				poiVisualizer.getChildren().add( region2 );
+				lastDetection = range.getStop();
+			}
 		}
 		if( poi.getPointOfInterest().size() == 1 && poi.getPointOfInterest().get( 0 ).getStop() == 0){
-	      pointsOfInterest.getChildren().clear();
-			pointsOfInterest.getChildren().add( LabelBuilder.create().text( " No points of interest detected " ).build() );
+	      pointsOfInterest.clear();
+			pointsOfInterest.setText( "No points of interest detected " );
 		}
 	}
 
