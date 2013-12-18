@@ -161,7 +161,7 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 		if( poi.getPointOfInterest().size() > 1 || poi.getPointOfInterest().get( 0 ).getStop() > 0)
 		{
 			pointsOfInterest.clear();
-			pointsOfInterest.appendText( " Based on " + poi.getProfile().toString() + "-profiling\n==================================\nPoI severity-level --> # { Time started --> Time Stopped }\n==================================\n\n" );
+			pointsOfInterest.appendText( " Based on " + poi.getProfile().toString() + "-profiling\n==================================\nPoI severity-level --> # { Time started --> Time Stopped }\n==================================\n" );
 			poiVisualizer.getChildren().clear();
 			int i = 0;
 			for( Range range : poi.getPointOfInterest() )
@@ -175,6 +175,7 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 
 			poiVisualizer.getChildren().clear();
 			long lastDetection = 0;
+			int accumulator = 0;
 			for( int j = 0; j < poi.getPointOfInterest().size(); j++) {
 				Range range = poi.getPointOfInterest().get( j );
 				String color = "green";
@@ -199,7 +200,14 @@ public class AnalysisView extends HBox implements Initializable, PopulatableView
 				Region region2 = RegionBuilder.create().style( "-fx-background-color: " + color + ";" ).maxHeight( 15 ).minWidth( range.getStop() - range.getStart() ).maxWidth( 50 ).build();
 				poiVisualizer.getChildren().add( region2 );
 				lastDetection = range.getStop();
+				if( poi.getRelevance( range ) != PointsOfInterest.Relevance.Irrelevant){
+					accumulator += range.getStop() - range.getStart();
+				}
+
+
 			}
+			double d = Math.round( ( accumulator * 100 ) / poi.getInvolvedStatistics().get( 0 ).size() );
+			pointsOfInterest.appendText( "\nBottleneck likelihood ==> { " + d + "% }" );
 		}
 		if( poi.getPointOfInterest().size() == 1 && poi.getPointOfInterest().get( 0 ).getStop() == 0){
 	      pointsOfInterest.clear();
