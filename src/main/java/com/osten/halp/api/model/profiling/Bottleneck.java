@@ -1,9 +1,6 @@
 package com.osten.halp.api.model.profiling;
 
 import com.osten.halp.api.model.shared.ProfileModel;
-import com.osten.halp.api.model.statistics.Statistic;
-
-import java.util.List;
 
 /**
  * Created by osten on 12/10/13.
@@ -12,13 +9,17 @@ public class Bottleneck
 {
 	private ProfileModel.Profile type;
 	private String description;
+	private double likeliness;
 
 	/**
 	 * A bottleneck, from A to B, discrete time. Contains relevantDetections on statistics.
 	 */
-	public Bottleneck(){
-
-   }
+	public Bottleneck( ProfileModel.Profile type, String description, double likeliness )
+	{
+		this.type = type;
+		this.description = description;
+		this.setLikeliness( likeliness );
+	}
 
 	public ProfileModel.Profile getType()
 	{
@@ -38,5 +39,15 @@ public class Bottleneck
 	public void setDescription( String description )
 	{
 		this.description = description;
+	}
+
+	public double getLikeliness()
+	{
+		return likeliness;
+	}
+
+	public void setLikeliness( double likeliness )
+	{
+		this.likeliness = likeliness;
 	}
 }

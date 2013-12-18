@@ -70,6 +70,6 @@ public interface ProfileModel<Data>
 
 	public static enum Profile
 	{
-		Custom, CPU, Memory, Network, ALL
+		Custom, CPU, Memory, Network, None, ALL
 	}
 }

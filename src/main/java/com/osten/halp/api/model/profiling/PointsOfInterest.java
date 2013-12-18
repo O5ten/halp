@@ -333,7 +333,7 @@ public class PointsOfInterest
 				}
 
 				//Segment A Before B
-				if( A.getStop() < B.getStart() )
+				if( A.getStop() <= B.getStart() )
 				{
 					store.add( A );
 					if( hasNext( original ) )
@@ -353,12 +353,16 @@ public class PointsOfInterest
 					if( hasNext( detections ) )
 					{
 						B = detections.pop();
+					}else{
+						if( hasNext( original )){
+							A = original.pop();
+						}
 					}
 					continue;
 				}
 
 				//since B segment is inside A we can conclude that the first part of A before B is a new store and recreate A to be the second part.
-				if( A.getStart() < B.getStart() && A.getStop() > B.getStop() )
+				if( A.getStart() <= B.getStart() && A.getStop() > B.getStop() )
 				{
 					if( A.getStart() < B.getStart() )
 					{
@@ -371,7 +375,8 @@ public class PointsOfInterest
 					continue;
 				}
 
-				if( A.getStart() > B.getStart() && A.getStop() < B.getStop()){
+				//Segment B is inside segment A
+				if( A.getStart() >= B.getStart() && A.getStop() <= B.getStop()){
 					if( hasNext( original ) ){
 						A = original.pop();
 					}

@@ -14,7 +14,9 @@ import com.osten.halp.impl.shared.LongDetectorModel;
 import com.osten.halp.impl.shared.LongFilterModel;
 import com.osten.halp.impl.shared.LongProfileModel;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +42,9 @@ public class HalpRunner
 	//Calculators
 	DataCruncher<Long> cruncher;
 
+	//Results
+	List<Bottleneck> bottlenecks;
+
 	//Settings
 	private File outputFile;
 	private boolean usingOutputFile;
@@ -61,6 +66,7 @@ public class HalpRunner
 
 		//Calculators
 		cruncher = new LongDataCruncher();
+		bottlenecks = new ArrayList<Bottleneck>();
 
 		//Settings
 		guessUponEnd = false;
@@ -133,15 +139,17 @@ public class HalpRunner
 									dataTypes.get( i ).add( getTypebyString( type ) );
 								}
 							}
-						}else{
+						}
+						else
+						{
 
-								String[] dataType = arg.split( "," );
-								dataTypes.add( new ArrayList<Statistic.DataType>() );
+							String[] dataType = arg.split( "," );
+							dataTypes.add( new ArrayList<Statistic.DataType>() );
 
-								for( String type : dataType )
-								{
-									dataTypes.get( 0 ).add( getTypebyString( type ) );
-								}
+							for( String type : dataType )
+							{
+								dataTypes.get( 0 ).add( getTypebyString( type ) );
+							}
 
 						}
 
@@ -274,7 +282,8 @@ public class HalpRunner
 		int accumulator = 0;
 		for( Range range : poi.getPointOfInterest() )
 		{
-			if( poi.getRelevance( range ) != PointsOfInterest.Relevance.Irrelevant){
+			if( poi.getRelevance( range ) != PointsOfInterest.Relevance.Irrelevant )
+			{
 				accumulator += range.getStop() - range.getStart();
 			}
 			System.out.println( poi.getRelevance( range ) + " PoI #" + ++i + "--> { " + range.getStart() + " --> " + range.getStop() + " }" );
@@ -282,6 +291,11 @@ public class HalpRunner
 		double d = Math.round( ( accumulator * 100 ) / poi.getInvolvedStatistics().get( 0 ).size() );
 		System.out.println( "\nBottleneck likelihood ==> { " + d + "% }" );
 		System.out.println( "================================================" );
+
+		if( guessUponEnd )
+		{
+			bottlenecks.add( new Bottleneck( poi.getProfile(), profileModel.getDescriptionByProfile( poi.getProfile() ), d ) );
+		}
 	}
 
 	public void assembleFiltersDetectorsAndPointsOfInterestByProfile()
@@ -293,6 +307,7 @@ public class HalpRunner
 			if( profile != ProfileModel.Profile.Custom )
 			{
 				profileModel.resetModel();
+				filterModel.resetModel();
 				detectorModel.resetModel();
 			}
 
@@ -311,9 +326,38 @@ public class HalpRunner
 			generatePointsOfInterests();
 			findAndShowPointsOfInterest();
 		}
+
+		if( guessUponEnd )
+		{
+			Bottleneck candidate = new Bottleneck( ProfileModel.Profile.None, "No profiling has been performed", 0d );
+			for( Bottleneck bn : bottlenecks )
+			{
+				if( candidate.getLikeliness() < bn.getLikeliness() && bn.getLikeliness() > 10 )
+				{
+					candidate = bn;
+				}
+			}
+
+			if( usingOutputFile )
+			{
+				try
+				{
+					FileWriter bw = new FileWriter( outputFile );
+					bw.write("Type,Confidence\n" + candidate.getType().toString() + "," + candidate.getLikeliness() );
+				}
+				catch( IOException e )
+				{
+					//Nothing
+				}
+			}else{
+				System.out.println( "With confidence of " + candidate.getLikeliness() + "% it is most likely a " + candidate.getType().toString() + "-bottleneck.");
+			}
+
+		}
 	}
 
-	private void applyFiltersAndDetectors(){
+	private void applyFiltersAndDetectors()
+	{
 		for( Statistic<Long> statistic : dataModel.getData() )
 		{
 			for( AdaptiveFilter<Long> filter : filterModel.getFiltersByStatisticName( statistic.getName() ) )
@@ -331,11 +375,14 @@ public class HalpRunner
 		}
 	}
 
-	private void generatePointsOfInterests(){
+	private void generatePointsOfInterests()
+	{
 		HashMap<Statistic<Long>, List<Detection<Long>>> statisticDetectionMap = new HashMap<Statistic<Long>, List<Detection<Long>>>();
-		for( Statistic<Long> statistic : dataModel.getData()){
+		for( Statistic<Long> statistic : dataModel.getData() )
+		{
 			statisticDetectionMap.put( statistic, new ArrayList<Detection<Long>>() );
-			for( ChangeDetector<Long> changeDetector : detectorModel.getDetectorsByStatisticName( statistic.getName() ) ) {
+			for( ChangeDetector<Long> changeDetector : detectorModel.getDetectorsByStatisticName( statistic.getName() ) )
+			{
 				statisticDetectionMap.put( statistic, changeDetector.getDetections() );
 			}
 		}
