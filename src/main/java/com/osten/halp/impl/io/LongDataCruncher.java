@@ -27,94 +27,178 @@ public class LongDataCruncher implements DataCruncher<Long>
 	public List<Statistic<Long>> crunch( DataReader reader, ObservableList<String> requiredHeaders )
 	{
 
-	ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
+		ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
 
-	try
-	{
-		String[] headers = reader.readLine( 1 );
-		ArrayList<String[]> data = reader.readFile();
-		List<Integer> positions = locatePositions( requiredHeaders, headers );
-
-		for( int column : positions )
+		try
 		{
-			LongStatistic stat = new LongStatistic( headers[column] );
-			int counter = 0;
-			//Why 1? it ignores the header
-			for( int row = 1; row < data.size(); row++ )
+			String[] headers = reader.readLine( 1 );
+			ArrayList<String[]> data = reader.readFile();
+			List<Integer> positions = locatePositions( requiredHeaders, headers );
+
+			for( int column : positions )
 			{
-
-				if( data.get( row )[column].equals( "" ) )
+				LongStatistic stat = new LongStatistic( headers[column] );
+				int counter = 0;
+				//Why 1? it ignores the header
+				for( int row = 1; row < data.size(); row++ )
 				{
-					counter++;
 
-					//Finishing up if any trailing empty fields.
-					if( row == data.size() - 1 && counter > 0 )
+					if( data.get( row )[column].equals( "" ) )
 					{
-						while( counter != 0 )
-						{
-							long value = stat.getDataAsList().get( stat.size() - 1 ).getValue();
-							stat.addData( new LongDataPoint( value ) );
-							counter--;
-						}
-					}
-					continue;
-				}
-				else
-				{
-					//Fill in the blanks with linear data.
-					if( counter > 0 )
-					{
-						long a = stat.getDataAsList().isEmpty() ? new LongDataPoint( data.get( row )[column] ).getValue() : stat.getDataAsList().get( stat.size() - 1 ).getValue();
-						long b = new LongDataPoint( data.get( row )[column] ).getValue();
+						counter++;
 
-						long diff = ( b - a ) / counter;
-
-						while( counter != 0 )
+						//Finishing up if any trailing empty fields.
+						if( row == data.size() - 1 && counter > 0 )
 						{
-							a += diff;
-							stat.addData( new LongDataPoint( a ) );
-							counter--;
+							while( counter != 0 )
+							{
+								long value = stat.getDataAsList().get( stat.size() - 1 ).getValue();
+								stat.addData( new LongDataPoint( value ) );
+								counter--;
+							}
 						}
 						continue;
 					}
+					else
+					{
+						//Fill in the blanks with linear data.
+						if( counter > 0 )
+						{
+							long a = stat.getDataAsList().isEmpty() ? new LongDataPoint( data.get( row )[column] ).getValue() : stat.getDataAsList().get( stat.size() - 1 ).getValue();
+							long b = new LongDataPoint( data.get( row )[column] ).getValue();
+
+							long diff = ( b - a ) / counter;
+
+							while( counter != 0 )
+							{
+								a += diff;
+								stat.addData( new LongDataPoint( a ) );
+								counter--;
+							}
+							continue;
+						}
+					}
+					try
+					{
+						stat.addData( new LongDataPoint( data.get( row )[column] ) );
+					}
+					catch( NumberFormatException e )
+					{
+						System.out.println( "cannot parse " + stat.getName() + ", is [ " + data.get( row )[column] + " ] really a number? Ignoring and continuing with the rest." );
+						break;
+					}
 				}
-				try
+
+				if( !stat.getDataAsList().isEmpty() )
 				{
-					stat.addData( new LongDataPoint( data.get( row )[column] ) );
-				}
-				catch( NumberFormatException e )
-				{
-					System.out.println( "cannot parse " + stat.getName() + ", is [ " + data.get( row )[column] + " ] really a number? Ignoring and continuing with the rest." );
-					break;
+					statistics.add( stat );
 				}
 			}
 
-			if( !stat.getDataAsList().isEmpty() )
-			{
-				statistics.add( stat );
-			}
+		}
+		catch( IOException exception )
+		{
+			exception.printStackTrace();
 		}
 
+
+		return normalize( statistics );
 	}
-	catch( IOException exception )
+
+	@Override
+	public List<Statistic<Long>> crunch( DataReader reader )
 	{
-		exception.printStackTrace();
+		ArrayList<Statistic<Long>> statistics = new ArrayList<Statistic<Long>>();
+
+		try
+		{
+			String[] headers = reader.readLine( 1 );
+			ArrayList<String[]> data = reader.readFile();
+			List<Integer> positions = locatePositions( headers );
+
+			for( int column : positions )
+			{
+				LongStatistic stat = new LongStatistic( headers[column] );
+				int counter = 0;
+				//Why 1? it ignores the header
+				for( int row = 1; row < data.size(); row++ )
+				{
+
+					if( data.get( row )[column].equals( "" ) )
+					{
+						counter++;
+
+						//Finishing up if any trailing empty fields.
+						if( row == data.size() - 1 && counter > 0 )
+						{
+							while( counter != 0 )
+							{
+								long value = stat.getDataAsList().get( stat.size() - 1 ).getValue();
+								stat.addData( new LongDataPoint( value ) );
+								counter--;
+							}
+						}
+						continue;
+					}
+					else
+					{
+						//Fill in the blanks with linear data.
+						if( counter > 0 )
+						{
+							long a = stat.getDataAsList().isEmpty() ? new LongDataPoint( data.get( row )[column] ).getValue() : stat.getDataAsList().get( stat.size() - 1 ).getValue();
+							long b = new LongDataPoint( data.get( row )[column] ).getValue();
+
+							long diff = ( b - a ) / counter;
+
+							while( counter != 0 )
+							{
+								a += diff;
+								stat.addData( new LongDataPoint( a ) );
+								counter--;
+							}
+							continue;
+						}
+					}
+					try
+					{
+						stat.addData( new LongDataPoint( data.get( row )[column] ) );
+					}
+					catch( NumberFormatException e )
+					{
+						System.out.println( "cannot parse " + stat.getName() + ", is [ " + data.get( row )[column] + " ] really a number? Ignoring and continuing with the rest." );
+						break;
+					}
+				}
+
+				if( !stat.getDataAsList().isEmpty() )
+				{
+					statistics.add( stat );
+				}
+			}
+
+		}
+		catch( IOException exception )
+		{
+			exception.printStackTrace();
+		}
+
+
+		return normalize( statistics );
 	}
 
-
-
-	return normalize( statistics );
-}
-
-	public List<Statistic<Long>> normalize ( List<Statistic<Long>> statistics ){
+	public List<Statistic<Long>> normalize( List<Statistic<Long>> statistics )
+	{
 
 		int length = longest( statistics );
 		//Normalize all lengths of measurements.
-		for( Statistic<Long> stat : statistics){
-			if( length > stat.getDataAsList().size()){
+		for( Statistic<Long> stat : statistics )
+		{
+			if( length > stat.getDataAsList().size() )
+			{
 				int n = length - stat.getDataAsList().size();
-				DataPoint<Long> fillerData = stat.getDataAsList().get( stat.getDataAsList().size()-1 );
-				while( n > 0){
+				DataPoint<Long> fillerData = stat.getDataAsList().get( stat.getDataAsList().size() - 1 );
+				while( n > 0 )
+				{
 					stat.addData( fillerData );
 					n--;
 				}
@@ -123,14 +207,27 @@ public class LongDataCruncher implements DataCruncher<Long>
 		return statistics;
 	}
 
-	private int longest( List<Statistic<Long>> statistics){
+	private int longest( List<Statistic<Long>> statistics )
+	{
 		int i = 0;
-		for( Statistic<Long> statistic : statistics ){
-			if(statistic.getDataAsList().size() > i ){
+		for( Statistic<Long> statistic : statistics )
+		{
+			if( statistic.getDataAsList().size() > i )
+			{
 				i = statistic.getDataAsList().size();
 			}
 		}
 		return i;
+	}
+
+	private List<Integer> locatePositions( String[] headers )
+	{
+		LinkedList<Integer> headerIndices = new LinkedList<Integer>();
+		for( int i = 0; i < headers.length; i++ )
+		{
+			headerIndices.add( i );
+		}
+		return headerIndices;
 	}
 
 	private List<Integer> locatePositions( ObservableList<String> requiredHeaders, String[] headers )

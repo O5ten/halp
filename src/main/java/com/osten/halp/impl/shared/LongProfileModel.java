@@ -108,8 +108,6 @@ public class LongProfileModel implements ProfileModel<Long>
 		Profiling, Profile, Description, Relations, Relation, Type, State, Detector, Filter
 	}
 
-	;
-
 	@Override
 	public void buildProfiles()
 	{
@@ -358,22 +356,5 @@ public class LongProfileModel implements ProfileModel<Long>
 			poi.not( detections );
 		}
 		this.poi = poi;
-	}
-
-	@Override
-	public Bottleneck getSuggestedBottleneck( List<PointsOfInterest> pois )
-	{
-		PointsOfInterest suggestedBottleneck = null;
-		for( PointsOfInterest poi : pois){
-			List<Range> ranges = poi.getPointOfInterest();
-			int accumulator = 0;
-			for(Range range : ranges){
-
-			}
-		}
-		Bottleneck bn = new Bottleneck();
-		bn.setDescription( getDescriptionByProfile( suggestedBottleneck.getProfile() ) );
-		bn.setType( suggestedBottleneck.getProfile() );
-		return bn;
 	}
 }

@@ -21,4 +21,7 @@ public interface DataCruncher<T>
 	 * @return a list
 	 */
 	public List<Statistic<T>> crunch( DataReader reader, ObservableList<String> headers);
+	public List<Statistic<T>> crunch( DataReader reader );
+
+
 }

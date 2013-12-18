@@ -357,11 +357,34 @@ public class PointsOfInterest
 					continue;
 				}
 
+				//since B segment is inside A we can conclude that the first part of A before B is a new store and recreate A to be the second part.
+				if( A.getStart() < B.getStart() && A.getStop() > B.getStop() )
+				{
+					if( A.getStart() < B.getStart() )
+					{
+						store.add( new Range( A.getStart(), B.getStart() ) );
+					}
+					A = new Range( B.getStop(), A.getStop() );
+					if(hasNext(detections)){
+						B = detections.pop();
+					}
+					continue;
+				}
+
+				if( A.getStart() > B.getStart() && A.getStop() < B.getStop()){
+					if( hasNext( original ) ){
+						A = original.pop();
+					}
+					continue;
+				}
+
 				//B segment overlaps after A segment.
 				if( A.getStop() >= B.getStart() && A.getStop() < B.getStop() )
 				{
 					store.add( new Range( A.getStart(), B.getStart() ) );
-					A = original.pop();
+					if(hasNext(original)){
+						A = original.pop();
+					}
 					continue;
 				}
 
@@ -371,18 +394,7 @@ public class PointsOfInterest
 					A = new Range( B.getStop(), A.getStop() );
 				}
 
-				//since B segment is inside A we can conclude that the first part of A before B is a new store and recreate A to be the second part.
-				if( A.getStart() < B.getStart() && A.getStop() > B.getStop() )
-				{
-					if( A.getStart() < B.getStart() )
-					{
-						store.add( new Range( A.getStart(), B.getStart() ) );
-					}
-					A = new Range( B.getStop(), A.getStop() );
-					B = detections.pop();
-				}
-
-
+				//Stop the last element.
 				if( !hasNext( detections ) )
 				{
 					store.add( new Range( A.getStart(), B.getStart() ) );

@@ -62,8 +62,6 @@ public interface ProfileModel<Data>
 
 	public PointsOfInterest getPointsOfInterests();
 
-	public Bottleneck getSuggestedBottleneck( List<PointsOfInterest> pois );
-
 	public void generatePointsOfInterests( Map<Statistic<Long>, List<Detection<Data>>> detectionsByStatistic );
 
 	public void resetModel();
