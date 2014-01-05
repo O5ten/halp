@@ -169,6 +169,11 @@ public class PointsOfInterest
 			LinkedList<Range> store = new LinkedList<Range>();
 
 			//Initial search first the next first.
+
+			if( detections.isEmpty() ){
+				return;
+			}
+
 			Range A = original.pop();
 			Range B = detections.pop();
 
@@ -183,6 +188,7 @@ public class PointsOfInterest
 						A = original.pop();
 						B = detections.pop();
 					}
+					continue;
 				}
 
 				//B segment is behind A is behind B.

@@ -123,7 +123,6 @@ public class LongDataCruncher implements DataCruncher<Long>
 				//Why 1? it ignores the header
 				for( int row = 1; row < data.size(); row++ )
 				{
-					System.out.println(row);
 					if( data.get( row )[column].equals( "" ) )
 					{
 						counter++;
@@ -131,11 +130,19 @@ public class LongDataCruncher implements DataCruncher<Long>
 						//Finishing up if any trailing empty fields.
 						if( row == data.size() - 1 && counter > 0 )
 						{
-							while( counter != 0 )
-							{
-								long value = stat.getDataAsList().get( stat.size() - 1 ).getValue();
-								stat.addData( new LongDataPoint( value ) );
-								counter--;
+							//Special case, when there is no measurements at all.
+							if(stat.size() == 0){
+								while( counter > 0){
+									stat.addData( new LongDataPoint( 0l ));
+									counter--;
+								}
+							}else{
+								while( counter > 0 )
+								{
+									long value = stat.getDataAsList().get( stat.size() - 1 ).getValue();
+									stat.addData( new LongDataPoint( value ) );
+									counter--;
+								}
 							}
 						}
 						continue;
