@@ -331,11 +331,13 @@ public class LongProfileModel implements ProfileModel<Long>
 			{
 				poi.and( detectionsByStatistic.get( statistic ) );
 			}
+
 			//false
 			else if( state == -1 )
 			{
 				poi.not( detectionsByStatistic.get( statistic ) );
 			}
+
 			//Omnitrue
 			else if( state == 2){
 				omniDetections.get(state).add( detectionsByStatistic.get( statistic ) );
