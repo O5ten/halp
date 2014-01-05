@@ -123,7 +123,7 @@ public class LongDataCruncher implements DataCruncher<Long>
 				//Why 1? it ignores the header
 				for( int row = 1; row < data.size(); row++ )
 				{
-
+					System.out.println(row);
 					if( data.get( row )[column].equals( "" ) )
 					{
 						counter++;

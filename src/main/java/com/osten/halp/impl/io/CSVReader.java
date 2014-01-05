@@ -58,18 +58,30 @@ public class CSVReader implements DataReader {
 
     private String[] csvSplit(String csvString) {
         if(csvString.endsWith(",")){
-            String[] splitString = csvString.split( splitregexp );
-            String[] aLittleLongerString = new String[csvString.length()+1];
+			   String[] splitString = csvString.split( splitregexp );
+			   int numberOfCommas = countCommas( csvString );
+            String[] aLittleLongerString = new String[ numberOfCommas + 1];
             for( int i = 0; i < splitString.length; i++ ){
                 aLittleLongerString[i] = splitString[i];
             }
-            aLittleLongerString[splitString.length] = "";
+			   for( int i = splitString.length; i < aLittleLongerString.length; i ++){
+					aLittleLongerString[i] = "";
+				}
             return aLittleLongerString;
         }else{
             return csvString.split(splitregexp);
         }
-
     }
+
+	private int countCommas(String commaString){
+		int i = 0;
+		for( char s : commaString.toCharArray() ){
+			if( s == ','){
+				i++;
+			}
+		}
+		return i;
+	}
 
     public boolean isFileWellFormed(){
         for( String[] s : readFile() ){

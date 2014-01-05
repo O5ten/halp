@@ -228,7 +228,7 @@ public class HalpRunner
 		{
 			return Statistic.DataType.Rate;
 		}
-		else if( type.equalsIgnoreCase( Statistic.DataType.Unknown.toString() ) )
+		else if( type.equalsIgnoreCase( Statistic.DataType.Zero.toString() ) )
 		{
 			return Statistic.DataType.Zero;
 		}

@@ -119,11 +119,9 @@ public class Cusum extends ChangeDetector<Long>
 			}
 			else
 			{
-
 				boolean detectionsExist = detections.size() > 0;
-				boolean lastDetectionIsNotAlreadyStopped = !lastDetection.hasStop();
 
-				if( detectionsExist && lastDetectionIsNotAlreadyStopped )
+				if( detectionsExist && !lastDetection.hasStop() )
 				{
 					if( ( i - lastDetection.getTouched() ) > robustness )
 					{

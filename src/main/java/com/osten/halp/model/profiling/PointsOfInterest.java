@@ -318,6 +318,10 @@ public class PointsOfInterest
 			//New list of pointsOfInterests;
 			LinkedList<Range> store = new LinkedList<Range>();
 
+			if(original.size() == 0 || detections.size() == 0){
+				return;
+			}
+
 			Range A = original.pop();
 			Range B = detections.pop();
 
@@ -327,8 +331,12 @@ public class PointsOfInterest
 				//Identical segments. Remove.
 				if( A.getStop().equals( B.getStop() ) && A.getStart().equals( B.getStart() ) )
 				{
-					A = original.pop();
-					B = detections.pop();
+					if( hasNext( original ) ){
+						A = original.pop();
+					}
+					if( hasNext( detections ) ){
+						B = detections.pop();
+					}
 					continue;
 				}
 
