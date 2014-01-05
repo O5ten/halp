@@ -5,7 +5,7 @@
     <artifactId>halp</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>shafdt</name>
+    <name>HALP</name>
     <url>http://maven.apache.org</url>
     <properties>
         <slf4jVersion>1.6.1</slf4jVersion>
@@ -44,6 +44,26 @@
     </dependencies>
     <build>
         <plugins>
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<configuration>
+			<source>1.7</source>
+			<target>1.7</target>
+		</configuration>
+            </plugin>
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<version>2.4</version>
+		<configuration>
+			<archive>
+				<manifest>
+					<mainClass>com.osten.halp.launcher.CmdLauncher</mainClass>
+				</manifest>
+			</archive>
+		</configuration>
+	    </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
