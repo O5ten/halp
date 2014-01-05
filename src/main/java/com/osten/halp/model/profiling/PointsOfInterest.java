@@ -385,6 +385,8 @@ public class PointsOfInterest
 					A = new Range( B.getStop(), A.getStop() );
 					if(hasNext(detections)){
 						B = detections.pop();
+					}else{
+						store.add( A );
 					}
 					continue;
 				}

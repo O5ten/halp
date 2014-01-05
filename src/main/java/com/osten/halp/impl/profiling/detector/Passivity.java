@@ -66,11 +66,12 @@ public class Passivity extends ChangeDetector<Long> {
                    }else if( detection.hasStop() ){
                        detections.add(new Detection<Long>( new Long( i - getSetting(ROBUSTNESS_PROPERTY).intValue() ), residual) );
                    }
-
                    else{
                        robustness++;
                    }
-               }
+               }else if(i == residuals.size()-1 && !detection.hasStop()){
+						detection.setStop( new Long( i ) );
+					}
            }else{
                if(detection != null && !detection.hasStop()){
                    detection.setStop(new Long(i));
@@ -78,5 +79,6 @@ public class Passivity extends ChangeDetector<Long> {
                robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
            }
        }
+
     }
 }

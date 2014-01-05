@@ -60,10 +60,13 @@ public class Activity extends ChangeDetector<Long> {
                 }
             }
         }
-        Detection<Long> detection = getDetections().get(getDetections().size()-1);
-        if(!detection.hasStop()){
-            detection.setStop(new Long( filter.getResiduals().size() ) );
-        }
 
+		 if(!detections.isEmpty()){
+			  Detection<Long> detection = getDetections().get(getDetections().size()-1);
+
+			  if(!detection.hasStop()){
+				  detection.setStop(new Long( filter.getResiduals().size() ) );
+			  }
+		  }
     }
 }
