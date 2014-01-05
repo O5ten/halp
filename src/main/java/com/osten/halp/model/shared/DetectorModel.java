@@ -1,7 +1,7 @@
-package com.osten.halp.api.model.shared;
+package com.osten.halp.model.shared;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.profiling.ChangeDetector;
 
 import java.util.List;
 

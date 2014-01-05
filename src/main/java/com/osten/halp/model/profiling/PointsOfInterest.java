@@ -1,7 +1,7 @@
-package com.osten.halp.api.model.profiling;
+package com.osten.halp.model.profiling;
 
-import com.osten.halp.api.model.shared.ProfileModel;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.shared.ProfileModel;
+import com.osten.halp.model.statistics.Statistic;
 
 import java.util.ArrayList;
 import java.util.Collections;

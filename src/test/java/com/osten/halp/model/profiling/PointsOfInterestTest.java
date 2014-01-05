@@ -1,4 +1,4 @@
-package com.osten.halp.api.model.profiling;
+package com.osten.halp.model.profiling;
 
 import com.osten.halp.impl.statistics.LongDataPoint;
 import com.osten.halp.impl.statistics.LongStatistic;

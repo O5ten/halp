@@ -1,9 +1,9 @@
 package com.osten.halp.impl.shared;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
-import com.osten.halp.api.model.profiling.Detection;
-import com.osten.halp.api.model.shared.DetectorModel;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.profiling.ChangeDetector;
+import com.osten.halp.model.profiling.Detection;
+import com.osten.halp.model.shared.DetectorModel;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
 import com.osten.halp.impl.profiling.detector.Passivity;
 import com.osten.halp.impl.profiling.detector.Cusum;

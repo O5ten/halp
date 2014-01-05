@@ -1,15 +1,14 @@
 package com.osten.halp.views.profiling;
 
-import com.osten.halp.api.model.gui.PopulatableView;
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
-import com.osten.halp.api.model.profiling.Detection;
-import com.osten.halp.api.model.profiling.PointsOfInterest;
-import com.osten.halp.api.model.shared.DataModel;
-import com.osten.halp.api.model.shared.DetectorModel;
-import com.osten.halp.api.model.shared.FilterModel;
-import com.osten.halp.api.model.shared.ProfileModel;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.gui.PopulatableView;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.profiling.ChangeDetector;
+import com.osten.halp.model.profiling.Detection;
+import com.osten.halp.model.shared.DataModel;
+import com.osten.halp.model.shared.DetectorModel;
+import com.osten.halp.model.shared.FilterModel;
+import com.osten.halp.model.shared.ProfileModel;
+import com.osten.halp.model.statistics.Statistic;
 import com.osten.halp.utils.FXMLUtils;
 import com.osten.halp.views.main.MainWindowView;
 import javafx.application.Platform;

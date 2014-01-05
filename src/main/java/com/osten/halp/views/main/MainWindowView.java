@@ -1,10 +1,10 @@
 package com.osten.halp.views.main;
 
-import com.osten.halp.api.model.gui.PopulatableView;
-import com.osten.halp.api.model.shared.DataModel;
-import com.osten.halp.api.model.shared.DetectorModel;
-import com.osten.halp.api.model.shared.FilterModel;
-import com.osten.halp.api.model.shared.ProfileModel;
+import com.osten.halp.model.gui.PopulatableView;
+import com.osten.halp.model.shared.DataModel;
+import com.osten.halp.model.shared.DetectorModel;
+import com.osten.halp.model.shared.FilterModel;
+import com.osten.halp.model.shared.ProfileModel;
 import com.osten.halp.impl.shared.LongDataModel;
 import com.osten.halp.impl.shared.LongDetectorModel;
 import com.osten.halp.impl.shared.LongFilterModel;
@@ -14,7 +14,6 @@ import com.osten.halp.views.selection.SelectionView;
 import com.osten.halp.views.profiling.ProfilingView;
 import com.osten.halp.views.home.HomeView;
 import com.osten.halp.utils.FXMLUtils;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,8 +21,6 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

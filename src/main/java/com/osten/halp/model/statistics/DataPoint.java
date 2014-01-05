@@ -1,4 +1,4 @@
-package com.osten.halp.api.model.statistics;
+package com.osten.halp.model.statistics;
 
 /**
  * Created with IntelliJ IDEA.

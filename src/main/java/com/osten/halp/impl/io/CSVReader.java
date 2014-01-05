@@ -1,6 +1,6 @@
 package com.osten.halp.impl.io;
 
-import com.osten.halp.api.model.io.DataReader;
+import com.osten.halp.model.io.DataReader;
 
 import java.io.*;
 import java.util.ArrayList;

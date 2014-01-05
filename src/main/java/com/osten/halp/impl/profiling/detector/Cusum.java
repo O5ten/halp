@@ -1,9 +1,9 @@
 package com.osten.halp.impl.profiling.detector;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
-import com.osten.halp.api.model.profiling.Detection;
-import com.osten.halp.api.model.statistics.DataPoint;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.profiling.ChangeDetector;
+import com.osten.halp.model.profiling.Detection;
+import com.osten.halp.model.statistics.DataPoint;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +64,7 @@ public class Cusum extends ChangeDetector<Long>
 
 			List<Detection<Long>> detections = getDetections();
 			Detection<Long> lastDetection = null;
+
 			if( !detections.isEmpty() )
 			{
 				lastDetection = detections.get( detections.size() - 1 );

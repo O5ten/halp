@@ -1,10 +1,8 @@
-package com.osten.halp.api.model.shared;
+package com.osten.halp.model.shared;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.profiling.AdaptiveFilter;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

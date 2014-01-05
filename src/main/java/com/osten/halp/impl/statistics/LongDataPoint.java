@@ -1,6 +1,6 @@
 package com.osten.halp.impl.statistics;
 
-import com.osten.halp.api.model.statistics.DataPoint;
+import com.osten.halp.model.statistics.DataPoint;
 
 public class LongDataPoint implements DataPoint<Long> {
     private Long data;

@@ -1,4 +1,4 @@
-package com.osten.halp.api.model.io;
+package com.osten.halp.model.io;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

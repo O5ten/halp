@@ -1,9 +1,8 @@
 package com.osten.halp.impl.shared;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
-import com.osten.halp.api.model.profiling.StopRule;
-import com.osten.halp.api.model.shared.FilterModel;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.profiling.ChangeDetector;
+import com.osten.halp.model.shared.FilterModel;
 import com.osten.halp.errorhandling.UnsupportedFilterException;
 import com.osten.halp.impl.profiling.filters.kalman.Kalman;
 import com.osten.halp.impl.profiling.filters.wls.BaseWLS;
@@ -81,10 +80,10 @@ public class LongFilterModel implements FilterModel<Long> {
         }
 
         if(filters.containsKey( statisticName) ){
-            System.out.println( "Statistic " + statisticName + " added filter of type " + filter.getType() );
+           // System.out.println( "Statistic " + statisticName + " added filter of type " + filter.getType() );
             filters.get( statisticName ).add( filter );
         }else{
-            System.out.println( "Statistic " + statisticName + " created and filter of type " + filter.getType() + " added " );
+            //System.out.println( "Statistic " + statisticName + " created and filter of type " + filter.getType() + " added " );
             ArrayList<AdaptiveFilter<Long>> filterList = new ArrayList<AdaptiveFilter<Long>>();
             filterList.add( filter );
             filters.put( statisticName, filterList );
@@ -103,7 +102,7 @@ public class LongFilterModel implements FilterModel<Long> {
         for ( AdaptiveFilter<Long> filter : filters.get( statisticName )){
             if( filter.getType() == type ){
                 filterToRemove = filter;
-                System.out.println( "Statistic " + statisticName + " removes filter of type " + filter.getType() );
+                //System.out.println( "Statistic " + statisticName + " removes filter of type " + filter.getType() );
             }
         }
         filters.get( statisticName ).remove( filterToRemove );

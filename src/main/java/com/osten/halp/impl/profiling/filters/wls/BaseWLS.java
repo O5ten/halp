@@ -1,8 +1,8 @@
 package com.osten.halp.impl.profiling.filters.wls;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.statistics.DataPoint;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.statistics.DataPoint;
+import com.osten.halp.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongDataPoint;
 
 import java.util.ArrayDeque;

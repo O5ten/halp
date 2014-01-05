@@ -1,9 +1,9 @@
 package com.osten.halp.impl.io;
 
-import com.osten.halp.api.model.io.DataCruncher;
-import com.osten.halp.api.model.io.DataReader;
-import com.osten.halp.api.model.statistics.DataPoint;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.io.DataCruncher;
+import com.osten.halp.model.io.DataReader;
+import com.osten.halp.model.statistics.DataPoint;
+import com.osten.halp.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongDataPoint;
 import com.osten.halp.impl.statistics.LongStatistic;
 import javafx.collections.ObservableList;

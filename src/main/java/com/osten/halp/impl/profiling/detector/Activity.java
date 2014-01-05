@@ -1,8 +1,8 @@
 package com.osten.halp.impl.profiling.detector;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.profiling.ChangeDetector;
-import com.osten.halp.api.model.profiling.Detection;
+import com.osten.halp.model.profiling.AdaptiveFilter;
+import com.osten.halp.model.profiling.ChangeDetector;
+import com.osten.halp.model.profiling.Detection;
 
 import java.util.HashMap;
 import java.util.List;

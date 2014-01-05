@@ -1,6 +1,6 @@
 package com.osten.halp.views.profiling;
 
-import com.osten.halp.api.model.profiling.ChangeDetector;
+import com.osten.halp.model.profiling.ChangeDetector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;

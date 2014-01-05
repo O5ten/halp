@@ -1,9 +1,8 @@
-package com.osten.halp.api.model.io;
+package com.osten.halp.model.io;
 
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.statistics.Statistic;
 import javafx.collections.ObservableList;
 
-import java.io.File;
 import java.util.List;
 
 /**

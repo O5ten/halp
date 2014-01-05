@@ -1,13 +1,11 @@
 package com.osten.halp.views.profiling;
 
-import com.osten.halp.api.model.profiling.AdaptiveFilter;
-import com.osten.halp.api.model.shared.FilterModel;
+import com.osten.halp.model.profiling.AdaptiveFilter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBuilder;
@@ -16,7 +14,6 @@ import javafx.scene.control.LabelBuilder;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

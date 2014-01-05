@@ -1,4 +1,4 @@
-package com.osten.halp.api.model.profiling;
+package com.osten.halp.model.profiling;
 
 import java.util.ArrayList;
 import java.util.HashMap;

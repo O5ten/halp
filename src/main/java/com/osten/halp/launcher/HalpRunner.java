@@ -1,12 +1,12 @@
 package com.osten.halp.launcher;
 
-import com.osten.halp.api.model.io.DataCruncher;
-import com.osten.halp.api.model.profiling.*;
-import com.osten.halp.api.model.shared.DataModel;
-import com.osten.halp.api.model.shared.DetectorModel;
-import com.osten.halp.api.model.shared.FilterModel;
-import com.osten.halp.api.model.shared.ProfileModel;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.io.DataCruncher;
+import com.osten.halp.model.profiling.*;
+import com.osten.halp.model.shared.DataModel;
+import com.osten.halp.model.shared.DetectorModel;
+import com.osten.halp.model.shared.FilterModel;
+import com.osten.halp.model.shared.ProfileModel;
+import com.osten.halp.model.statistics.Statistic;
 import com.osten.halp.impl.io.CSVReader;
 import com.osten.halp.impl.io.LongDataCruncher;
 import com.osten.halp.impl.shared.LongDataModel;
@@ -14,14 +14,12 @@ import com.osten.halp.impl.shared.LongDetectorModel;
 import com.osten.halp.impl.shared.LongFilterModel;
 import com.osten.halp.impl.shared.LongProfileModel;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by server on 2013-12-18.
@@ -47,7 +45,9 @@ public class HalpRunner
 
 	//Settings
 	private File outputFile;
+	private File guessFile;
 	private boolean usingOutputFile;
+	private boolean usingGuessFile;
 	private boolean guessUponEnd;
 
 	public HalpRunner()
@@ -71,7 +71,7 @@ public class HalpRunner
 		//Settings
 		guessUponEnd = false;
 		usingOutputFile = false;
-
+		usingGuessFile = false;
 	}
 
 	public void parseArgs( String[] args )
@@ -155,7 +155,8 @@ public class HalpRunner
 
 						break;
 					case Guess:
-						guessUponEnd = true;
+						usingGuessFile = true;
+						guessFile = new File( arg );
 
 						break;
 					case Output:
@@ -166,7 +167,7 @@ public class HalpRunner
 
 					//print stuff on usage
 					default:
-						System.out.println( "HalpRunner -F File1;File2;...  -T ResponseTime,Throughput,Rate,Memory,Swap,CPU,Unknown;... -P All,CPU,Memory,Network -guess -o AbsoluteOutputFile" );
+						System.out.println( "HalpRunner -F File1;File2;...  -T ResponseTime,Throughput,Rate,Memory,Swap,CPU,Unknown;... -P All,CPU,Memory,Network -G guessfile -O AbsoluteOutputFile" );
 				}
 			}
 		}
@@ -235,23 +236,23 @@ public class HalpRunner
 
 	private Argument getArgumentByStringArg( String arg )
 	{
-		if( arg.equalsIgnoreCase( "-f" ) )
+		if( arg.equalsIgnoreCase( "-F" ) )
 		{
 			return Argument.File;
 		}
-		else if( arg.equalsIgnoreCase( "-p" ) )
+		else if( arg.equalsIgnoreCase( "-P" ) )
 		{
 			return Argument.Profile;
 		}
-		else if( arg.equalsIgnoreCase( "-t" ) )
+		else if( arg.equalsIgnoreCase( "-T" ) )
 		{
 			return Argument.Types;
 		}
-		else if( arg.equalsIgnoreCase( "-guess" ) )
+		else if( arg.equalsIgnoreCase( "-G" ) )
 		{
 			return Argument.Guess;
 		}
-		else if( arg.equalsIgnoreCase( "-o" ) )
+		else if( arg.equalsIgnoreCase( "-O" ) )
 		{
 			return Argument.Output;
 		}
@@ -292,7 +293,7 @@ public class HalpRunner
 		System.out.println( "\nBottleneck likelihood ==> { " + d + "% }" );
 		System.out.println( "================================================" );
 
-		if( guessUponEnd )
+		if( usingGuessFile )
 		{
 			bottlenecks.add( new Bottleneck( poi.getProfile(), profileModel.getDescriptionByProfile( poi.getProfile() ), d ) );
 		}
@@ -327,33 +328,95 @@ public class HalpRunner
 			findAndShowPointsOfInterest();
 		}
 
-		if( guessUponEnd )
+		Bottleneck candidate = new Bottleneck( ProfileModel.Profile.Baseline, "No profiling has been performed", 0d );
+		if( usingGuessFile )
 		{
-			Bottleneck candidate = new Bottleneck( ProfileModel.Profile.None, "No profiling has been performed", 0d );
+			Collections.sort( bottlenecks );
 			for( Bottleneck bn : bottlenecks )
 			{
-				if( candidate.getLikeliness() < bn.getLikeliness() && bn.getLikeliness() > 10 )
+				if( candidate.getLikeliness() < bn.getLikeliness() && bn.getLikeliness() > 5 )
 				{
 					candidate = bn;
 				}
 			}
 
-			if( usingOutputFile )
+			if( candidate.getType() == ProfileModel.Profile.Baseline )
 			{
-				try
-				{
-					FileWriter bw = new FileWriter( outputFile );
-					bw.write("Type,Confidence\n" + candidate.getType().toString() + "," + candidate.getLikeliness() );
-				}
-				catch( IOException e )
-				{
-					//Nothing
-				}
-			}else{
-				System.out.println( "With confidence of " + candidate.getLikeliness() + "% it is most likely a " + candidate.getType().toString() + "-bottleneck.");
+				candidate.setLikeliness( 100 );
 			}
 
+			try
+			{
+				FileWriter bw = new FileWriter( guessFile, true );
+
+				if( guessFile.length() == 0 )
+				{
+					guessFile.createNewFile();
+					bw.write( "Timestamp,Actual,Guess,Correct,CPU,Memory,Network\n" );
+					bw.flush();
+				}
+
+				DateFormat dateFormat = new SimpleDateFormat( "HH:mm:ss" );
+				Date date = new Date();
+				String timestamp = dateFormat.format( date );
+
+				ProfileModel.Profile actual = getCorrectBottleneckByFilename( csvSources.get( 0 ).getName() );
+				bw.append( timestamp + "," + actual + "," + candidate.getType() + "," + ( actual == candidate.getType() ) + "" );
+
+				for( Bottleneck bn : bottlenecks )
+				{
+					bw.append( "," + bn.getLikeliness() );
+				}
+				bw.append( "\n" );
+				bw.close();
+
+			}
+			catch( IOException e )
+			{
+				//Nothing
+
+			}
 		}
+
+		System.out.println( "With confidence of " + candidate.getLikeliness() + "% it is most likely a " + candidate.getType().
+
+				toString()
+
+				+ "-bottleneck." );
+	}
+
+	private ProfileModel.Profile getCorrectBottleneckByFilename( String filename )
+	{
+		ProfileModel.Profile correct = ProfileModel.Profile.Baseline;
+		for( String s : filename.split( "-" ) )
+		{
+			if( s.equalsIgnoreCase( "memory" ) )
+			{
+				correct = ProfileModel.Profile.Memory;
+				break;
+			}
+			else if( s.equalsIgnoreCase( "baseline" ) )
+			{
+				correct = ProfileModel.Profile.Baseline;
+				break;
+			}
+			else if( s.equalsIgnoreCase( "cpu" ) )
+			{
+				correct = ProfileModel.Profile.CPU;
+				break;
+			}
+			else if( s.equalsIgnoreCase( "network" ) )
+			{
+				correct = ProfileModel.Profile.Network;
+				break;
+			}
+			else
+			{
+				//Nothing.
+			}
+		}
+
+		return correct;
 	}
 
 	private void applyFiltersAndDetectors()

@@ -1,9 +1,9 @@
-package com.osten.halp.api.model.gui;
+package com.osten.halp.model.gui;
 
-import com.osten.halp.api.model.shared.DataModel;
-import com.osten.halp.api.model.shared.DetectorModel;
-import com.osten.halp.api.model.shared.FilterModel;
-import com.osten.halp.api.model.shared.ProfileModel;
+import com.osten.halp.model.shared.DataModel;
+import com.osten.halp.model.shared.DetectorModel;
+import com.osten.halp.model.shared.FilterModel;
+import com.osten.halp.model.shared.ProfileModel;
 
 /**
  * Created with IntelliJ IDEA.

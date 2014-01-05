@@ -1,6 +1,6 @@
-package com.osten.halp.api.model.profiling;
+package com.osten.halp.model.profiling;
 
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.statistics.Statistic;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,7 +1,7 @@
 package com.osten.halp.impl.statistics;
 
-import com.osten.halp.api.model.statistics.DataPoint;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.statistics.DataPoint;
+import com.osten.halp.model.statistics.Statistic;
 
 import java.util.ArrayList;
 import java.util.Collections;

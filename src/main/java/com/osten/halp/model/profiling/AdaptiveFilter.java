@@ -1,7 +1,7 @@
-package com.osten.halp.api.model.profiling;
+package com.osten.halp.model.profiling;
 
-import com.osten.halp.api.model.statistics.DataPoint;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.statistics.DataPoint;
+import com.osten.halp.model.statistics.Statistic;
 import com.osten.halp.impl.statistics.LongStatistic;
 
 import java.util.HashMap;

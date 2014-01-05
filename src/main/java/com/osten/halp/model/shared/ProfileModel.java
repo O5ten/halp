@@ -1,7 +1,7 @@
-package com.osten.halp.api.model.shared;
+package com.osten.halp.model.shared;
 
-import com.osten.halp.api.model.profiling.*;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.profiling.*;
+import com.osten.halp.model.statistics.Statistic;
 
 import java.util.List;
 import java.util.Map;
@@ -70,6 +70,6 @@ public interface ProfileModel<Data>
 
 	public static enum Profile
 	{
-		Custom, CPU, Memory, Network, None, ALL
+		Custom, CPU, Memory, Network, Baseline, ALL
 	}
 }

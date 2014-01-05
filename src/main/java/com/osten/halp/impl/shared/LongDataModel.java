@@ -1,7 +1,7 @@
 package com.osten.halp.impl.shared;
 
-import com.osten.halp.api.model.shared.DataModel;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.shared.DataModel;
+import com.osten.halp.model.statistics.Statistic;
 
 import java.util.ArrayList;
 import java.util.List;

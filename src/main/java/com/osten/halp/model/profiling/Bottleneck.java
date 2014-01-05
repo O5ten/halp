@@ -1,11 +1,11 @@
-package com.osten.halp.api.model.profiling;
+package com.osten.halp.model.profiling;
 
-import com.osten.halp.api.model.shared.ProfileModel;
+import com.osten.halp.model.shared.ProfileModel;
 
 /**
  * Created by osten on 12/10/13.
  */
-public class Bottleneck
+public class Bottleneck implements Comparable<Bottleneck>
 {
 	private ProfileModel.Profile type;
 	private String description;
@@ -49,5 +49,11 @@ public class Bottleneck
 	public void setLikeliness( double likeliness )
 	{
 		this.likeliness = likeliness;
+	}
+
+	@Override
+	public int compareTo( Bottleneck o )
+	{
+		return type.compareTo( o.getType() );
 	}
 }

@@ -1,8 +1,8 @@
 package com.osten.halp.impl.shared;
 
-import com.osten.halp.api.model.profiling.*;
-import com.osten.halp.api.model.shared.ProfileModel;
-import com.osten.halp.api.model.statistics.Statistic;
+import com.osten.halp.model.profiling.*;
+import com.osten.halp.model.shared.ProfileModel;
+import com.osten.halp.model.statistics.Statistic;
 import com.osten.halp.errorhandling.UnsupportedElementException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -273,7 +273,7 @@ public class LongProfileModel implements ProfileModel<Long>
 			System.err.println( "Failed to parse XML. " );
 			e.printStackTrace();
 		}
-		System.out.println( "Parsed profile-relations. " );
+		//System.out.println( "Parsed profile-relations. " );
 
 	}
 
