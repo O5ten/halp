@@ -78,6 +78,10 @@ public class HalpRunner
 	{
 
 		Argument argument = Argument.Help;
+		if(args.length == 0){
+			System.out.println( "HalpRunner -F File1;File2;...  -T ResponseTime,Throughput,Rate,Memory,Swap,CPU,Unknown;... -P All,CPU,Memory,Network -G guessfile" );
+			System.exit( -1 );
+		}
 		for( String arg : args )
 		{
 			if( arg.startsWith( "-" ) )
