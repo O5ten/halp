@@ -443,17 +443,21 @@ public class PointsOfInterest
 				}
 			}
 
-			if( store.getLast().getStop() <= A.getStart() && store.getLast().getStart() != A.getStart() && store.getLast().getStop() != A.getStop()){
+			if( !store.isEmpty() && store.getLast().getStop() <= A.getStart() && store.getLast().getStart() != A.getStart() && store.getLast().getStop() != A.getStop()){
 				store.add( A );
 			}
 
-			LinkedHashSet<Range> set = new LinkedHashSet<Range>();
-			set.addAll( store );
-			store.clear();
-			store.addAll( set );
-			Collections.sort( store );
+			//Elliminate duplicates
+			Range range = new Range(0l, 0l);
+			LinkedList<Range> list = new LinkedList<Range>();
+			for(Range poi : store ){
+				if(range.getStart() != poi.getStart() && range.getStop() != poi.getStop()){
+					list.add( poi );
+				}
+				range = poi;
+			}
 
-			pointsOfInterest = store;
+			pointsOfInterest = list;
 		}
 	}
 

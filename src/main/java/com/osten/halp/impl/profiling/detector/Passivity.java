@@ -26,7 +26,7 @@ public class Passivity extends ChangeDetector<Long> {
 	public static String LOWER_LIMIT_PROPERTY = "LIMIT";
 
     private Integer DEFAULT_ROBUSTNESS = 10;
-    private Integer DEFAULT_THRESHOLD = 4;
+    private Integer DEFAULT_THRESHOLD = 10;
 	 private Integer DEFAULT_LOWERLIMIT = 20;
     /**
      * The no-activity-detector.
