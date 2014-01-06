@@ -3,10 +3,7 @@ package com.osten.halp.model.profiling;
 import com.osten.halp.model.shared.ProfileModel;
 import com.osten.halp.model.statistics.Statistic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by osten on 12/10/13.
@@ -73,8 +70,6 @@ public class PointsOfInterest
 					newPointsOfInterest.add( new Range( range.getStart(), range.getStop() ) );
 					continue;
 				}
-
-
 			}
 		}
 		if( !newPointsOfInterest.isEmpty() )
@@ -328,12 +323,24 @@ public class PointsOfInterest
 				return;
 			}
 
+			int limit = original.size()*detections.size();
+			int counter = 0;
+
 			Range A = original.pop();
 			Range B = detections.pop();
+
+
 
 			//LinkedList hopping between smallest starts of detections and points of interests and assembles a list containing the OR result of both lists.
 			do
 			{
+				counter++;
+
+				//Error-counteraction
+				if(counter > limit){
+					break;
+				}
+
 				//Identical segments. Remove.
 				if( A.getStop().equals( B.getStop() ) && A.getStart().equals( B.getStart() ) )
 				{
@@ -368,6 +375,7 @@ public class PointsOfInterest
 					{
 						B = detections.pop();
 					}else{
+						store.add( A );
 						if( hasNext( original )){
 							A = original.pop();
 						}
@@ -388,7 +396,6 @@ public class PointsOfInterest
 					}else{
 						store.add( A );
 					}
-					continue;
 				}
 
 				//Segment B is inside segment A
@@ -410,7 +417,7 @@ public class PointsOfInterest
 				}
 
 				//Overlapping in to
-				if( A.getStart() > B.getStart() && A.getStop() > B.getStop() )
+				if( A.getStart() > B.getStart() && A.getStop() > B.getStop() && B.getStop() > A.getStart() )
 				{
 					A = new Range( B.getStop(), A.getStop() );
 				}
@@ -435,6 +442,16 @@ public class PointsOfInterest
 					store.add( range );
 				}
 			}
+
+			if( store.getLast().getStop() <= A.getStart() && store.getLast().getStart() != A.getStart() && store.getLast().getStop() != A.getStop()){
+				store.add( A );
+			}
+
+			LinkedHashSet<Range> set = new LinkedHashSet<Range>();
+			set.addAll( store );
+			store.clear();
+			store.addAll( set );
+			Collections.sort( store );
 
 			pointsOfInterest = store;
 		}
@@ -462,7 +479,6 @@ public class PointsOfInterest
 		{
 			return Relevance.Substantial;
 		}
-
 	}
 
 	public void setPointsOfInterest( LinkedList<Range> pointsOfInterest )
