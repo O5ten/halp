@@ -92,7 +92,7 @@ public class Cusum extends ChangeDetector<Long>
 			{
 
 				robustness--;
-				if( robustness == 0 )
+				if( robustness <= 0 )
 				{
 
 					if( detections.isEmpty() || lastDetection.hasStop() )
@@ -109,6 +109,9 @@ public class Cusum extends ChangeDetector<Long>
 						if( i - lastDetection.getTouched() > getSetting( ROBUSTNESS_PROPERTY ).intValue() )
 						{
 							lastDetection.setStop( new Long( i ) );
+							positiveCusum = 0;
+							negativeCusum = 0;
+							robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
 						}
 						else
 						{
@@ -126,6 +129,8 @@ public class Cusum extends ChangeDetector<Long>
 					if( ( i - lastDetection.getTouched() ) > robustness )
 					{
 						lastDetection.setStop( new Long( i ) );
+						positiveCusum = 0;
+						negativeCusum = 0;
 					}
 				}
 				robustness = getSetting( ROBUSTNESS_PROPERTY ).intValue();
@@ -135,7 +140,7 @@ public class Cusum extends ChangeDetector<Long>
 			Detection<Long> lastDetection = getDetections().get( getDetections().size() - 1 );
 			if( !lastDetection.hasStop() )
 			{
-				lastDetection.setStop( new Long( residuals.size() ) );
+				lastDetection.setStop( lastDetection.getTouched()+1 );
 			}
 		}
 
